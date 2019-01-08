@@ -12,6 +12,6 @@ import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 public interface SysConfigDao<T> extends BaseDao<T> {
 	
 	
-	   public List<SysConfigEntity> querySysConfig();
+	   public List<SysConfigEntity> querySysConfig(SysConfigEntity sce);
 
 }

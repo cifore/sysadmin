@@ -1,5 +1,6 @@
 package com.csi.sbs.sysadmin.business.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csi.sbs.sysadmin.business.clientmodel.SysParamsModel;
 import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,11 +37,18 @@ public class SysConfigController {
        
        @RequestMapping(value = "/{query}", method = RequestMethod.POST)
        @ResponseBody
-   	   public String query() throws JsonProcessingException{
+   	   public String query(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;
+    	   String[] item = spm.getItem().split(",");
+    	   List<String> list = new ArrayList<String>();
+    	   for(int i=0;i<item.length;i++){
+    		   list.add(item[i]);
+    	   }
+    	   SysConfigEntity sce = new SysConfigEntity();
+    	   sce.setParams(list);
            try{
-        	   sysconfig = sysConfigService.querySysConfig();
+        	   sysconfig = sysConfigService.querySysConfig(sce);
            }catch(Exception e){
         	   map.put("msg", "查询失败");
                map.put("code", "0");

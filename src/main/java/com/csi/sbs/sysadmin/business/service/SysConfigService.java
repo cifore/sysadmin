@@ -7,6 +7,6 @@ import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 public interface SysConfigService {
 	
 	
-	   public List<SysConfigEntity> querySysConfig(String...args);
+	   public List<SysConfigEntity> querySysConfig(SysConfigEntity sce);
 
 }
