@@ -10,8 +10,5 @@ import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 
 @Mapper
 public interface SysConfigDao<T> extends BaseDao<T> {
-	
-	
 	   public List<SysConfigEntity> querySysConfig();
-
 }

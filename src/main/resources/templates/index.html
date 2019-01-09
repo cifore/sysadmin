@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>API List Infomation</title>
+    <!-- CSS引用 -->
+    <link rel="stylesheet" href="/css/bootstarp-table/bootstrap-table.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstarp-table/bootstrap-table.min.css" type="text/css" />   
+	<link rel="stylesheet" href="/css/bootstrap-3.3.7-dist/bootstrap.css" type="text/css" />   
+    <link rel="stylesheet" href="/css/bootstrap-val/bootstrapValidator.css" type="text/css" />
+    <link rel="stylesheet" href="/css/main/bootstrap.css" type="text/css" />
+    <!-- JS引用 -->
+    <script src="/js/jquery/jquery.js" type="text/javascript"></script>
+    <script src="/js/jquery/jquery.knob.js" type="text/javascript"></script>
+    <script src="/js/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/jquery/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script src="/js/bootstrap-3.3.7-dist/bootstrap.js"></script>
+    <script src="/js/bootstrap-table/dist/bootstrap-table.js" type="text/javascript"></script>
+	<script src="/js/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/bootstrap-val/bootstrapValidator.min.js"></script>
+    <script src="/js/main/index.js"></script>
+  </head>
+  
+  <body>
+  	<h2 style="text-align:center;"> API of Simulated Banking System </h2>
+  	<table id="tableContent">
+	   	
+	</table>
+	<div class="modal fade" id="modifyMadal"  role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel">API Details</h4>
+					</div>
+					<form class="form-horizontal" id="addAdminForm">
+					<div class="modal-body">
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="txt_search_departmentname">模块名</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="moduleName" name="moduleName"/>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+				</div>
+				
+	</div>
+  </body>
+</html>

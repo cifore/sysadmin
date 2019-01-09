@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.SysConfigDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ITEM" property="item" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="querySysConfig" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    select * from t_sys_conf
+    where 1=1
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_sys_conf
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    insert into t_sys_conf
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="item != null" >
+        ITEM,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="item != null" >
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    update t_sys_conf
+    <set >
+      <if test="item != null" >
+        ITEM = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

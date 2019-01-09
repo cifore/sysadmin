@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.CheckListDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ApiName" property="apiname" jdbcType="VARCHAR" />
+    <result column="ApiDescription" property="apidescription" jdbcType="VARCHAR" />
+    <result column="RequestMode" property="requestmode" jdbcType="VARCHAR" />
+    <result column="ModuleID" property="moduleid" jdbcType="VARCHAR" />
+    <result column="InputDescription" property="inputdescription" jdbcType="VARCHAR" />
+    <result column="OutputDescription" property="outputdescription" jdbcType="VARCHAR" />
+    <result column="ApiAddress" property="apiaddress" jdbcType="VARCHAR" /> 
+    <result column="InternalURL" jdbcType="VARCHAR" property="internalurl" />
+    <result column="Owner" property="owner" jdbcType="VARCHAR" />
+    <result column="Status" property="status" jdbcType="VARCHAR" />
+    <result column="Version" property="version" jdbcType="VARCHAR" />
+    <result column="VersionDesc" property="versiondesc" jdbcType="VARCHAR" />
+    <result column="LastUpdateDate" property="lastupdatedate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ApiName, ApiDescription, RequestMode, ModuleID, InputDescription, OutputDescription, 
+    ApiAddress, InternalURL, Owner, Status, Version, VersionDesc, LastUpdateDate
+  </sql>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apidetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apidetail
+    where ApiName = #{apiname,jdbcType=VARCHAR}
+  </select>
+   <select id="queryAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from t_apidetail where 1 = 1 order by moduleid asc
+  </select>
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_apidetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
+    insert into t_apidetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="apiname != null" >
+        ApiName,
+      </if>
+      <if test="apidescription != null" >
+        ApiDescription,
+      </if>
+      <if test="requestmode != null" >
+        RequestMode,
+      </if>
+      <if test="moduleid != null" >
+        ModuleID,
+      </if>
+      <if test="inputdescription != null" >
+        InputDescription,
+      </if>
+      <if test="outputdescription != null" >
+        OutputDescription,
+      </if>
+      <if test="apiaddress != null" >
+        ApiAddress,
+      </if>
+      <if test="internalurl != null">
+        InternalURL,
+      </if>
+      <if test="owner != null" >
+        Owner,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+      <if test="versiondesc != null" >
+        VersionDesc,
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="apiname != null" >
+        #{apiname,jdbcType=VARCHAR},
+      </if>
+      <if test="apidescription != null" >
+        #{apidescription,jdbcType=VARCHAR},
+      </if>
+      <if test="requestmode != null" >
+        #{requestmode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleid != null" >
+        #{moduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="inputdescription != null" >
+        #{inputdescription,jdbcType=VARCHAR},
+      </if>
+      <if test="outputdescription != null" >
+        #{outputdescription,jdbcType=VARCHAR},
+      </if>
+      <if test="apiaddress != null" >
+        #{apiaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="internalurl != null">
+        #{internalurl,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="versiondesc != null" >
+        #{versiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatedate != null" >
+        #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
+    update t_apidetail
+    <set >
+      <if test="apiname != null" >
+        ApiName = #{apiname,jdbcType=VARCHAR},
+      </if>
+      <if test="apidescription != null" >
+        ApiDescription = #{apidescription,jdbcType=VARCHAR},
+      </if>
+      <if test="requestmode != null" >
+        RequestMode = #{requestmode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleid != null" >
+        ModuleID = #{moduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="inputdescription != null" >
+        InputDescription = #{inputdescription,jdbcType=VARCHAR},
+      </if>
+      <if test="outputdescription != null" >
+        OutputDescription = #{outputdescription,jdbcType=VARCHAR},
+      </if>
+      <if test="apiaddress != null" >
+        ApiAddress = #{apiaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="internalurl != null">
+        #{internalurl,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null" >
+        Owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        Version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="versiondesc != null" >
+        VersionDesc = #{versiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
