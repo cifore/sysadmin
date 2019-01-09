@@ -78,6 +78,22 @@ function loadAPIList(){
 //获取api详情
 function getInfo(info){
 	$('#modifyMadal').modal('show');
+	$("#moduleName").val(info.modulename);
+	$("#apiName").val(info.apiname);
+	$("#status").val(info.status);
+	$("#requestmethod").val(info.requestmode);
+	$("#owner").val(info.owner);
+	if(!!info.lastupdatedate){
+		$("#lastupdateDate").val(new Date(info.lastupdatedate).format("yyyy-MM-dd"));
+	}
+	$("#version").val(info.version);
+	$("#versionDesc").val(info.versiondesc);
+	$("#apiDescription").val(info.apidescription);
+	$("#apiaddress").val(info.apiaddress);
+	$("#internalURL").val(info.internalurl);
+	$("#inputDesc").val(info.inputdescription);
+	$("#outputDesc").val(info.outputdescription);
+	
 }
 
 /**
