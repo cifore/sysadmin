@@ -56,8 +56,15 @@ public class CheckListController {
        public String getServiceInternalURL(final HttpServletRequest request,
 	            final HttpServletResponse response,@RequestBody ApiNameModel anm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
-    	  String apiName = anm.getApiname();
-    	   String internaURL = checkListService.selectByName(apiName).getInternalurl();
+    	   String apiName = anm.getApiname();
+    	   String internaURL = "";
+    	  try{
+    		  internaURL = checkListService.selectByName(apiName).getInternalurl();
+    	  }catch(Exception e){
+    		  map.put("msg", "查询失败");
+              map.put("code", "0");
+              return objectMapper.writeValueAsString(map);
+    	  }  
     	   map.put("internaURL", internaURL);
     	   return objectMapper.writeValueAsString(map);
        }
