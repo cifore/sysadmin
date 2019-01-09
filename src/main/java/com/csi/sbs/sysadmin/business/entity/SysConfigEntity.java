@@ -1,5 +1,7 @@
 package com.csi.sbs.sysadmin.business.entity;
 
+import java.util.List;
+
 public class SysConfigEntity {
 	
     private String id;
@@ -12,8 +14,27 @@ public class SysConfigEntity {
 
     private Integer sort;
     
+    
+    /**
+     * 表外字段
+     * @return
+     */
+    private List<String> params;
+    
+    
+    
+    
 
-    public String getId() {
+
+	public List<String> getParams() {
+		return params;
+	}
+
+	public void setParams(List<String> params) {
+		this.params = params;
+	}
+
+	public String getId() {
         return id;
     }
 

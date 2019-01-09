@@ -21,8 +21,8 @@ public class SysConfigServiceImpl implements SysConfigService{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SysConfigEntity> querySysConfig(String...args) {
-		return sysConfigDao.querySysConfig();
+	public List<SysConfigEntity> querySysConfig(SysConfigEntity sce) {
+		return sysConfigDao.querySysConfig(sce);
 	}
 
 }
