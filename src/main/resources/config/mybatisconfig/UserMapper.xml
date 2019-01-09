@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.UserEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="UserID" property="userid" jdbcType="VARCHAR" />
+    <result column="UserName" property="username" jdbcType="VARCHAR" />
+    <result column="UserPosition" property="userposition" jdbcType="VARCHAR" />
+    <result column="TransactionLimit" property="transactionlimit" jdbcType="DECIMAL" />
+    <result column="TDLimit" property="tdlimit" jdbcType="DECIMAL" />
+    <result column="ExchLimit" property="exchlimit" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, UserID, UserName, UserPosition, TransactionLimit, TDLimit, ExchLimit
+  </sql>
+  <select id="selectByUserID" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_user
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.UserEntity" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userid != null" >
+        UserID,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="userposition != null" >
+        UserPosition,
+      </if>
+      <if test="transactionlimit != null" >
+        TransactionLimit,
+      </if>
+      <if test="tdlimit != null" >
+        TDLimit,
+      </if>
+      <if test="exchlimit != null" >
+        ExchLimit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userposition != null" >
+        #{userposition,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionlimit != null" >
+        #{transactionlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="tdlimit != null" >
+        #{tdlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="exchlimit != null" >
+        #{exchlimit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.UserEntity" >
+    update t_user
+    <set >
+      <if test="userid != null" >
+        UserID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        UserName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userposition != null" >
+        UserPosition = #{userposition,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionlimit != null" >
+        TransactionLimit = #{transactionlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="tdlimit != null" >
+        TDLimit = #{tdlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="exchlimit != null" >
+        ExchLimit = #{exchlimit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
