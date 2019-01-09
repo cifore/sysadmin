@@ -25,15 +25,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/sysconfig")
 public class SysConfigController {
 	
-	
-	
 	   @Resource
 	   private SysConfigService sysConfigService;
 	   
 	   
        ObjectMapper objectMapper = new ObjectMapper();
        
-       
+       @RequestMapping(value = "/{index}", method = RequestMethod.GET)
+   	   public String index() throws JsonProcessingException{
+    	  return "index";
+   	   }
+
        
        @RequestMapping(value = "/{query}", method = RequestMethod.POST)
        @ResponseBody
@@ -57,5 +59,5 @@ public class SysConfigController {
            			  
 		   return objectMapper.writeValueAsString(sysconfig);
    	   }
-
+       
 }
