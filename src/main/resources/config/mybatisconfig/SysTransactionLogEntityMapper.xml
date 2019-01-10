@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.SysTransactionLogDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="UserID" property="userid" jdbcType="VARCHAR" />
+    <result column="UserName" property="username" jdbcType="VARCHAR" />
+    <result column="OperationType" property="operationtype" jdbcType="VARCHAR" />
+    <result column="SourceServices" property="sourceservices" jdbcType="VARCHAR" />
+    <result column="OperationState" property="operationstate" jdbcType="VARCHAR" />
+    <result column="OperationDate" property="operationdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity" >
+    insert into t_transaction_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userid != null" >
+        UserID,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="operationtype != null" >
+        OperationType,
+      </if>
+      <if test="sourceservices != null" >
+        SourceServices,
+      </if>
+      <if test="operationstate != null" >
+        OperationState,
+      </if>
+      <if test="operationdate != null" >
+        OperationDate,
+      </if>
+      <if test="operationdetail != null" >
+        OperationDetail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="operationtype != null" >
+        #{operationtype,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceservices != null" >
+        #{sourceservices,jdbcType=VARCHAR},
+      </if>
+      <if test="operationstate != null" >
+        #{operationstate,jdbcType=VARCHAR},
+      </if>
+      <if test="operationdate != null" >
+        #{operationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operationdetail != null" >
+        #{operationdetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+</mapper>
