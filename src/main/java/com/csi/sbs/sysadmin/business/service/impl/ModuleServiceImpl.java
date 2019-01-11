@@ -11,6 +11,7 @@ import com.csi.sbs.sysadmin.business.service.ModuleService;
 @Service("ModuleService")
 public class ModuleServiceImpl implements ModuleService{
 	
+	@SuppressWarnings("rawtypes")
 	@Resource
 	private ModuleDao moduleDao;
 
