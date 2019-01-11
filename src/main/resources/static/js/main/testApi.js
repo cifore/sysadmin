@@ -33,7 +33,7 @@ function hideOutput(){
 //返回API主页面
 function returnListPage(){
 	sessionStorage.removeItem('apiId')
-	window.location.href = "/sysconfig/index";
+	window.location.href = "/sysadmin/sysconfig/index";
 }
 
 //发送API请求

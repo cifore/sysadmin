@@ -48,7 +48,7 @@ public class CheckListController {
 	   
        ObjectMapper objectMapper = new ObjectMapper();
        
-       @RequestMapping(value = "/{queryApiList}", method = RequestMethod.GET)
+       @RequestMapping(value = "/queryApiList", method = RequestMethod.GET)
        @ResponseBody
        public String queryApiList() throws JsonProcessingException{
     	   List<CheckListEntity> apiList = checkListService.queryAll();
@@ -63,7 +63,7 @@ public class CheckListController {
        
        
        //获取API详情
-       @RequestMapping(value = "/{getApiInfo}/{id}", method = RequestMethod.GET)
+       @RequestMapping(value = "/getApiInfo/{id}", method = RequestMethod.GET)
        @ResponseBody
        public String getApiInfo(@PathVariable("id") String id ) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>(); 
@@ -102,7 +102,7 @@ public class CheckListController {
        }
        
        
-	@RequestMapping(value = "/{getServiceInternalURL}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getServiceInternalURL", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api return api's url base on api's name.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 0, message = "查询失败") })
