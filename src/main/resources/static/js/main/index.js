@@ -85,7 +85,7 @@ function loadAPIList(){
 //跳转到API 调用页面
 function testApi(id){
 	sessionStorage.setItem("apiId",id);
-	var url = '/sysconfig/index/testApi';
+	var url = '/sysadmin/sysconfig/index/testApi';
 	window.location.href = url;	
 }
 
