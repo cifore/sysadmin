@@ -70,9 +70,23 @@ function loadAPIList(){
             		return "";
             	}
             }
+        },{
+            title: 'Test',
+            sortable: false,
+            formatter:function(value, row, index){
+            	var html = "<div id='"+ row.id +"'><button class='btn btn-default' onclick= testApi('" + row.id + "')>Test</button></div>";
+            	return html;
+            }
         }
        ]
 	});
+}
+
+//跳转到API 调用页面
+function testApi(id){
+	sessionStorage.setItem("apiId",id);
+	var url = '/sysadmin/sysconfig/index/testApi';
+	window.location.href = url;	
 }
 
 //获取api详情
