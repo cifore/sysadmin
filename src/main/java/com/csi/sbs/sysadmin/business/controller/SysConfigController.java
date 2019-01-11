@@ -34,6 +34,10 @@ public class SysConfigController {
        ObjectMapper objectMapper = new ObjectMapper();
        
        
+       @RequestMapping(value = "/{index}", method = RequestMethod.GET)
+   	   public String index() throws JsonProcessingException{
+    	  return "index";
+   	   }
        
        @RequestMapping(value = "/{getSystemParameter}", method = RequestMethod.POST)
        @ResponseBody
