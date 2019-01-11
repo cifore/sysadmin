@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin//解决跨域请求
 @Controller
-@RequestMapping("/sysadmin")
+@RequestMapping("/sysadmin/log")
 public class SysTransactionLogController {
 	
 	
