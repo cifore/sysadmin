@@ -39,6 +39,11 @@ public class SysConfigController {
     	  return "index";
    	   }
        
+       @RequestMapping(value = "/{index}/{testApi}", method = RequestMethod.GET)
+   	   public String testApi() throws JsonProcessingException{
+    	  return "testApi";
+   	   }
+       
        @RequestMapping(value = "/{getSystemParameter}", method = RequestMethod.POST)
        @ResponseBody
    	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
