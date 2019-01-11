@@ -39,7 +39,7 @@ public class SysConfigController {
     	  return "index";
    	   }
        
-       @RequestMapping(value = "/{getSystemParameter}", method = RequestMethod.POST)
+       @RequestMapping(value = "/getSystemParameter", method = RequestMethod.POST)
        @ResponseBody
    	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();

@@ -29,7 +29,7 @@ public class GenerateAvailableController {
 	 ObjectMapper objectMapper = new ObjectMapper();
 	
 	
-	 @RequestMapping(value = "/{getNextAvailableNumber}", method = RequestMethod.GET)
+	 @RequestMapping(value = "/getNextAvailableNumber", method = RequestMethod.GET)
 	 @ResponseBody
  	 public String getNextAvailableNumber() throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
