@@ -8,5 +8,7 @@ public interface SysConfigService {
 	
 	
 	   public List<SysConfigEntity> querySysConfig(SysConfigEntity sce);
+	   
+	   public int updateNextAvailableCustomerNum(SysConfigEntity sce);
 
 }

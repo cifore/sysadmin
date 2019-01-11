@@ -28,9 +28,16 @@ import com.csi.sbs.sysadmin.business.service.ModuleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin//解决跨域请求
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@CrossOrigin // 解决跨域请求
 @Controller
 @RequestMapping("/sysadmin")
+@Api(value = "Then controller is getting infomations about models and api.")
 public class CheckListController {
 	
 	   @Resource
@@ -95,21 +102,24 @@ public class CheckListController {
        }
        
        
-       @RequestMapping(value = "/{getServiceInternalURL}", method = RequestMethod.POST)
-       @ResponseBody
-       public String getServiceInternalURL(final HttpServletRequest request,
-	            final HttpServletResponse response,@RequestBody ApiNameModel anm) throws JsonProcessingException{
-    	   Map<String,Object> map = new HashMap<String,Object>();
-    	   String apiName = anm.getApiname();
-    	   String internaURL = "";
-    	  try{
-    		  internaURL = checkListService.selectByName(apiName).getInternalurl();
-    	  }catch(Exception e){
-    		  map.put("msg", "查询失败");
-              map.put("code", "0");
-              return objectMapper.writeValueAsString(map);
-    	  }  
-    	   map.put("internaURL", internaURL);
-    	   return objectMapper.writeValueAsString(map);
-       }
+	@RequestMapping(value = "/{getServiceInternalURL}", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This api return api's url base on api's name.", notes = "version 0.0.1")
+	@ApiResponses({ @ApiResponse(code = 0, message = "查询失败") })
+	@ApiImplicitParam(paramType = "body", name = "anm", required = true, value = "ApiNameModel")
+	public String getServiceInternalURL(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestBody ApiNameModel anm) throws JsonProcessingException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String apiName = anm.getApiname();
+		String internaURL = "";
+		try {
+			internaURL = checkListService.selectByName(apiName).getInternalurl();
+		} catch (Exception e) {
+			map.put("msg", "查询失败");
+			map.put("code", "0");
+			return objectMapper.writeValueAsString(map);
+		}
+		map.put("internaURL", internaURL);
+		return objectMapper.writeValueAsString(map);
+	}
 }

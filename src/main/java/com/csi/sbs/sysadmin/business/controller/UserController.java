@@ -18,28 +18,28 @@ import com.csi.sbs.sysadmin.business.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin //解决跨域请求
+@CrossOrigin // 解决跨域请求
 @Controller
 @RequestMapping("/sysadmin")
-public class UserController{
-	
+public class UserController {
+
 	@Resource
 	private UserService userService;
-	
+
 	ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	@RequestMapping(value = "/getUserInfo/{userid}", method = RequestMethod.GET)
-    @ResponseBody
-    public String getUserInfo(@PathVariable("userid") String userid) throws JsonProcessingException{
-		Map<String,Object> map = new HashMap<String,Object>();
+	@ResponseBody
+	public String getUserInfo(@PathVariable("userid") String userid) throws JsonProcessingException {
+		Map<String, Object> map = new HashMap<String, Object>();
 		UserEntity user = userService.selectByUserID(userid);
-		if(user != null){
+		if (user != null) {
 			return objectMapper.writeValueAsString(user);
-		}else{
+		} else {
 			map.put("msg", "此用户不存在");
-            map.put("code", "0");
-            return objectMapper.writeValueAsString(map);
+			map.put("code", "0");
+			return objectMapper.writeValueAsString(map);
 		}
-		
+
 	}
 }

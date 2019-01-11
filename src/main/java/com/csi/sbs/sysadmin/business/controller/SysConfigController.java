@@ -22,8 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin//解决跨域请求
 @Controller
-@RequestMapping("/sysconfig")
+@RequestMapping("/sysadmin/sysconfig")
 public class SysConfigController {
+	
+	
 	
 	   @Resource
 	   private SysConfigService sysConfigService;
@@ -31,20 +33,20 @@ public class SysConfigController {
 	   
        ObjectMapper objectMapper = new ObjectMapper();
        
+       
        @RequestMapping(value = "/{index}", method = RequestMethod.GET)
    	   public String index() throws JsonProcessingException{
     	  return "index";
    	   }
-
        
        @RequestMapping(value = "/{index}/{testApi}", method = RequestMethod.GET)
    	   public String testApi() throws JsonProcessingException{
     	  return "testApi";
    	   }
        
-       @RequestMapping(value = "/{query}", method = RequestMethod.POST)
+       @RequestMapping(value = "/{getSystemParameter}", method = RequestMethod.POST)
        @ResponseBody
-   	   public String query(@RequestBody SysParamsModel spm) throws JsonProcessingException{
+   	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;
     	   String[] item = spm.getItem().split(",");
@@ -64,5 +66,5 @@ public class SysConfigController {
            			  
 		   return objectMapper.writeValueAsString(sysconfig);
    	   }
-       
+
 }
