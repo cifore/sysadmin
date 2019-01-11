@@ -25,4 +25,9 @@ public class SysConfigServiceImpl implements SysConfigService{
 		return sysConfigDao.querySysConfig(sce);
 	}
 
+	@Override
+	public int updateNextAvailableCustomerNum(SysConfigEntity sce) {
+		return sysConfigDao.updateNextAvailableCustomerNum(sce);
+	}
+
 }

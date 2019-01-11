@@ -81,4 +81,14 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   
+  <update id="updateNextAvailableCustomerNum" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    update t_sys_conf
+    <set >
+      <if test="value != null" >
+        Value = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Item = #{item,jdbcType=VARCHAR}
+  </update>
+  
 </mapper>

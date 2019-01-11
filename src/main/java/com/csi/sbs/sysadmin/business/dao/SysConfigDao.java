@@ -13,5 +13,7 @@ public interface SysConfigDao<T> extends BaseDao<T> {
 	
 	
 	   public List<SysConfigEntity> querySysConfig(SysConfigEntity sce);
+	   
+	   public int updateNextAvailableCustomerNum(SysConfigEntity sce);
 
 }

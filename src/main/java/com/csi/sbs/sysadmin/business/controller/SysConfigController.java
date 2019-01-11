@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin//解决跨域请求
 @Controller
-@RequestMapping("/sysconfig")
+@RequestMapping("/sysadmin/sysconfig")
 public class SysConfigController {
 	
 	   @Resource
@@ -37,9 +37,9 @@ public class SysConfigController {
    	   }
 
        
-       @RequestMapping(value = "/{query}", method = RequestMethod.POST)
+       @RequestMapping(value = "/{getSystemParameter}", method = RequestMethod.POST)
        @ResponseBody
-   	   public String query(@RequestBody SysParamsModel spm) throws JsonProcessingException{
+   	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;
     	   String[] item = spm.getItem().split(",");
