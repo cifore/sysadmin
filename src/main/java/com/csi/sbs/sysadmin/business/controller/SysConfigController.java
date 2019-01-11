@@ -37,6 +37,11 @@ public class SysConfigController {
    	   }
 
        
+       @RequestMapping(value = "/{index}/{testApi}", method = RequestMethod.GET)
+   	   public String testApi() throws JsonProcessingException{
+    	  return "testApi";
+   	   }
+       
        @RequestMapping(value = "/{query}", method = RequestMethod.POST)
        @ResponseBody
    	   public String query(@RequestBody SysParamsModel spm) throws JsonProcessingException{

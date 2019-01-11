@@ -29,5 +29,11 @@ public class CheckListServiceImpl implements CheckListService{
 		// TODO Auto-generated method stub
 		return checkListDao.selectByName(apiname);
 	}
+
+	@Override
+	public CheckListEntity selectById(String id) {
+		// TODO Auto-generated method stub
+		return checkListDao.selectById(id);
+	}
 	
 }

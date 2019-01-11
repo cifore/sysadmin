@@ -9,4 +9,6 @@ public interface CheckListService {
 	public List<CheckListEntity> queryAll();
 	
 	CheckListEntity selectByName(String apiname);
+	
+	CheckListEntity selectById(String id);
 }

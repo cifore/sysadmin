@@ -13,6 +13,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sysadmin</name>
 	<description>sysadmin</description>
+	
+	<distributionManagement>
+    <repository>
+        <id>sbs-releases</id>
+        <name>Nexus Release Repository</name>
+        <url>http://117.78.38.89:8081/repository/sbs-releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>sbs-snapshots</id>
+        <name>Nexus Snapshot Repository</name>
+        <url>http://117.78.38.89:8081/repository/sbs-snapshots/</url>
+    </snapshotRepository>
+ </distributionManagement>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -56,6 +69,18 @@
            <groupId>javax.servlet</groupId>
            <artifactId>javax.servlet-api</artifactId>
            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.csi.sbs</groupId>
+           <artifactId>common</artifactId>
+           <version>0.0.1</version>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.alibaba</groupId>
+           <artifactId>fastjson</artifactId>
+           <version>1.2.47</version>
         </dependency>
         
         <!-- 引入模板引擎jar包 -->
