@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.common.business.httpclient.ConnPostClient;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.csi.sbs.common.business.httpclient.ConnGetClient;
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
 import com.csi.sbs.sysadmin.business.clientmodel.TestApiModel;
