@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.sysadmin.business.clientmodel.SysParamsModel;
+import com.csi.sbs.sysadmin.business.clientmodel.SysReturnParamsModel;
 import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,6 +50,7 @@ public class SysConfigController {
    	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;
+    	   List<SysReturnParamsModel> respmList = null;
     	   String[] item = spm.getItem().split(",");
     	   List<String> list = new ArrayList<String>();
     	   for(int i=0;i<item.length;i++){
@@ -58,13 +60,22 @@ public class SysConfigController {
     	   sce.setParams(list);
            try{
         	   sysconfig = sysConfigService.querySysConfig(sce);
+        	   respmList = new ArrayList<SysReturnParamsModel>();
+        	   if(sysconfig!=null && sysconfig.size()>0){
+        		   for(int i=0;i<sysconfig.size();i++){
+        			   SysReturnParamsModel respm = new SysReturnParamsModel();
+            		   respm.setItem(sysconfig.get(i).getItem());
+            		   respm.setValue(sysconfig.get(i).getValue());
+            		   respmList.add(respm);
+        		   }
+        	   }
            }catch(Exception e){
         	   map.put("msg", "查询失败");
                map.put("code", "0");
                return objectMapper.writeValueAsString(map);
            }
            			  
-		   return objectMapper.writeValueAsString(sysconfig);
+		   return objectMapper.writeValueAsString(respmList);
    	   }
 
 }

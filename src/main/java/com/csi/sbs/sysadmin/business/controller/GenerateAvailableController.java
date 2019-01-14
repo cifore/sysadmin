@@ -9,10 +9,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csi.sbs.sysadmin.business.clientmodel.SaveNextAvailableNumberModel;
 import com.csi.sbs.sysadmin.business.entity.SysConfigEntity;
 import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,48 +49,39 @@ public class GenerateAvailableController {
 	         
 	         //返回数据处理
 	         String currentAvailableCustomerNumber = "";
-	         int nextAvailableCustomerNumber = 0;
 	         for(int i=0;i<result1.size();i++){
 	      	  if(result1.get(i).getItem().equals("NextAvailableCustomerNumber")){
 	      		currentAvailableCustomerNumber = result1.get(i).getValue();
 	      	  }
 	         }
-	         nextAvailableCustomerNumber = Integer.parseInt(currentAvailableCustomerNumber);
-	         //可用number加1
-	         nextAvailableCustomerNumber = nextAvailableCustomerNumber+1;
-	         String availableNumber = String.valueOf(nextAvailableCustomerNumber);
-	         int availableNumberLength = availableNumber.length();
-	         String appendSave = "";
-	         //可用number长度判断
-	         switch(availableNumberLength){
-	            case 1:
-	               appendSave = "0000"+nextAvailableCustomerNumber;
-	               break;
-	            case 2:
-	               appendSave = "000"+nextAvailableCustomerNumber;
-	               break;
-	            case 3:
-	               appendSave = "00"+nextAvailableCustomerNumber;
-	               break;
-	            case 4:
-	               appendSave = "0"+nextAvailableCustomerNumber;
-	               break;
-	            case 5:
-	               appendSave = nextAvailableCustomerNumber+"";
-	               break;
-	         }
-	         
-	         //保存AvailableNumber
-	         SysConfigEntity sce2 = new SysConfigEntity();
-	         sce2.setValue(appendSave);
-	         sce2.setItem("NextAvailableCustomerNumber");
-	         sysConfigService.updateNextAvailableCustomerNum(sce2);
-	         
 	         map.put("msg", "获取成功");
 	         map.put("nextAvailableNumber", currentAvailableCustomerNumber);
 	         map.put("code", "1");
 		 }catch(Exception e){
 			 map.put("msg", "获取失败");
+      	     map.put("code", "0");
+		 }
+		 
+		 return objectMapper.writeValueAsString(map);
+ 	 }
+	 
+	 
+	 @RequestMapping(value = "/saveNextAvailableNumber", method = RequestMethod.POST)
+	 @ResponseBody
+ 	 public String saveNextAvailableNumber(@RequestBody SaveNextAvailableNumberModel saveNextAvailableNumberModel) throws JsonProcessingException{
+		 Map<String,Object> map = new HashMap<String,Object>();
+		 try{
+	         //保存AvailableNumber
+	         SysConfigEntity sce = new SysConfigEntity();
+	         sce.setValue(saveNextAvailableNumberModel.getValue());
+	         sce.setItem("NextAvailableCustomerNumber");
+	         sysConfigService.updateNextAvailableCustomerNum(sce);
+	         
+	         map.put("msg", "保存成功");
+	         map.put("code", "1");
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 map.put("msg", "保存失败");
       	     map.put("code", "0");
 		 }
 		 
