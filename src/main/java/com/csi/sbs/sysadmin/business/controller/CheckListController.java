@@ -32,6 +32,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -49,6 +50,7 @@ public class CheckListController {
        
        @RequestMapping(value = "/queryApiList", method = RequestMethod.GET)
        @ResponseBody
+       @ApiIgnore()
        public String queryApiList() throws JsonProcessingException{
     	   List<CheckListEntity> apiList = checkListService.queryAll();
     	   
@@ -64,6 +66,7 @@ public class CheckListController {
        //获取API详情
        @RequestMapping(value = "/getApiInfo/{id}", method = RequestMethod.GET)
        @ResponseBody
+       @ApiIgnore()
        public String getApiInfo(@PathVariable("id") String id ) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>(); 
     	   CheckListEntity apiInfo = checkListService.selectById(id);
@@ -80,6 +83,7 @@ public class CheckListController {
      //调用API接口
        @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
        @ResponseBody
+       @ApiIgnore()
        public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   String requestmode = ase.getRequestmode();
