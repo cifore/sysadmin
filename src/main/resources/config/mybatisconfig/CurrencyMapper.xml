@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.CurrencyDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.CurrencyEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="Currency" property="currency" jdbcType="VARCHAR" />
+    <result column="Ccycode" property="ccycode" jdbcType="VARCHAR" />
+    <result column="Ccyplaces" property="ccyplaces" jdbcType="VARCHAR" />
+    <result column="BankBuy" property="bankbuy" jdbcType="DECIMAL" />
+    <result column="BankSell" property="banksell" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, Currency, Ccycode, Ccyplaces, BankBuy, BankSell
+  </sql>
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from t_currency where 1 = 1
+  </select>
+  <select id="queryByCcyCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_currency 
+    where Ccycode = #{ccycode,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_currency
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.CurrencyEntity" >
+    insert into t_currency
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="currency != null" >
+        Currency,
+      </if>
+      <if test="ccycode != null" >
+        Ccycode,
+      </if>
+      <if test="ccyplaces != null" >
+        Ccyplaces,
+      </if>
+      <if test="bankbuy != null" >
+        BankBuy,
+      </if>
+      <if test="banksell != null" >
+        BankSell,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="ccycode != null" >
+        #{ccycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ccyplaces != null" >
+        #{ccyplaces,jdbcType=VARCHAR},
+      </if>
+      <if test="bankbuy != null" >
+        #{bankbuy,jdbcType=DECIMAL},
+      </if>
+      <if test="banksell != null" >
+        #{banksell,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.CurrencyEntity" >
+    update t_currency
+    <set >
+      <if test="currency != null" >
+        Currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="ccycode != null" >
+        Ccycode = #{ccycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ccyplaces != null" >
+        Ccyplaces = #{ccyplaces,jdbcType=VARCHAR},
+      </if>
+      <if test="bankbuy != null" >
+        BankBuy = #{bankbuy,jdbcType=DECIMAL},
+      </if>
+      <if test="banksell != null" >
+        BankSell = #{banksell,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
