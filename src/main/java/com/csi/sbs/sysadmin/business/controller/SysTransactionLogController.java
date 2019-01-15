@@ -33,6 +33,7 @@ public class SysTransactionLogController {
 		try {
 			stl.setId(UUIDUtil.generateUUID());
 			stlservice.writeTransactionLog(stl);
+			
 			map.put("msg", "日志插入成功");
 			map.put("code", "1");
 		} catch (Exception e) {
