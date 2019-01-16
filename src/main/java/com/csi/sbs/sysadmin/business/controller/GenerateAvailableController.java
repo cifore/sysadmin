@@ -20,6 +20,8 @@ import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @CrossOrigin//解决跨域请求
 @Controller
 @RequestMapping("/sysadmin/generate")
@@ -68,6 +70,7 @@ public class GenerateAvailableController {
 	 
 	 @RequestMapping(value = "/saveNextAvailableNumber", method = RequestMethod.POST)
 	 @ResponseBody
+	 @ApiIgnore()
  	 public String saveNextAvailableNumber(@RequestBody SaveNextAvailableNumberModel saveNextAvailableNumberModel) throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
 		 try{

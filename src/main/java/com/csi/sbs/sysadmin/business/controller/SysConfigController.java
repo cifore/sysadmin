@@ -21,6 +21,8 @@ import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @CrossOrigin//解决跨域请求
 @Controller
 @RequestMapping("/sysadmin/sysconfig")
@@ -36,11 +38,13 @@ public class SysConfigController {
        
        
        @RequestMapping(value = "/{index}", method = RequestMethod.GET)
+       @ApiIgnore()
    	   public String index() throws JsonProcessingException{
     	  return "index";
    	   }
 
        @RequestMapping(value = "/{index}/{testApi}", method = RequestMethod.GET)
+       @ApiIgnore()
    	   public String testApi() throws JsonProcessingException{
     	  return "testApi";
    	   }

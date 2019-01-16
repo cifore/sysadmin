@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.csi.sbs.common.business.httpclient.ConnPostClient;
 import com.alibaba.fastjson.JSON;
-import com.csi.sbs.common.business.httpclient.ConnGetClient;
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
 import com.csi.sbs.sysadmin.business.clientmodel.TestApiModel;
 import com.csi.sbs.sysadmin.business.entity.CheckListEntity;
@@ -32,6 +30,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -49,6 +48,7 @@ public class CheckListController {
        
        @RequestMapping(value = "/queryApiList", method = RequestMethod.GET)
        @ResponseBody
+       @ApiIgnore()
        public String queryApiList() throws JsonProcessingException{
     	   List<CheckListEntity> apiList = checkListService.queryAll();
     	   
@@ -64,6 +64,7 @@ public class CheckListController {
        //获取API详情
        @RequestMapping(value = "/getApiInfo/{id}", method = RequestMethod.GET)
        @ResponseBody
+       @ApiIgnore()
        public String getApiInfo(@PathVariable("id") String id ) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>(); 
     	   CheckListEntity apiInfo = checkListService.selectById(id);
@@ -77,28 +78,29 @@ public class CheckListController {
     	   
        }
        
-     //调用API接口
-       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
-       @ResponseBody
-       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
-    	   Map<String,Object> map = new HashMap<String,Object>();
-    	   String requestmode = ase.getRequestmode();
-    	   String apiAddress = ase.getApiaddress();
-    	   String result = null;
-    	   //JSONObject jsonObject = new JSONObject();
-    	   JSON.parse(ase.getInputDesc());
-    	   if(requestmode.equals("GET")){
-    		   result = ConnGetClient.get(apiAddress);
-    	   }else if(requestmode.equals("POST")){
-    		   result = ConnPostClient.postJson(apiAddress, ase.getInputDesc());   
-    	   }
-    	   if(result==null){
-        	   map.put("msg", "调用系统参数失败");
-        	   map.put("code", "0");
-        	   return objectMapper.writeValueAsString(map);
-           }
-    	   return result;
-       }
+//     //调用API接口
+//       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
+//       @ResponseBody
+//       @ApiIgnore()
+//       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
+//    	   Map<String,Object> map = new HashMap<String,Object>();
+//    	   String requestmode = ase.getRequestmode();
+//    	   String apiAddress = ase.getApiaddress();
+//    	   String result = null;
+//    	   //JSONObject jsonObject = new JSONObject();
+//    	   JSON.parse(ase.getInputDesc());
+//    	   if(requestmode.equals("GET")){
+//    		   result = ConnGetClient.get(apiAddress);
+//    	   }else if(requestmode.equals("POST")){
+//    		   result = ConnPostClient.postJson(apiAddress, ase.getInputDesc());   
+//    	   }
+//    	   if(result==null){
+//        	   map.put("msg", "调用系统参数失败");
+//        	   map.put("code", "0");
+//        	   return objectMapper.writeValueAsString(map);
+//           }
+//    	   return result;
+//       }
        
        
 	@RequestMapping(value = "/getServiceInternalURL", method = RequestMethod.POST)
