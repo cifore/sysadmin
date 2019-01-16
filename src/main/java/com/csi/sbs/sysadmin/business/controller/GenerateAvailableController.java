@@ -78,7 +78,7 @@ public class GenerateAvailableController {
 	         //保存AvailableNumber
 	         SysConfigEntity sce = new SysConfigEntity();
 	         sce.setValue(saveNextAvailableNumberModel.getValue());
-	         sce.setItem("NextAvailableCustomerNumber");
+	         sce.setItem(saveNextAvailableNumberModel.getItem());
 	         sysConfigService.updateNextAvailableCustomerNum(sce);
 	         
 	         map.put("msg", "保存成功");
