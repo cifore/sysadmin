@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 
 @CrossOrigin // 解决跨域请求
 @Controller
-@RequestMapping("/sysadmin")
+@RequestMapping("/sysadmin/currency")
 @Api(value="The controller is about foreign exchange")
 public class CurrencyController{
 	
@@ -91,7 +91,15 @@ public class CurrencyController{
 	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
 	@ApiImplicitParam(paramType = "body", name = "ase", required = true, value = "CurrencyModel")
 	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws JsonProcessingException{
+		Map<String,Object> map = new HashMap<String,Object>();
 		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
-		return objectMapper.writeValueAsString(ccyInfo);
+		if(ccyInfo == null){
+			map.put("msg", "Currency Not Supported");
+            map.put("code", "0");
+            return objectMapper.writeValueAsString(map);
+		}else{
+			return objectMapper.writeValueAsString(ccyInfo);
+		}
+		
 	}
 }
