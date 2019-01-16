@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,14 +34,14 @@ public class GenerateAvailableController {
 	 ObjectMapper objectMapper = new ObjectMapper();
 	
 	
-	 @RequestMapping(value = "/getNextAvailableNumber", method = RequestMethod.GET)
+	 @RequestMapping(value = "/getNextAvailableNumber/{item}", method = RequestMethod.GET)
 	 @ResponseBody
- 	 public String getNextAvailableNumber() throws JsonProcessingException{
+ 	 public String getNextAvailableNumber(@PathVariable("item") String item) throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
 		 try{
 			 //调用系统参数方法获取下一个可用的CustomerNumber/**/**/..
 			 List<String> list = new ArrayList<String>();
-	    	 list.add("NextAvailableCustomerNumber");
+	    	 list.add(item);
 	    	 SysConfigEntity sce = new SysConfigEntity();
 	    	 sce.setParams(list);
 			 List<SysConfigEntity> result1 = sysConfigService.querySysConfig(sce);
@@ -50,14 +51,14 @@ public class GenerateAvailableController {
 	         }
 	         
 	         //返回数据处理
-	         String currentAvailableCustomerNumber = "";
+	         String currentAvailableNumber = "";
 	         for(int i=0;i<result1.size();i++){
-	      	  if(result1.get(i).getItem().equals("NextAvailableCustomerNumber")){
-	      		currentAvailableCustomerNumber = result1.get(i).getValue();
+	      	  if(result1.get(i).getItem().equals(item)){
+	      		currentAvailableNumber = result1.get(i).getValue();
 	      	  }
 	         }
 	         map.put("msg", "获取成功");
-	         map.put("nextAvailableNumber", currentAvailableCustomerNumber);
+	         map.put("nextAvailableNumber", currentAvailableNumber);
 	         map.put("code", "1");
 		 }catch(Exception e){
 			 map.put("msg", "获取失败");
