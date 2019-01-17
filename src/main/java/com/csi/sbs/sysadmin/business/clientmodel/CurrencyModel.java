@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 public class CurrencyModel {
 	
 	
-	@ApiModelProperty(value="this is ccy code")
 	private String ccycode;
 
 	public String getCcycode() {

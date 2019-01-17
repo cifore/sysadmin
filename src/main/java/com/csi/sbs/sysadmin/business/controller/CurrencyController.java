@@ -39,7 +39,6 @@ public class CurrencyController{
 	@RequestMapping(value = "/getCurrencys", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "This api returns all currency", notes = "version 0.0.1")
-	@ApiResponses({ @ApiResponse(code = 0, message = "查询失败") })
 	public String getCurrencys() throws JsonProcessingException{
 		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -67,7 +66,6 @@ public class CurrencyController{
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
-	@ApiImplicitParam(paramType = "body", name = "ase", required = true, value = "CurrencyModel")
 	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws JsonProcessingException{
 		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
 		if(ccyInfo == null){
@@ -89,7 +87,6 @@ public class CurrencyController{
 	@RequestMapping(value = "/queryByCcyCode", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
-	@ApiImplicitParam(paramType = "body", name = "ase", required = true, value = "CurrencyModel")
 	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws JsonProcessingException{
 		Map<String,Object> map = new HashMap<String,Object>();
 		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
