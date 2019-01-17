@@ -38,8 +38,6 @@ public class UserController {
 	@RequestMapping(value = "/getUserInfo/{userid}", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "This api return user infomation about limits", notes = "version 0.0.1")
-	@ApiResponses({ @ApiResponse(code = 0, message = "此用户不存在") })
-	@ApiImplicitParam(paramType = "path", name = "userid", required = true, value="the user's id")
 	public String getUserInfo(@PathVariable("userid") String userid) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		UserEntity user = userService.selectByUserID(userid);
