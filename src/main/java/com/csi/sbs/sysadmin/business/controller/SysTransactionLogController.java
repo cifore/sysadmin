@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity;
 import com.csi.sbs.sysadmin.business.service.SysTransactionLogService;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -50,7 +50,7 @@ public class Swagger2 {
                 .title("Open API for sysadmin service")
                 .description("Open API for sysadmin service")
                 .termsOfServiceUrl("http://localhost:8083/sysadmin")
-                .contact("Pim li:lihuacheng@chinasofit.com")
+                .contact("Pim li:lihuacheng@chinasofti.com")
                 .version("1.0")
                 .build();
     }
