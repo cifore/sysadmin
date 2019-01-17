@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity;
 import com.csi.sbs.sysadmin.business.service.SysTransactionLogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,7 +33,8 @@ public class SysTransactionLogController {
 	@ResponseBody
 	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {			
+		try {	
+			stl.setId(UUIDUtil.generateUUID());
 			stlservice.writeTransactionLog(stl);			
 			map.put("msg", "日志插入成功");
 			map.put("code", "1");
