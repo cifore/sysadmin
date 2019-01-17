@@ -33,8 +33,7 @@ public class SysTransactionLogController {
 	@ResponseBody
 	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {	
-			stl.setId(UUIDUtil.generateUUID());
+		try {
 			stlservice.writeTransactionLog(stl);			
 			map.put("msg", "日志插入成功");
 			map.put("code", "1");
