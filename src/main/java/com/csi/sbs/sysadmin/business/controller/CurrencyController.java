@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 
 @CrossOrigin // 解决跨域请求
 @Controller
-@RequestMapping("/sysadmin")
+@RequestMapping("/sysadmin/currency")
 @Api(value="The controller is about foreign exchange")
 public class CurrencyController{
 	
@@ -55,12 +55,51 @@ public class CurrencyController{
 		return objectMapper.writeValueAsString(list);
 	}
 	
+	/**
+	 * 
+	 * 根据ccycode判断currency是否存在
+	 * 
+	 * @param ase
+	 * @return
+	 * @throws JsonProcessingException
+	 * 
+	 * */
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
 	@ApiImplicitParam(paramType = "body", name = "ase", required = true, value = "CurrencyModel")
 	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws JsonProcessingException{
+		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
+		if(ccyInfo == null){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	/**
+	 * 
+	 * 根据ccycode查询currency信息
+	 * 
+	 * @param ase
+	 * @return
+	 * @throws JsonProcessingException
+	 * 
+	 * */
+	@RequestMapping(value = "/queryByCcyCode", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
+	@ApiImplicitParam(paramType = "body", name = "ase", required = true, value = "CurrencyModel")
+	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws JsonProcessingException{
+		Map<String,Object> map = new HashMap<String,Object>();
+		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
+		if(ccyInfo == null){
+			map.put("msg", "Currency Not Supported");
+            map.put("code", "0");
+            return objectMapper.writeValueAsString(map);
+		}else{
+			return objectMapper.writeValueAsString(ccyInfo);
+		}
 		
-		return currencyService.queryByCcyCode(ase.getCcycode());
 	}
 }

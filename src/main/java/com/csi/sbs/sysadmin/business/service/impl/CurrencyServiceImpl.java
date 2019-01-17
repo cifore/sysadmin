@@ -27,13 +27,7 @@ public class CurrencyServiceImpl implements CurrencyService{
 
 
 	@Override
-	public boolean queryByCcyCode(String ccycode) {
-		
-		if(currencyDao.queryByCcyCode(ccycode) != null){
-			return true;
-		}else{
-			return false;
-		}
+	public CurrencyEntity queryByCcyCode(String ccycode) {	
+		return currencyDao.queryByCcyCode(ccycode);
 	}
-	
 }

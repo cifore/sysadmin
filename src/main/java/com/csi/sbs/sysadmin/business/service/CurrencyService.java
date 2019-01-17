@@ -8,5 +8,5 @@ public interface CurrencyService{
 	
 	public List<CurrencyEntity> queryAll();
 	
-	public boolean queryByCcyCode(String ccycode);
+	CurrencyEntity queryByCcyCode(String ccycode);
 }
