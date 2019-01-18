@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class ApiNameModel {
 	
 	
-	@ApiModelProperty(value="this is apiname")
+	
 	private String apiname;
 
 	public String getApiname() {
