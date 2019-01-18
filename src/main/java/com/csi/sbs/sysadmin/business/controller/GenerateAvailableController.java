@@ -21,11 +21,14 @@ import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin//解决跨域请求
 @Controller
 @RequestMapping("/sysadmin/generate")
+@Api(value = "Then controller is getAvailableNumber")
 public class GenerateAvailableController {
 	 
 	 @Resource
@@ -36,6 +39,7 @@ public class GenerateAvailableController {
 	
 	 @RequestMapping(value = "/getNextAvailableNumber/{item}", method = RequestMethod.GET)
 	 @ResponseBody
+	 @ApiOperation(value = "This api return availableNumber", notes = "version 0.0.1")
  	 public String getNextAvailableNumber(@PathVariable("item") String item) throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
 		 try{

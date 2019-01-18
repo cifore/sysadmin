@@ -21,11 +21,14 @@ import com.csi.sbs.sysadmin.business.service.SysConfigService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin//解决跨域请求
 @Controller
 @RequestMapping("/sysadmin/sysconfig")
+@Api(value = "Then controller is sysconfig")
 public class SysConfigController {
 	
 	
@@ -51,6 +54,7 @@ public class SysConfigController {
        
        @RequestMapping(value = "/getSystemParameter", method = RequestMethod.POST)
        @ResponseBody
+       @ApiOperation(value = "This api return sysparameter", notes = "version 0.0.1")
    	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;
