@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import com.alibaba.fastjson.JSON;
 import com.csi.sbs.sysadmin.business.util.PostUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
 import com.csi.sbs.sysadmin.business.clientmodel.TestApiModel;
@@ -91,6 +93,7 @@ public class CheckListController {
     	   String apiAddress = ase.getApiaddress();
     	   String result = null;
     	   //JSONObject jsonObject = new JSONObject();
+    	   JSON.parse(ase.getInputDesc());
 //    	   JSON.parse(ase.getInputDesc());
     	   if(requestmode.equals("GET")){
     		   result = restTemplate.getForEntity(apiAddress,String.class).getBody();
