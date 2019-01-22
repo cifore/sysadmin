@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -62,7 +63,7 @@ public class CurrencyController{
 	 * */
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
+	@ApiIgnore()
 	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws JsonProcessingException{
 		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
 		if(ccyInfo == null){
@@ -83,7 +84,7 @@ public class CurrencyController{
 	 * */
 	@RequestMapping(value = "/queryByCcyCode", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "This api is check whether we have the currency ", notes = "version 0.0.1")
+	@ApiIgnore()
 	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws JsonProcessingException{
 		Map<String,Object> map = new HashMap<String,Object>();
 		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
