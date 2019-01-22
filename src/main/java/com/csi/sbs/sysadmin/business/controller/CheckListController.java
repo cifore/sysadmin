@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
+import com.csi.sbs.sysadmin.business.clientmodel.TestApiModel;
 import com.csi.sbs.sysadmin.business.entity.CheckListEntity;
 import com.csi.sbs.sysadmin.business.service.CheckListService;
 import com.csi.sbs.sysadmin.business.service.ModuleService;
@@ -73,29 +75,29 @@ public class CheckListController {
     	   
        }
        
-//     //调用API接口
-//       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
-//       @ResponseBody
-//       @ApiIgnore()
-//       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
-//    	   Map<String,Object> map = new HashMap<String,Object>();
-//    	   String requestmode = ase.getRequestmode();
-//    	   String apiAddress = ase.getApiaddress();
-//    	   String result = null;
-//    	   //JSONObject jsonObject = new JSONObject();
-//    	   JSON.parse(ase.getInputDesc());
-//    	   if(requestmode.equals("GET")){
-//    		   result = ConnGetClient.get(apiAddress);
-//    	   }else if(requestmode.equals("POST")){
-//    		   result = ConnPostClient.postJson(apiAddress, ase.getInputDesc());   
-//    	   }
-//    	   if(result==null){
-//        	   map.put("msg", "调用系统参数失败");
-//        	   map.put("code", "0");
-//        	   return objectMapper.writeValueAsString(map);
-//           }
-//    	   return result;
-//       }
+     //调用API接口
+       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
+       @ResponseBody
+       @ApiIgnore()
+       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
+    	   Map<String,Object> map = new HashMap<String,Object>();
+    	   String requestmode = ase.getRequestmode();
+    	   String apiAddress = ase.getApiaddress();
+    	   String result = null;
+    	   //JSONObject jsonObject = new JSONObject();
+    	   JSON.parse(ase.getInputDesc());
+    	   if(requestmode.equals("GET")){
+    		   result = ConnGetClient.get(apiAddress);
+    	   }else if(requestmode.equals("POST")){
+    		   result = ConnPostClient.postJson(apiAddress, ase.getInputDesc());   
+    	   }
+    	   if(result==null){
+        	   map.put("msg", "调用系统参数失败");
+        	   map.put("code", "0");
+        	   return objectMapper.writeValueAsString(map);
+           }
+    	   return result;
+       }
        
        
 	@RequestMapping(value = "/getServiceInternalURL", method = RequestMethod.POST)
