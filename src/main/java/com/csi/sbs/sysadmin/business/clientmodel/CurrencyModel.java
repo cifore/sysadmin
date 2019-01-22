@@ -13,10 +13,6 @@ public class CurrencyModel {
 	}
 
 	public void setCcycode(String ccycode) {
-		this.ccycode = ccycode;
+		this.ccycode = ccycode == null ? null : ccycode.trim();
 	}
-	   
-	   
-	   
-
 }
