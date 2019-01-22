@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csi.sbs.sysadmin.business.util.PostUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
+import com.csi.sbs.sysadmin.business.clientmodel.TestApiModel;
 import com.csi.sbs.sysadmin.business.entity.CheckListEntity;
 import com.csi.sbs.sysadmin.business.service.CheckListService;
 import com.csi.sbs.sysadmin.business.service.ModuleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.web.client.RestTemplate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +43,9 @@ public class CheckListController {
 	   
 	   @Resource
 	   private ModuleService moduleService;
+	   
+	   @Resource
+	   private RestTemplate restTemplate;
 	   
        ObjectMapper objectMapper = new ObjectMapper();
        
@@ -73,29 +81,30 @@ public class CheckListController {
     	   
        }
        
-//     //调用API接口
-//       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
-//       @ResponseBody
-//       @ApiIgnore()
-//       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
-//    	   Map<String,Object> map = new HashMap<String,Object>();
-//    	   String requestmode = ase.getRequestmode();
-//    	   String apiAddress = ase.getApiaddress();
-//    	   String result = null;
-//    	   //JSONObject jsonObject = new JSONObject();
+     //调用API接口
+       @RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
+       @ResponseBody
+       @ApiIgnore()
+       public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException{
+    	   Map<String,Object> map = new HashMap<String,Object>();
+    	   String requestmode = ase.getRequestmode();
+    	   String apiAddress = ase.getApiaddress();
+    	   String result = null;
+    	   //JSONObject jsonObject = new JSONObject();
 //    	   JSON.parse(ase.getInputDesc());
-//    	   if(requestmode.equals("GET")){
-//    		   result = ConnGetClient.get(apiAddress);
-//    	   }else if(requestmode.equals("POST")){
-//    		   result = ConnPostClient.postJson(apiAddress, ase.getInputDesc());   
-//    	   }
-//    	   if(result==null){
-//        	   map.put("msg", "调用系统参数失败");
-//        	   map.put("code", "0");
-//        	   return objectMapper.writeValueAsString(map);
-//           }
-//    	   return result;
-//       }
+    	   if(requestmode.equals("GET")){
+    		   result = restTemplate.getForEntity(apiAddress,String.class).getBody();
+    	   }else if(requestmode.equals("POST")){
+    		   ResponseEntity<String> response =  restTemplate.postForEntity(apiAddress, PostUtil.getRequestEntity(ase.getInputDesc()), String.class);
+    		   result = response.getBody();
+    	   }
+    	   if(result==null){
+        	   map.put("msg", "调用系统参数失败");
+        	   map.put("code", "0");
+        	   return objectMapper.writeValueAsString(map);
+           }
+    	   return result;
+       }
        
        
 	@RequestMapping(value = "/getServiceInternalURL", method = RequestMethod.POST)
