@@ -39,19 +39,6 @@ public class SysConfigController {
 	   
        ObjectMapper objectMapper = new ObjectMapper();
        
-       
-       @RequestMapping(value = "/{index}", method = RequestMethod.GET)
-       @ApiIgnore()
-   	   public String index() throws JsonProcessingException{
-    	  return "index";
-   	   }
-
-       @RequestMapping(value = "/{index}/{testApi}", method = RequestMethod.GET)
-       @ApiIgnore()
-   	   public String testApi() throws JsonProcessingException{
-    	  return "testApi";
-   	   }
-       
        @RequestMapping(value = "/getSystemParameter", method = RequestMethod.POST)
        @ResponseBody
        @ApiOperation(value = "This api return sysparameter", notes = "version 0.0.1")
