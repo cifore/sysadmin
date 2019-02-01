@@ -21,6 +21,12 @@
     from t_currency 
     where Ccycode = #{ccycode,jdbcType=VARCHAR}
   </select>
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_currency 
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
   <delete id="delete" parameterType="java.lang.String" >
     delete from t_currency
     where ID = #{id,jdbcType=VARCHAR}
@@ -71,19 +77,19 @@
   <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.CurrencyEntity" >
     update t_currency
     <set >
-      <if test="currency != null" >
+      <if test="currency != null and currency != ''" >
         Currency = #{currency,jdbcType=VARCHAR},
       </if>
-      <if test="ccycode != null" >
+      <if test="ccycode != null and ccycode != ''" >
         Ccycode = #{ccycode,jdbcType=VARCHAR},
       </if>
-      <if test="ccyplaces != null" >
+      <if test="ccyplaces != null and ccyplaces != ''" >
         Ccyplaces = #{ccyplaces,jdbcType=VARCHAR},
       </if>
-      <if test="bankbuy != null" >
+      <if test="bankbuy != null and bankbuy != ''" >
         BankBuy = #{bankbuy,jdbcType=DECIMAL},
       </if>
-      <if test="banksell != null" >
+      <if test="banksell != null and banksell != ''" >
         BankSell = #{banksell,jdbcType=DECIMAL},
       </if>
     </set>

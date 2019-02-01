@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
 import com.csi.sbs.sysadmin.business.dao.CheckListDao;
+import com.csi.sbs.sysadmin.business.dao.ModuleDao;
 import com.csi.sbs.sysadmin.business.entity.CheckListEntity;
 import com.csi.sbs.sysadmin.business.service.CheckListService;
 
@@ -19,6 +20,10 @@ public class CheckListServiceImpl implements CheckListService{
 	@SuppressWarnings("rawtypes")
 	@Resource
 	private CheckListDao checkListDao;
+	
+	@SuppressWarnings("rawtypes")
+	@Resource
+	private ModuleDao moduleDao;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -38,6 +43,21 @@ public class CheckListServiceImpl implements CheckListService{
 		// TODO Auto-generated method stub
 		return checkListDao.selectById(id);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> queryApiList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CheckListEntity> apiList = checkListDao.queryAll();
+		for(int i=0 ; i<apiList.size(); i++){
+  		   String moduleid = apiList.get(i).getModuleid();
+  		   apiList.get(i).setModulename(moduleDao.selectById(moduleid).getName());
+  		}
+		map.put("list", apiList);
+		map.put("msg", "Get API List Success");
+		map.put("code", "1");
+		return map;
+	}
 
 	@Override
 	public Map<String, Object> getServiceInternalURL(ApiNameModel anm) {
@@ -54,5 +74,7 @@ public class CheckListServiceImpl implements CheckListService{
 		map.put("internaURL", internaURL);
 		return map;
 	}
+
+	
 	
 }

@@ -1,12 +1,11 @@
 package com.csi.sbs.sysadmin.business.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.sysadmin.business.clientmodel.CurrencyModel;
+import com.csi.sbs.sysadmin.business.clientmodel.DeleteCurrencyModel;
+import com.csi.sbs.sysadmin.business.clientmodel.InsertCurrencyModel;
 import com.csi.sbs.sysadmin.business.entity.CurrencyEntity;
 import com.csi.sbs.sysadmin.business.service.CurrencyService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
@@ -34,22 +34,17 @@ public class CurrencyController{
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
+	
+	//Alina 获取所有货币汇率列表
 	@RequestMapping(value = "/getCurrencys", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "This api returns all currency", notes = "version 0.0.1")
-	public String getCurrencys() throws JsonProcessingException{
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		List<CurrencyEntity> list = null;		
-		 
-		try{
-			 list = currencyService.queryAll();
-         }catch(Exception e){
-      	   	 map.put("msg", "查询失败");
-             map.put("code", "0");
-             return objectMapper.writeValueAsString(map);
-         }
-		return objectMapper.writeValueAsString(list);
+	public String getCurrencys() throws Exception{
+		Map<String,Object> map = currencyService.getCurrencys();
+		if(map.get("list") == null){
+			return objectMapper.writeValueAsString(map);
+		}
+		return objectMapper.writeValueAsString(map.get("list"));
 	}
 	
 	/**
@@ -58,15 +53,15 @@ public class CurrencyController{
 	 * 
 	 * @param ase
 	 * @return
-	 * @throws JsonProcessingException
+	 * @throws Exception
 	 * 
 	 * */
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws JsonProcessingException{
-		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
-		if(ccyInfo == null){
+	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws Exception{
+		Map<String,Object> map  = currencyService.queryByCcyCode(ase.getCcycode());
+		if(map.get("code").equals("0")){
 			return false;
 		}else{
 			return true;
@@ -79,22 +74,41 @@ public class CurrencyController{
 	 * 
 	 * @param ase
 	 * @return
-	 * @throws JsonProcessingException
+	 * @throws Exception
 	 * 
 	 * */
 	@RequestMapping(value = "/queryByCcyCode", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws JsonProcessingException{
-		Map<String,Object> map = new HashMap<String,Object>();
-		CurrencyEntity ccyInfo  = currencyService.queryByCcyCode(ase.getCcycode());
-		if(ccyInfo == null){
-			map.put("msg", "Currency Not Supported");
-            map.put("code", "0");
-            return objectMapper.writeValueAsString(map);
-		}else{
-			return objectMapper.writeValueAsString(ccyInfo);
-		}
-		
+	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws Exception{
+		Map<String,Object> map = currencyService.queryByCcyCode(ase.getCcycode());
+        return objectMapper.writeValueAsString(map);	
+	}
+	
+	//Alina 插入汇率信息
+	@RequestMapping(value = "/insertCurrency", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiIgnore()
+	public String insertCurrency(@RequestBody @Validated InsertCurrencyModel ase) throws Exception{
+		Map<String,Object> map = currencyService.insertCurrency(ase);
+        return objectMapper.writeValueAsString(map);	
+	}
+	
+	//Alina 更新汇率信息
+	@RequestMapping(value = "/updateCurrency", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiIgnore()
+	public String updateCurrency(@RequestBody CurrencyEntity ase) throws Exception{
+		Map<String,Object> map = currencyService.updateCurrency(ase);
+        return objectMapper.writeValueAsString(map);	
+	}
+	
+	//Alina 更新汇率信息
+	@RequestMapping(value = "/deleteCurrency", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiIgnore()
+	public String deleteCurrency(@RequestBody @Validated DeleteCurrencyModel ase) throws Exception{
+		Map<String,Object> map = currencyService.deleteCurrency(ase.getId());
+        return objectMapper.writeValueAsString(map);	
 	}
 }
