@@ -1,7 +1,6 @@
 package com.csi.sbs.sysadmin.business.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -55,14 +54,11 @@ public class CheckListController {
        @ResponseBody
        @ApiIgnore()
        public String queryApiList() throws JsonProcessingException{
-    	   List<CheckListEntity> apiList = checkListService.queryAll();
-    	   
-    	   for(int i=0 ; i<apiList.size(); i++){
-    		   String moduleid = apiList.get(i).getModuleid();
-    		   apiList.get(i).setModulename(moduleService.selectById(moduleid).getName());
-    	   }
-    	   
-    	   return objectMapper.writeValueAsString(apiList);
+    	   Map<String,Object> map = checkListService.queryApiList();
+    	   if(map.get("list") == null){
+	   			objectMapper.writeValueAsString(map);
+	   		}
+    	   return objectMapper.writeValueAsString(map.get("list"));
        }
        
        
@@ -80,7 +76,6 @@ public class CheckListController {
                map.put("code", "0");
                return objectMapper.writeValueAsString(map);
     	   }
-    	   
        }
        
      //调用API接口
@@ -92,9 +87,7 @@ public class CheckListController {
     	   String requestmode = ase.getRequestmode();
     	   String apiAddress = ase.getApiaddress();
     	   String result = null;
-    	   //JSONObject jsonObject = new JSONObject();
     	   JSON.parse(ase.getInputDesc());
-//    	   JSON.parse(ase.getInputDesc());
     	   if(requestmode.equals("GET")){
     		   result = restTemplate.getForEntity(apiAddress,String.class).getBody();
     	   }else if(requestmode.equals("POST")){
