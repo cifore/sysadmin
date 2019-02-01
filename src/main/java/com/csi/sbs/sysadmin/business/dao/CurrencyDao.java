@@ -13,4 +13,6 @@ public interface CurrencyDao<T> extends BaseDao <T>{
    public List<CurrencyEntity> queryAll();
    
    CurrencyEntity queryByCcyCode(String ccycode);
+   
+   CurrencyEntity queryById(String id);
 }

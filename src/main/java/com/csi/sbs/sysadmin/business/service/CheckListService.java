@@ -14,5 +14,8 @@ public interface CheckListService {
 	
 	CheckListEntity selectById(String id);
 	
+	
+	public Map<String, Object>queryApiList();
+	
 	public Map<String, Object>getServiceInternalURL(ApiNameModel anm);
 }
