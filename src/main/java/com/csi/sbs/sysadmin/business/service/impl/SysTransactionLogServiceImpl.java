@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codingapi.tx.annotation.TxTransaction;
 import com.csi.sbs.sysadmin.business.dao.SysTransactionLogDao;
 import com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity;
 import com.csi.sbs.sysadmin.business.service.SysTransactionLogService;
@@ -19,11 +20,10 @@ public class SysTransactionLogServiceImpl  implements SysTransactionLogService{
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@TxTransaction(isStart = true)
 	@Transactional
-	public void writeTransactionLog(SysTransactionLogEntity stl) {
-		
+	public void writeTransactionLog(SysTransactionLogEntity stl){
 		stlDao.insert(stl);
-					
 	}
 		
 

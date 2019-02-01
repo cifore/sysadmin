@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.sysadmin.business.entity.SysTransactionLogEntity;
 import com.csi.sbs.sysadmin.business.service.SysTransactionLogService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
@@ -30,18 +29,19 @@ public class SysTransactionLogController {
 
 	@RequestMapping(value = "/writeTransactionLog", method = RequestMethod.POST)
 	@ResponseBody
-	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws JsonProcessingException {
+	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {
+		try{
 			stlservice.writeTransactionLog(stl);			
-			map.put("msg", "日志插入成功");
+			map.put("msg", "save log success");
 			map.put("code", "1");
-		} catch (Exception e) {
-			map.put("msg", "日志插入失败");
+			return objectMapper.writeValueAsString(map);
+		}catch(Exception e){
+			map.put("msg", "save log fail");
 			map.put("code", "0");
+			throw new RuntimeException(objectMapper.writeValueAsString(map));
 		}
-
-		return objectMapper.writeValueAsString(map);
+		  
 	}
 
 }
