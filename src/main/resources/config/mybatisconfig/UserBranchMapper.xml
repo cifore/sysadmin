@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.UserBranchDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="UserID" property="userid" jdbcType="VARCHAR" />
+    <result column="BankID" property="bankid" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    select * from t_userbranch_relationship
+    where 1=1
+  </select>
+  
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    select * from t_userbranch_relationship
+    where 1=1
+    <if test="userid != null" >
+       and UserID = #{userid,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_userbranch_relationship
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    insert into t_userbranch_relationship
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userid != null" >
+        UserID,
+      </if>
+      <if test="bankid != null" >
+        BankID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="bankid != null" >
+        #{bankid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    update t_userbranch_relationship
+    <set >
+      <if test="userid != null" >
+        UserID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="bankid != null" >
+        BankID = #{bankid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

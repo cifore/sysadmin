@@ -106,6 +106,7 @@ public class CheckListController {
 	@RequestMapping(value = "/getServiceInternalURL", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api return api's url base on api's name.", notes = "version 0.0.1")
+	@ApiIgnore()
 	public String getServiceInternalURL(final HttpServletRequest request, final HttpServletResponse response,
 			@RequestBody ApiNameModel anm) throws JsonProcessingException {
 		Map<String, Object> map = null;

@@ -1,5 +1,6 @@
 package com.csi.sbs.sysadmin.business.base;
 
+import java.util.List;
 
 public interface BaseDao<T> {
 	
@@ -9,5 +10,10 @@ public interface BaseDao<T> {
     int delete(String id);  
     
     int update(T t);
+    
+    List<T> findMany(T t);
+    
+    T findOne(T t);
+
 
 }

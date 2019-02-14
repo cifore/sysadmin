@@ -15,6 +15,7 @@ import com.csi.sbs.sysadmin.business.service.SysTransactionLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -29,6 +30,7 @@ public class SysTransactionLogController {
 
 	@RequestMapping(value = "/writeTransactionLog", method = RequestMethod.POST)
 	@ResponseBody
+	@ApiIgnore()
 	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		try{

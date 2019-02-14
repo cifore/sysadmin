@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.csi.sbs.sysadmin.business.entity.CurrencyEntity;
 import com.csi.sbs.common.business.util.UUIDUtil;

@@ -1,23 +1,12 @@
-package com.csi.sbs.sysadmin.business.entity;
+package com.csi.sbs.sysadmin.business.clientmodel;
 
-
-public class UserEntity {
-
-	private String id;
+public class AddUserModel {
 
 	private String userid;
 
 	private String username;
 
 	private String email;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getUserid() {
 		return userid;
