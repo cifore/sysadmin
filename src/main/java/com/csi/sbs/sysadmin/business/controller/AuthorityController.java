@@ -13,6 +13,7 @@ import com.csi.sbs.sysadmin.business.service.PermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -34,6 +35,7 @@ public class AuthorityController {
 	@RequestMapping(value = "/permissionValidate", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to validate permission", notes = "version 0.0.1")
+	@ApiIgnore()
 	public String permissionValidate(PermissionModel permissionModel) throws Exception {
 		try {
 			boolean flag = permissionService.validate(permissionModel);
