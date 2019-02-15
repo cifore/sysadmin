@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
 import com.csi.sbs.sysadmin.business.service.PermissionService;
+import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
@@ -26,23 +27,28 @@ public class AuthorityController {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
-	 * 权限处理
+	 * 权限处理(指定了 countryCode,clearingCode,branchCode)
 	 * 
 	 * @param addUserModel
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/permissionValidate", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to validate permission", notes = "version 0.0.1")
 	@ApiIgnore()
 	public String permissionValidate(PermissionModel permissionModel) throws Exception {
 		try {
-			boolean flag = permissionService.validate(permissionModel);
-			return objectMapper.writeValueAsString(flag);
+			return objectMapper.writeValueAsString(permissionService.validate(permissionModel));
 		} catch (Exception e) {
-			return objectMapper.writeValueAsString(false);
+			ResultUtil result = new ResultUtil();
+			result.setCode("0");
+			result.setMsg("fail");
+			throw new RuntimeException(objectMapper.writeValueAsString(result));
 		}
 	}
+	
+	
 
 }

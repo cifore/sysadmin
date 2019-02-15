@@ -1,12 +1,11 @@
 package com.csi.sbs.sysadmin.business.service;
 
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
+import com.csi.sbs.sysadmin.business.util.ResultUtil;
 
 public interface PermissionService {
-	
-	
-	
-	
-	   public boolean validate(PermissionModel permissionModel);
+
+	@SuppressWarnings("rawtypes")
+	public ResultUtil validate(PermissionModel permissionModel);
 
 }

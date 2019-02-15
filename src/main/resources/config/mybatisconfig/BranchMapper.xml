@@ -20,6 +20,9 @@
     <if test="branchcode != null" >
        and BranchCode = #{branchcode,jdbcType=VARCHAR}
     </if>
+    <if test="id != null" >
+       and ID = #{id,jdbcType=VARCHAR}
+    </if>
   </select>
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
