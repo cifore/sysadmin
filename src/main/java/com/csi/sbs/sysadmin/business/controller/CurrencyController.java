@@ -82,7 +82,10 @@ public class CurrencyController{
 	@ApiIgnore()
 	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws Exception{
 		Map<String,Object> map = currencyService.queryByCcyCode(ase.getCcycode());
-        return objectMapper.writeValueAsString(map);	
+		if(map.get("ccyInfo") ==  null){
+			return objectMapper.writeValueAsString(map);
+		}
+        return objectMapper.writeValueAsString(map.get("ccyInfo"));	
 	}
 	
 	//Alina 插入汇率信息
