@@ -18,7 +18,7 @@
     select * from t_user
     where 1=1
     <if test="userid != null" >
-        UserID = #{userid,jdbcType=VARCHAR}
+       and UserID = #{userid,jdbcType=VARCHAR}
     </if>
   </select>
   
