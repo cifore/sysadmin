@@ -61,6 +61,7 @@ public class UserController {
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to add a user.", notes = "version 0.0.1")
+	@ApiIgnore()
 	public ResultUtil addUser(@RequestBody AddUserModel addUserModel) throws Exception {
 		try {
 			return userService.addUser(addUserModel);

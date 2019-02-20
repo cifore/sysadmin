@@ -16,6 +16,7 @@ import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @CrossOrigin // 解决跨域请求
@@ -41,6 +42,7 @@ public class UserBranchController {
 	@RequestMapping(value = "/addUserBranch", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to add a userbranch.", notes = "version 0.0.1")
+	@ApiIgnore()
 	public ResultUtil addUserBranch(@RequestBody AddUserBranchModel addUserBranchModel) throws Exception {
 		try {
 			return userBranchService.addUserBranch(addUserBranchModel, restTemplate);

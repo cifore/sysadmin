@@ -35,10 +35,12 @@
        and ClearingCode = #{clearingcode,jdbcType=VARCHAR}
     </if>
   </select>
-   <select id="findCountryCodes" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
+  
+  <select id="findCountryCodes" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
     select * from t_branch
     where 1=1 GROUP BY CountryCode
   </select>
+  
   <select id="findClearingCodeByCountry" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
     select * from t_branch
     where 1=1
@@ -53,7 +55,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
   
-  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
+  <insert id="insert" keyProperty="id" parameterType="com.csi.sbs.sysadmin.business.entity.BranchEntity" >
     insert into t_branch
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

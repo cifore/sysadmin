@@ -87,6 +87,7 @@ public class BranchController {
 	@RequestMapping(value = "/addBranch", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to add a branch.", notes = "version 0.0.1")
+	@ApiIgnore()
 	public ResultUtil addBranch() throws Exception {
 		try {
 			return branchService.addBranch(restTemplate);
