@@ -10,6 +10,12 @@
   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
     select * from t_userbranch_relationship
     where 1=1
+    <if test="userid != null" >
+       and UserID = #{userid,jdbcType=VARCHAR}
+    </if>
+    <if test="bankid != null" >
+       and BankID = #{bankid,jdbcType=VARCHAR}
+    </if>
   </select>
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
