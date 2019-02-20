@@ -27,7 +27,7 @@ public class AuthorityController {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
-	 * 权限处理(指定了 countryCode,clearingCode,branchCode)
+	 * 权限处理
 	 * 
 	 * @param addUserModel
 	 * @return
