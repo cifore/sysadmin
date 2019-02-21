@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
+import com.csi.sbs.sysadmin.business.clientmodel.CheckCCBModel;
+
 import com.alibaba.fastjson.JSONObject;
 import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
@@ -73,6 +76,27 @@ public class BranchServiceImpl implements BranchService {
 		return map;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> checkccbInfo(CheckCCBModel ase) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		BranchEntity branchEntity =  new BranchEntity();
+		branchEntity.setCountrycode(ase.getCountrycode());
+		branchEntity.setClearingcode(ase.getClearingcode());
+		branchEntity.setBranchcode(ase.getBranchcode());
+		BranchEntity branchInfo = (BranchEntity) branchdao.findOne(branchEntity);
+		if(branchInfo != null){
+			map.put("branchInfo", branchInfo);
+			map.put("msg", "Find Record Succssfully");
+			map.put("code", "1");
+			return map;
+		}
+		map.put("msg", "The Record Doesn't Exist");
+		map.put("code", "0");
+		return map;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ResultUtil addBranch(RestTemplate restTemplate) {

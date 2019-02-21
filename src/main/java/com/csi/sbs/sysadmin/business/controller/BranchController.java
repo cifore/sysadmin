@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.csi.sbs.sysadmin.business.clientmodel.CheckCCBModel;
 import com.csi.sbs.sysadmin.business.clientmodel.FindBranchCodeModel;
 import com.csi.sbs.sysadmin.business.clientmodel.GetCountryCodeModel;
 import com.csi.sbs.sysadmin.business.service.BranchService;
@@ -78,6 +79,22 @@ public class BranchController {
 		}
 	}
 	
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/checkccbInfo", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiIgnore()
+	public String checkccbInfo(@RequestBody CheckCCBModel ase) throws Exception {
+		try {
+			return objectMapper.writeValueAsString(branchService.checkccbInfo(ase));
+		} catch (Exception e) {
+			ResultUtil result = new ResultUtil();
+			result.setCode("0");
+			result.setMsg("fail");
+			throw new RuntimeException(objectMapper.writeValueAsString(result));
+		}
+	}
+
 	/**
 	 * 增加branch
 	 * 
