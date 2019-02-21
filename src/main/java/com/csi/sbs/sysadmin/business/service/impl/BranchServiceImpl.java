@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.csi.sbs.sysadmin.business.clientmodel.CheckCCBModel;
 import com.csi.sbs.sysadmin.business.clientmodel.FindBranchCodeModel;
 import com.csi.sbs.sysadmin.business.clientmodel.GetCountryCodeModel;
 import com.csi.sbs.sysadmin.business.dao.BranchDao;
@@ -60,6 +61,26 @@ public class BranchServiceImpl implements BranchService{
 		map.put("msg", "Check Success");
 		map.put("code", "1");
 		map.put("branchCodes", branchCodes);
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> checkccbInfo(CheckCCBModel ase) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		BranchEntity branchEntity =  new BranchEntity();
+		branchEntity.setCountrycode(ase.getCountrycode());
+		branchEntity.setClearingcode(ase.getClearingcode());
+		branchEntity.setBranchcode(ase.getBranchcode());
+		BranchEntity branchInfo = (BranchEntity) branchdao.findOne(branchEntity);
+		if(branchInfo != null){
+			map.put("branchInfo", branchInfo);
+			map.put("msg", "Find Record Succssfully");
+			map.put("code", "1");
+			return map;
+		}
+		map.put("msg", "The Record Doesn't Exist");
+		map.put("code", "0");
 		return map;
 	}
 
