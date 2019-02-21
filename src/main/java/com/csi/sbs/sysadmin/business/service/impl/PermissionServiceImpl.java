@@ -247,7 +247,7 @@ public class PermissionServiceImpl implements PermissionService {
 		
 		//返回信息
 		ReAuthorityModel reAuthorityModel = new ReAuthorityModel();
-		reAuthorityModel.setUserid(reuserID);
+		reAuthorityModel.setUserid(addUserModel.getUserid());
 		reAuthorityModel.setUsername(addUserModel.getUsername());
 		reAuthorityModel.setEmail(addUserModel.getEmail());
 		reAuthorityModel.setCountrycode(countryCode);

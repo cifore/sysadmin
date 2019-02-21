@@ -2,6 +2,7 @@ package com.csi.sbs.sysadmin.business.clientmodel;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
@@ -15,6 +16,7 @@ public class AddUserModel {
 
 	private String username;
 
+	@Email(message="Incorrect mailbox format")
 	private String email;
 
 	public String getUserid() {
