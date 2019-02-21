@@ -2,6 +2,7 @@ package com.csi.sbs.sysadmin.business.service.impl;
 
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserModel;
+import com.csi.sbs.sysadmin.business.clientmodel.ReUserModel;
 import com.csi.sbs.sysadmin.business.dao.UserDao;
 import com.csi.sbs.sysadmin.business.entity.UserEntity;
 import com.csi.sbs.sysadmin.business.service.UserService;
@@ -41,8 +42,14 @@ public class UserServiceImpl implements UserService{
 		user.setId(UUIDUtil.generateUUID());
 		user.setUsername(addUserModel.getUsername());
 		userDao.insert(user);
+		//返回信息
+		ReUserModel reum = new ReUserModel();
+		reum.setUserid(addUserModel.getUserid());
+		reum.setUsername(addUserModel.getUsername());
+		reum.setEmail(addUserModel.getEmail());
 		result.setCode("1");
 		result.setMsg("add User Success");
+		result.setData(reum);
 		return result;
 	}
 	

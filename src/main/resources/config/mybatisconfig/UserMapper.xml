@@ -27,7 +27,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
  
-  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.UserEntity" >
+  <insert id="insert" keyProperty="id" parameterType="com.csi.sbs.sysadmin.business.entity.UserEntity" >
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

@@ -59,12 +59,12 @@ public class CurrencyController{
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public boolean isSupportbyccy(@RequestBody CurrencyModel ase) throws Exception{
+	public String isSupportbyccy(@RequestBody CurrencyModel ase) throws Exception{
 		Map<String,Object> map  = currencyService.queryByCcyCode(ase.getCcycode());
 		if(map.get("code").equals("0")){
-			return false;
+			return "false";
 		}else{
-			return true;
+			return "true";
 		}
 	}
 	
