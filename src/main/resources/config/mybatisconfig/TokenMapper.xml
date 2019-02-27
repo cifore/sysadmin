@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.TokenDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.TokenEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="Token" property="token" jdbcType="VARCHAR" />
+    <result column="State" property="state" jdbcType="VARCHAR" />
+    <result column="ExpireDate" property="expiredate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.TokenEntity" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" >
+    select * from t_token
+    where 1=1
+    <if test="token != null" >
+       and Token = #{token}
+    </if>
+  </select>
+  
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" >
+    select * from t_token
+    where 1=1
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_token
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" keyProperty="id" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" >
+    insert into t_token
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="token != null" >
+        Token,
+      </if>
+      <if test="state != null" >
+        State,
+      </if>
+      <if test="expiredate != null" >
+        ExpireDate,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="expiredate != null" >
+        #{expiredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" >
+    update t_token
+    <set >
+      <if test="token != null" >
+        Token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        State = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="expiredate != null" >
+        ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>
