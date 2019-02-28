@@ -17,6 +17,7 @@ import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
+import com.csi.sbs.sysadmin.business.clientmodel.ReLoginModel;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity;
 import com.csi.sbs.sysadmin.business.entity.LoginModel;
@@ -104,9 +105,13 @@ public class LoginServiceImpl implements LoginService {
 		ct.setTokenid(st.getId());
 		customerTokenRelationService.save(ct);
 		
+		ReLoginModel rlm = new ReLoginModel();
+		rlm.setCustomerID(str4);
+		rlm.setToken(token);
+		
 		result.setCode("1");
 		result.setMsg("Login Success");
-		result.setData(token);
+		result.setData(rlm);
 		return result;
 	}
 
