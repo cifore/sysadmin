@@ -42,7 +42,7 @@ public class LoginController {
 		try {
 			// 获取请求头参数
 			@SuppressWarnings("unused")
-			String userID = request.getHeader("userID");
+			String userID = request.getHeader("developerID");
 			String countryCode = request.getHeader("countryCode");
 			String clearingCode = request.getHeader("clearingCode");
 			String branchCode = request.getHeader("branchCode");
