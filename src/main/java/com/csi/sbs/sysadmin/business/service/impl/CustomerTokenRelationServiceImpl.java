@@ -26,7 +26,7 @@ public class CustomerTokenRelationServiceImpl implements CustomerTokenRelationSe
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ResultUtil save(CustomerTokenRelationEntity cte) throws Exception {
+	public ResultUtil save(String customerID,CustomerTokenRelationEntity cte) throws Exception {
 		ResultUtil result = new ResultUtil();
 		//校验是否已经授权
 		CustomerTokenRelationEntity recte = (CustomerTokenRelationEntity) customerTokenRelationDao.findOne(cte);
@@ -36,6 +36,7 @@ public class CustomerTokenRelationServiceImpl implements CustomerTokenRelationSe
 			return result;
 		}
 		cte.setId(UUIDUtil.generateUUID());
+		cte.setCustomerid(customerID);
 		cte.setCreatedate(format1.parse(format1.format(new Date())));
 		customerTokenRelationDao.insert(cte);
 		result.setCode("1");

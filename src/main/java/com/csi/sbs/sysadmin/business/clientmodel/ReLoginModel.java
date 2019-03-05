@@ -1,17 +1,28 @@
 package com.csi.sbs.sysadmin.business.clientmodel;
 
+
+
 public class ReLoginModel {
 
-	private String customerID;
+	
+	
+	private String id;
 
 	private String token;
+	
+	
+	
+	
 
-	public String getCustomerID() {
-		return customerID;
+	
+
+
+	public String getId() {
+		return id;
 	}
 
-	public void setCustomerID(String customerID) {
-		this.customerID = customerID;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getToken() {

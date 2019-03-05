@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
@@ -18,6 +19,7 @@ import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReLoginModel;
+import com.csi.sbs.sysadmin.business.clientmodel.ReceptLoginModel;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity;
 import com.csi.sbs.sysadmin.business.entity.LoginModel;
@@ -64,8 +66,10 @@ public class LoginServiceImpl implements LoginService {
 			result.setMsg("Login Fail");
 			return result;
 		}
-		//customerID
+		//登录返回的实体
 		String str4 = JsonProcess.returnValue(str2, "data");
+		//返回json转换为实体
+		ReceptLoginModel rm = JSON.parseObject(str4, ReceptLoginModel.class);
 		/**
 		 * token 处理部分
 		 */
@@ -76,7 +80,8 @@ public class LoginServiceImpl implements LoginService {
 		claims.setCountryCode(header.getCountryCode());
 		claims.setClearingCode(header.getClearingCode());
 		claims.setBranchCode(header.getBranchCode());
-		claims.setCustomerID(str4);
+		claims.setCustomerID(rm.getCustomerID());
+		claims.setId(rm.getId());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 		Date currdate = format.parse(format.format(new Date()));
@@ -101,12 +106,12 @@ public class LoginServiceImpl implements LoginService {
 		 * 授权token给客户
 		 */
 		CustomerTokenRelationEntity ct = new CustomerTokenRelationEntity();
-		ct.setCustomerid(str4);
+		ct.setUid(rm.getId());
 		ct.setTokenid(st.getId());
-		customerTokenRelationService.save(ct);
+		customerTokenRelationService.save(rm.getCustomerID(), ct);
 		
 		ReLoginModel rlm = new ReLoginModel();
-		rlm.setCustomerID(str4);
+		rlm.setId(rm.getId());
 		rlm.setToken(token);
 		
 		result.setCode("1");

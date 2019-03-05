@@ -20,6 +20,9 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 	private String countryCode;
 	private String clearingCode;
 	private String branchCode;
+	
+	
+	
     
  
     public String[] getScope() {

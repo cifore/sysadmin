@@ -5,14 +5,26 @@ import java.util.Date;
 public class CustomerTokenRelationEntity {
 	
     private String id;
+    
+    private String uid;
 
     private String customerid;
 
     private String tokenid;
 
     private Date createdate;
+    
+    
 
-    public String getId() {
+    public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getId() {
         return id;
     }
 
