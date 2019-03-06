@@ -68,7 +68,7 @@ public class LoginInServiceImpl implements LoginInService {
          * 根据customer主键去查询 customerNumber
          */
         FindCustomerModel fcm = new FindCustomerModel();
-        fcm.setiD(reLoginIn.getCustomerpk());
+        fcm.setCustomerNumber(reLoginIn.getCustomernumber());
         //调用deposit 查询  customer方法
         ResponseEntity<String> customerResult = restTemplate.postForEntity(
 				"http://" + CommonConstant.getDEPOSIT() + SysConstant.GET_CUSTOMER_URL + "",
@@ -93,10 +93,10 @@ public class LoginInServiceImpl implements LoginInService {
 		// 密钥 客户的登录密码
 		JwtTokenProviderUtil jwtTokenProvider = new JwtTokenProviderUtil(loginModel.getLoginpwd());
 		UserClaimsEntity claims = new UserClaimsEntity();
-		claims.setDeveloperID(header.getUserID());
-		claims.setCountryCode(header.getCountryCode());
-		claims.setClearingCode(header.getClearingCode());
-		claims.setBranchCode(header.getBranchCode());
+		claims.setDeveloperID(reLoginIn.getDeveloperid());
+		claims.setCountryCode(rcm.getCountrycode());
+		claims.setClearingCode(rcm.getClearingcode());
+		claims.setBranchCode(rcm.getBranchcode());
 		claims.setLoginName(reLoginIn.getLoginname());
 		claims.setCustomerNumber(rcm.getCustomernumber());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

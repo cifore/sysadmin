@@ -32,6 +32,7 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 
 	public void setDeveloperID(String developerID) {
 		this.developerID = developerID;
+		setValue("developerID", this.developerID);
 	}
 
 	public String[] getScope() {
@@ -58,6 +59,7 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+		setValue("loginName", this.loginName);
 	}
 
 	public String getCustomerNumber() {
@@ -66,6 +68,7 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 
 	public void setCustomerNumber(String customerNumber) {
 		this.customerNumber = customerNumber;
+		setValue("customerNumber", this.customerNumber);
 	}
 
 	public String getCountryCode() {

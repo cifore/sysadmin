@@ -6,14 +6,42 @@ public class LoginInEntity {
 
     private String loginname;
 	
-    private String customerpk;
+    private String customernumber;
 
     private String loginpwd;
     
+    private String usertype;
+
+    private String developerid;
+    
     
     
 
-    public String getId() {
+    public String getCustomernumber() {
+		return customernumber;
+	}
+
+	public void setCustomernumber(String customernumber) {
+		this.customernumber = customernumber;
+	}
+
+	public String getUsertype() {
+		return usertype;
+	}
+
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
+	}
+
+	public String getDeveloperid() {
+		return developerid;
+	}
+
+	public void setDeveloperid(String developerid) {
+		this.developerid = developerid;
+	}
+
+	public String getId() {
 		return id;
 	}
 
@@ -28,14 +56,6 @@ public class LoginInEntity {
 	public void setLoginname(String loginname) {
 		this.loginname = loginname;
 	}
-
-	public String getCustomerpk() {
-        return customerpk;
-    }
-
-    public void setCustomerpk(String customerpk) {
-        this.customerpk = customerpk == null ? null : customerpk.trim();
-    }
 
     public String getLoginpwd() {
         return loginpwd;

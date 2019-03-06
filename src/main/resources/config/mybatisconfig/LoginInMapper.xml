@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <id column="LoginName" property="loginname" jdbcType="VARCHAR" />
-    <result column="CustomerPK" property="customerpk" jdbcType="VARCHAR" />
+    <result column="CustomerNumber" property="customernumber" jdbcType="VARCHAR" />
     <result column="LoginPwd" property="loginpwd" jdbcType="VARCHAR" />
+    <result column="UserType" property="usertype" jdbcType="VARCHAR" />
+    <result column="DeveloperID" property="developerid" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
@@ -38,11 +40,17 @@
       <if test="loginname != null" >
         LoginName,
       </if>
-      <if test="customerpk != null" >
-        CustomerPK,
+      <if test="customernumber != null" >
+        CustomerNumber,
       </if>
       <if test="loginpwd != null" >
         LoginPwd,
+      </if>
+      <if test="usertype != null" >
+        UserType,
+      </if>
+      <if test="developerid != null" >
+        DeveloperID,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -52,11 +60,17 @@
       <if test="loginname != null" >
         #{loginname,jdbcType=VARCHAR},
       </if>
-      <if test="customerpk != null" >
-        #{customerpk,jdbcType=VARCHAR},
+      <if test="customernumber != null" >
+        #{customernumber,jdbcType=VARCHAR},
       </if>
       <if test="loginpwd != null" >
         #{loginpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null" >
+        #{usertype,jdbcType=VARCHAR},
+      </if>
+      <if test="developerid != null" >
+        #{developerid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -64,11 +78,17 @@
   <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
     update t_login_in
     <set >
-      <if test="customerpk != null" >
-        CustomerPK = #{customerpk,jdbcType=VARCHAR},
+      <if test="customernumber != null" >
+        CustomerNumber = #{customernumber,jdbcType=VARCHAR},
       </if>
       <if test="loginpwd != null" >
         LoginPwd = #{loginpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null" >
+        UserType = #{usertype,jdbcType=VARCHAR},
+      </if>
+      <if test="developerid != null" >
+        DeveloperID = #{developerid,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
