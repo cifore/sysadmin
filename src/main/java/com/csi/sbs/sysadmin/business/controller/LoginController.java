@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
-import com.csi.sbs.sysadmin.business.entity.LoginModel;
-import com.csi.sbs.sysadmin.business.service.LoginService;
+import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
+import com.csi.sbs.sysadmin.business.service.LoginInService;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 public class LoginController {
 
 	@Resource
-	private LoginService loginService;
+	private LoginInService loginInService;
 
 	@Resource
 	private RestTemplate restTemplate;
@@ -35,10 +35,10 @@ public class LoginController {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginIn", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This api return login result", notes = "version 0.0.1")
-	public ResultUtil login(@RequestBody LoginModel loginModel, HttpServletRequest request) throws Exception {
+	public ResultUtil loginIn(@RequestBody LoginModel loginModel, HttpServletRequest request) throws Exception {
 		try {
 			// 获取请求头参数
 			@SuppressWarnings("unused")
@@ -50,7 +50,7 @@ public class LoginController {
 			header.setCountryCode(countryCode);
 			header.setClearingCode(clearingCode);
 			header.setBranchCode(branchCode);
-			return loginService.login(header, loginModel, restTemplate);
+			return loginInService.loginIn(header, loginModel, restTemplate);
 		} catch (Exception e) {
 			ResultUtil result = new ResultUtil();
 			result.setCode("0");

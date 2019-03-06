@@ -6,23 +6,21 @@ public class ReLoginModel {
 
 	
 	
-	private String id;
+	private String loginName;
 
 	private String token;
 	
 	
 	
 	
-
 	
 
-
-	public String getId() {
-		return id;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getToken() {

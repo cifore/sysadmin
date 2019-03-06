@@ -3,8 +3,7 @@
 <mapper namespace="com.csi.sbs.sysadmin.business.dao.CustomerTokenRelationDao" >
   <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="UID" property="uid" jdbcType="VARCHAR" />
-    <result column="CustomerID" property="customerid" jdbcType="VARCHAR" />
+    <result column="LoginInPK" property="logininpk" jdbcType="VARCHAR" />
     <result column="TokenID" property="tokenid" jdbcType="VARCHAR" />
     <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -12,15 +11,13 @@
   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity" parameterType="com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity" >
     select * from t_customertoken_relationship
     where 1=1
-    <if test="customerid != null" >
-      and CustomerID = #{customerid}
+    <if test="logininpk != null" >
+      and LoginInPK = #{logininpk}
     </if>
     <if test="tokenid != null" >
       and TokenID = #{tokenid}
     </if>
-    <if test="uid != null" >
-      and UID = #{uid}
-    </if>
+    
   </select>
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity" >
@@ -39,11 +36,8 @@
       <if test="id != null" >
         ID,
       </if>
-      <if test="uid != null" >
-        UID,
-      </if>
-      <if test="customerid != null" >
-        CustomerID,
+      <if test="logininpk != null" >
+        LoginInPK,
       </if>
       <if test="tokenid != null" >
         TokenID,
@@ -56,11 +50,8 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="uid != null" >
-        #{uid,jdbcType=VARCHAR},
-      </if>
-      <if test="customerid != null" >
-        #{customerid,jdbcType=VARCHAR},
+      <if test="logininpk != null" >
+        #{logininpk,jdbcType=VARCHAR},
       </if>
       <if test="tokenid != null" >
         #{tokenid,jdbcType=VARCHAR},
@@ -74,11 +65,8 @@
   <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity" >
     update t_customertoken_relationship
     <set >
-      <if test="uid != null" >
-        UID = #{uid,jdbcType=VARCHAR},
-      </if>
-      <if test="customerid != null" >
-        CustomerID = #{customerid,jdbcType=VARCHAR},
+      <if test="logininpk != null" >
+        LoginInPK = #{logininpk,jdbcType=VARCHAR},
       </if>
       <if test="tokenid != null" >
         TokenID = #{tokenid,jdbcType=VARCHAR},

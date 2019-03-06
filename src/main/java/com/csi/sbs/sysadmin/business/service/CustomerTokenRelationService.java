@@ -8,6 +8,6 @@ public interface CustomerTokenRelationService {
 	
 	
 	@SuppressWarnings("rawtypes")
-	public ResultUtil save(String customerID,CustomerTokenRelationEntity cte) throws Exception;
+	public ResultUtil save(CustomerTokenRelationEntity cte) throws Exception;
 
 }

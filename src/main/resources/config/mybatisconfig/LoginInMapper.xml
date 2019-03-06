@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.LoginInDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <id column="LoginName" property="loginname" jdbcType="VARCHAR" />
+    <result column="CustomerPK" property="customerpk" jdbcType="VARCHAR" />
+    <result column="LoginPwd" property="loginpwd" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    select * from t_login_in
+    where 1=1
+    <if test="loginname != null and loginname !=''" >
+       and LoginName = #{loginname}
+    </if>
+    <if test="loginpwd != null and loginpwd !=''" >
+       and LoginPwd = #{loginpwd}
+    </if>
+  </select>
+  
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    select * from t_login_in
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="delete" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    delete from t_login_in
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    insert into t_login_in
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loginname != null" >
+        LoginName,
+      </if>
+      <if test="customerpk != null" >
+        CustomerPK,
+      </if>
+      <if test="loginpwd != null" >
+        LoginPwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="customerpk != null" >
+        #{customerpk,jdbcType=VARCHAR},
+      </if>
+      <if test="loginpwd != null" >
+        #{loginpwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
+    update t_login_in
+    <set >
+      <if test="customerpk != null" >
+        CustomerPK = #{customerpk,jdbcType=VARCHAR},
+      </if>
+      <if test="loginpwd != null" >
+        LoginPwd = #{loginpwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

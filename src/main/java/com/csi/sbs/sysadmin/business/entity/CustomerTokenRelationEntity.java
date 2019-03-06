@@ -5,10 +5,8 @@ import java.util.Date;
 public class CustomerTokenRelationEntity {
 	
     private String id;
-    
-    private String uid;
 
-    private String customerid;
+    private String logininpk;
 
     private String tokenid;
 
@@ -16,12 +14,14 @@ public class CustomerTokenRelationEntity {
     
     
 
-    public String getUid() {
-		return uid;
+    
+
+	public String getLogininpk() {
+		return logininpk;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setLogininpk(String logininpk) {
+		this.logininpk = logininpk;
 	}
 
 	public String getId() {
@@ -30,14 +30,6 @@ public class CustomerTokenRelationEntity {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
-    }
-
-    public String getCustomerid() {
-        return customerid;
-    }
-
-    public void setCustomerid(String customerid) {
-        this.customerid = customerid == null ? null : customerid.trim();
     }
 
     public String getTokenid() {

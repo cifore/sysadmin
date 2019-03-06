@@ -15,8 +15,9 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 	
     private String[] scope;
     private String grantType = "password";
-    private String userID;
-    private String customerID;
+    private String developerID;
+    private String loginName;
+    private String customerNumber;
 	private String countryCode;
 	private String clearingCode;
 	private String branchCode;
@@ -25,7 +26,15 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 	
     
  
-    public String[] getScope() {
+    public String getDeveloperID() {
+		return developerID;
+	}
+
+	public void setDeveloperID(String developerID) {
+		this.developerID = developerID;
+	}
+
+	public String[] getScope() {
         return scope;
     }
  
@@ -42,23 +51,21 @@ public class UserClaimsEntity extends JwtMap implements Claims {
         this.grantType = grantType;
         setValue("grantType", this.grantType);
     }
- 
-    public String getUserID() {
-		return userID;
+
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
-		setValue("userID", this.userID);
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
-	public String getCustomerID() {
-		return customerID;
+	public String getCustomerNumber() {
+		return customerNumber;
 	}
 
-	public void setCustomerID(String customerID) {
-		this.customerID = customerID;
-		setValue("customerID", this.customerID);
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
 	}
 
 	public String getCountryCode() {

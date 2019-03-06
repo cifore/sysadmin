@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class SysConstant {
 	
+	//查询客户URL
+	public static final String GET_CUSTOMER_URL = "/deposit/account/getCustomer";
 	//返回内部服务接口地址 URL
     public static final String SERVICE_INTERNAL_URL = "/sysadmin/getServiceInternalURL";
     //branchNumber
