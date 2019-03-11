@@ -12,4 +12,6 @@ public interface LoginInService {
 	@SuppressWarnings("rawtypes")
 	public ResultUtil loginIn(HeaderModel header,LoginModel loginModel,RestTemplate restTemplate) throws Exception;
 
+	@SuppressWarnings("rawtypes")
+	public ResultUtil authorize(String loginPK,RestTemplate restTemplate) throws Exception;
 }

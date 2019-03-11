@@ -27,13 +27,13 @@ public class TokenServiceImpl implements TokenService{
 	@Override
 	public ResultUtil save(TokenEntity token) throws Exception {
 		ResultUtil result = new ResultUtil();
-		//校验token是否存在
-		TokenEntity retoken = (TokenEntity) tokenDao.findOne(token);
-		if(retoken!=null && retoken.getState().equals(SysConstant.TOKEN_STATE1)){
-			result.setCode("0");
-			result.setMsg("Token already exists.");
-			return result;
-		}
+//		//校验token是否存在
+//		TokenEntity retoken = (TokenEntity) tokenDao.findOne(token);
+//		if(retoken!=null && retoken.getState().equals(SysConstant.TOKEN_STATE1)){
+//			result.setCode("0");
+//			result.setMsg("Token already exists.");
+//			return result;
+//		}
 		token.setId(UUIDUtil.generateUUID());
 		token.setCreatedate(format1.parse(format1.format(new Date())));
 		token.setState(SysConstant.TOKEN_STATE1);
