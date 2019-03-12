@@ -15,6 +15,9 @@
     <if test="token != null" >
        and Token = #{token}
     </if>
+    <if test="id != null" >
+       and ID = #{id}
+    </if>
   </select>
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" >

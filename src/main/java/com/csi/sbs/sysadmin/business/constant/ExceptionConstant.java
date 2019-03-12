@@ -25,7 +25,7 @@ public class ExceptionConstant {
     	Map<Integer,String> map = new HashMap<Integer,String>();
     	map.put(ERROR_CODE2021001, "Login Fail");//登录失败
     	
-    	map.put(ERROR_CODE4031001, "Authorization failed");//授权失败
+    	map.put(ERROR_CODE4031001, "Authorization failed,There's dirty data");//授权失败
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
     	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
