@@ -79,7 +79,7 @@ public class LoginInServiceImpl implements LoginInService {
 		 */
 		LoginInEntity loginIn = new LoginInEntity();
 		loginIn.setLoginname(loginModel.getLoginname());
-		loginIn.setLoginpwd(loginModel.getLoginpwd());
+		loginIn.setLoginpwd(EncryptionUtil.Md5Encrypt(loginModel.getLoginpwd()));
 		LoginInEntity reLoginIn = (LoginInEntity) loginInDao.findOne(loginIn);
         if(reLoginIn==null){
         	throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021001),ExceptionConstant.ERROR_CODE2021001);
