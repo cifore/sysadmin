@@ -3,6 +3,7 @@ package com.csi.sbs.sysadmin.business.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -16,11 +17,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.codingapi.tx.annotation.TxTransaction;
 import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
+import com.csi.sbs.common.business.util.EncryptionUtil;
 import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
+import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
+import com.csi.sbs.sysadmin.business.clientmodel.AddLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.FindCustomerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
+import com.csi.sbs.sysadmin.business.clientmodel.ReCreateLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCustomerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReLoginModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
@@ -35,6 +40,7 @@ import com.csi.sbs.sysadmin.business.entity.UserClaimsEntity;
 import com.csi.sbs.sysadmin.business.exception.AcceptException;
 import com.csi.sbs.sysadmin.business.exception.AuthorityException;
 import com.csi.sbs.sysadmin.business.exception.CallOtherException;
+import com.csi.sbs.sysadmin.business.exception.InsertException;
 import com.csi.sbs.sysadmin.business.service.CustomerTokenRelationService;
 import com.csi.sbs.sysadmin.business.service.LoginInService;
 import com.csi.sbs.sysadmin.business.service.TokenService;
@@ -206,6 +212,49 @@ public class LoginInServiceImpl implements LoginInService {
 
 		result.setCode("1");
 		result.setMsg("Authorize Success");
+		result.setData(rlm);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public ResultUtil createLoginUser(AddLoginUserModel alm) throws Exception {
+		ResultUtil result = new ResultUtil();
+		//校验登录名是否存在
+		LoginInEntity validateLoginName = new LoginInEntity();
+		validateLoginName.setLoginname(alm.getLoginName());
+		List<LoginInEntity> relogin = loginInDao.findMany(validateLoginName);
+		if(relogin!=null && relogin.size()>0){
+			//登录名已经存在
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021002),ExceptionConstant.ERROR_CODE2021002);
+		}
+		//校验customerNumber是否存在
+		LoginInEntity validateCustomer = new LoginInEntity();
+		validateCustomer.setCustomernumber(alm.getCustomerNumber());
+		List<LoginInEntity> reloginTwo = loginInDao.findMany(validateCustomer);
+		if(reloginTwo!=null && reloginTwo.size()>0){
+			//customerNumber已经存在
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021003),ExceptionConstant.ERROR_CODE2021003);
+		}
+		LoginInEntity createLoginUser = new LoginInEntity();
+		createLoginUser.setCustomernumber(alm.getCustomerNumber());
+		createLoginUser.setDeveloperid(alm.getDeveloperID());
+		createLoginUser.setId(UUIDUtil.generateUUID());
+		createLoginUser.setLoginname(alm.getLoginName());
+		createLoginUser.setLoginpwd(EncryptionUtil.Md5Encrypt(alm.getLoginPwd()));
+		createLoginUser.setUsertype(SysConstant.USER_TYPE0);//普通用户
+		
+		try{
+			loginInDao.insert(createLoginUser);
+		}catch(Exception e){
+			//添加失败
+			throw new InsertException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001002),ExceptionConstant.ERROR_CODE5001002);
+		}
+		ReCreateLoginUserModel rlm = new ReCreateLoginUserModel();
+		rlm.setLoginName(createLoginUser.getLoginname());
+		rlm.setLoginPwd(alm.getLoginPwd());
+		result.setCode(String.valueOf(ExceptionConstant.SUCCESS_CODE2001002));
+		result.setMsg("Create Success");
 		result.setData(rlm);
 		return result;
 	}

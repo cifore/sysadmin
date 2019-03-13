@@ -23,7 +23,13 @@
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
     select * from t_login_in
-    where ID = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="loginname != null and loginname !=''" >
+       and LoginName = #{loginname}
+    </if>
+    <if test="customernumber != null and customernumber !=''" >
+       and CustomerNumber = #{customernumber}
+    </if>
   </select>
   
   <delete id="delete" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
