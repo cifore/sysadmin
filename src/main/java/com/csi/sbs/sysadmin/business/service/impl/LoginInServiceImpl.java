@@ -164,8 +164,9 @@ public class LoginInServiceImpl implements LoginInService {
 				throw new AuthorityException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4031001),ExceptionConstant.ERROR_CODE4031001);
 			}else{
 				if(retk.getState().equals(SysConstant.TOKEN_STATE1)){
+					token=retk.getToken();
 					//已经授权
-					throw new AuthorityException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4031002),ExceptionConstant.ERROR_CODE4031002);
+					//throw new AuthorityException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4031002),ExceptionConstant.ERROR_CODE4031002);
 				}else{
 					/**
 					 * 保存token
