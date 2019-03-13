@@ -193,6 +193,15 @@ public class PermissionServiceImpl implements PermissionService {
 			result.setMsg("branch number 已经达到最大");
 			return result;
 		}
+		
+		//校验branchnumber,countryCode,clearcode是否存在
+		branchsearch.setBranchcode(branchnumber);
+		List<BranchEntity> rbs = (List<BranchEntity>) branchDao.findMany(branchsearch);
+		if(rbs!=null && rbs.size()>0){
+			result.setCode("0");
+			result.setMsg("数据重复developer授权失败,请检查数据库"+"countryCode:"+countryCode+"-clearingCode:"+clearcode+"-branchCode:"+branchnumber);
+			return result;
+		}
 
 		BranchEntity branch = new BranchEntity();
 		branch.setId(UUIDUtil.generateUUID());

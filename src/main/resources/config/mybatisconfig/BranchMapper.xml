@@ -29,10 +29,13 @@
     select * from t_branch
     where 1=1
     <if test="countrycode != null" >
-       and CountryCode = #{countrycode,jdbcType=VARCHAR}
+       and CountryCode = #{countrycode}
     </if>
     <if test="clearingcode != null" >
-       and ClearingCode = #{clearingcode,jdbcType=VARCHAR}
+       and ClearingCode = #{clearingcode}
+    </if>
+    <if test="branchcode != null" >
+       and BranchCode = #{branchcode}
     </if>
   </select>
   
