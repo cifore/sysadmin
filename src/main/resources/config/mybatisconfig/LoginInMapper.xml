@@ -19,6 +19,9 @@
     <if test="loginpwd != null and loginpwd !=''" >
        and LoginPwd = #{loginpwd}
     </if>
+    <if test="id != null" >
+       and ID = #{id}
+    </if>
   </select>
   
   <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.LoginInEntity" >
@@ -29,6 +32,9 @@
     </if>
     <if test="customernumber != null and customernumber !=''" >
        and CustomerNumber = #{customernumber}
+    </if>
+    <if test="id != null" >
+       and ID = #{id}
     </if>
   </select>
   

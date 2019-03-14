@@ -199,7 +199,7 @@ public class PermissionServiceImpl implements PermissionService {
 		List<BranchEntity> rbs = (List<BranchEntity>) branchDao.findMany(branchsearch);
 		if(rbs!=null && rbs.size()>0){
 			result.setCode("0");
-			result.setMsg("数据重复developer授权失败,请检查数据库"+"countryCode:"+countryCode+"-clearingCode:"+clearcode+"-branchCode:"+branchnumber);
+			result.setMsg("Duplicate data, authorization failed, please check database"+"countryCode:"+countryCode+"-clearingCode:"+clearcode+"-branchCode:"+branchnumber);
 			return result;
 		}
 

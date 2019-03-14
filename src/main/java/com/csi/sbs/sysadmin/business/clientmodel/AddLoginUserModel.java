@@ -23,7 +23,7 @@ public class AddLoginUserModel {
 	@NotNull(message="loginPwd is a required field")
 	@NotBlank(message="loginPwd is a required field")
 	@ApiModelProperty(notes=""
-	,example="123456")
+	,example="123456a")
 	private String loginPwd;
 
 	@NotNull(message="developerID is a required field")

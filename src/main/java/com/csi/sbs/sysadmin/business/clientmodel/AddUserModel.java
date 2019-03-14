@@ -14,7 +14,7 @@ public class AddUserModel {
 	@NotNull(message="userid is a required field")
 	@NotBlank(message="userid is a required field")
 	@ApiModelProperty(notes="the developer id"
-	,example="111")
+	,example="111a")
 	private String userid;
 
 	@ApiModelProperty(notes="the name of user"
