@@ -7,4 +7,5 @@ import com.csi.sbs.sysadmin.business.base.BaseDao;
 @Mapper
 public interface TokenDao<T> extends BaseDao<T> {
 
+	   public void callSetTokenExpire();
 }

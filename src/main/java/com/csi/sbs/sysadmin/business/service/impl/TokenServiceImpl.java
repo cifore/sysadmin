@@ -43,4 +43,9 @@ public class TokenServiceImpl implements TokenService{
 		return result;
 	}
 
+	@Override
+	public void setTokenExpired() {
+		tokenDao.callSetTokenExpire();
+	}
+
 }

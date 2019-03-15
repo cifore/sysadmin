@@ -25,6 +25,14 @@
     where 1=1
   </select>
   
+  
+  <!-- 将token设置为过期状态的函数 -->
+  <select id="callSetTokenExpire" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.TokenEntity" statementType="CALLABLE">
+     {
+        call setTokenExpire()
+     }
+  </select>
+  
   <delete id="delete" parameterType="java.lang.String" >
     delete from t_token
     where ID = #{id,jdbcType=VARCHAR}

@@ -9,5 +9,8 @@ public interface TokenService {
 	
 	@SuppressWarnings("rawtypes")
 	public ResultUtil save(TokenEntity token) throws Exception;
+	
+	
+	public void setTokenExpired();
 
 }
