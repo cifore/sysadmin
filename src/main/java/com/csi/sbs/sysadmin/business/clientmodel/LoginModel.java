@@ -1,5 +1,6 @@
 package com.csi.sbs.sysadmin.business.clientmodel;
 
+
 public class LoginModel {
 
 	private String loginname;
