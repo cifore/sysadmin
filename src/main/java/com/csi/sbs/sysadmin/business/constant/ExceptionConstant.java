@@ -21,8 +21,11 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE4031001 = 4031001;//授权失败
 	public static final int ERROR_CODE4031002 = 4031002;//已经授权
 	
+	public static final int ERROR_CODE4041001 = 4041001;//根据API Name 未查到内部调用地址
+	
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
 	public static final int ERROR_CODE5001002 = 5001002;//添加登录用户失败
+	public static final int ERROR_CODE5001003 = 5001003;//根据API Name 查内部调用地址失败
 	
     
     public static Map<Integer,String> getExceptionMap(){
@@ -35,8 +38,11 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE4031001, "Authorization failed,There's dirty data");//授权失败
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
     	
+    	map.put(ERROR_CODE4041001, "Not Found InternalService Url");//根据API Name 未查到内部调用地址
+    	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
+    	map.put(ERROR_CODE5001003, "Get InternalService Fail");//根据API Name 查内部调用地址失败
     	return map;
     }
     

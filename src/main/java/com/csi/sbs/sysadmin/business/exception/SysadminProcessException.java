@@ -54,5 +54,13 @@ public class SysadminProcessException {
     {
         return new Result(e.getMessage(), e.getCode());
     }
+    
+    @ExceptionHandler(value = SearchException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleResourceSearchException(SearchException e)
+    {
+        return new Result(e.getMessage(), e.getCode());
+    }
 	
 }

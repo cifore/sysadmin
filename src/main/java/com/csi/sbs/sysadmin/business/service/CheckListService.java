@@ -17,5 +17,5 @@ public interface CheckListService {
 	
 	public Map<String, Object>queryApiList();
 	
-	public Map<String, Object>getServiceInternalURL(ApiNameModel anm);
+	public Map<String, Object>getServiceInternalURL(ApiNameModel anm) throws Exception;
 }

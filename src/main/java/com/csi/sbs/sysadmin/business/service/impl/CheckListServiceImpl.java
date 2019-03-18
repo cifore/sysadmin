@@ -9,9 +9,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.csi.sbs.sysadmin.business.clientmodel.ApiNameModel;
+import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.dao.CheckListDao;
 import com.csi.sbs.sysadmin.business.dao.ModuleDao;
 import com.csi.sbs.sysadmin.business.entity.CheckListEntity;
+import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.service.CheckListService;
 
 @Service("CheckListService")
@@ -60,18 +62,13 @@ public class CheckListServiceImpl implements CheckListService{
 	}
 
 	@Override
-	public Map<String, Object> getServiceInternalURL(ApiNameModel anm) {
+	public Map<String, Object> getServiceInternalURL(ApiNameModel anm) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String apiName = anm.getApiname();
-		String internaURL = "";
-		try {
-			internaURL = checkListDao.selectByName(apiName).getInternalurl();
-		} catch (Exception e) {
-			map.put("msg", "查询失败");
-			map.put("code", "0");
-			return map;
+		CheckListEntity recle = (CheckListEntity) checkListDao.selectByName(anm.getApiname());
+		if(recle == null){
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041001),ExceptionConstant.ERROR_CODE4041001);
 		}
-		map.put("internaURL", internaURL);
+		map.put("internaURL", recle.getInternalurl());
 		return map;
 	}
 

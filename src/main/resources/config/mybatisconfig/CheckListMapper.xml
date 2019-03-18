@@ -21,25 +21,42 @@
     ID, ApiName, ApiDescription, RequestMode, ModuleID, InputDescription, OutputDescription, 
     ApiAddress, InternalURL, Owner, Status, Version, VersionDesc, LastUpdateDate
   </sql>
+  
+  
+  <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
+    select * from t_apidetail
+    where 1=1
+    <if test="apiname != null" >
+      and ApiName = #{apiname}
+    </if>
+  </select>
+  
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
+    select * from t_apidetail
+    where 1=1
+  </select>
+  
   <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from t_apidetail
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_apidetail
+  
+  <select id="selectByName" resultType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" parameterType="java.lang.String" >
+    select * from t_apidetail
     where ApiName = #{apiname,jdbcType=VARCHAR}
   </select>
-   <select id="queryAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select * from t_apidetail where 1 = 1 order by moduleid asc
   </select>
+  
   <delete id="delete" parameterType="java.lang.String" >
     delete from t_apidetail
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
+  
   <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
     insert into t_apidetail
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -131,6 +148,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.CheckListEntity" >
     update t_apidetail
     <set >
