@@ -38,4 +38,7 @@ public class SysConstant {
     	
     	return map;
     }
+    
+    //给kafka发送消息地址
+    public static final String SEND_TOKAFKA_URL = "http://MONITORCENTER/kafka/send";
 }

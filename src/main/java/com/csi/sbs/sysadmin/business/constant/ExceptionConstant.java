@@ -10,6 +10,7 @@ public class ExceptionConstant {
 	 */
 	public static final int SUCCESS_CODE2001001 = 2001001;//登录成功
 	public static final int SUCCESS_CODE2001002 = 2001002;//添加成功
+	public static final int SUCCESS_CODE2001003 = 2001003;//发送成功
 	
 	/**
      * 错误码
@@ -26,7 +27,7 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
 	public static final int ERROR_CODE5001002 = 5001002;//添加登录用户失败
 	public static final int ERROR_CODE5001003 = 5001003;//根据API Name 查内部调用地址失败
-	
+	public static final int ERROR_CODE5001004 = 5001004;//发送失败
     
     public static Map<Integer,String> getExceptionMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
@@ -43,13 +44,15 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
     	map.put(ERROR_CODE5001003, "Get InternalService Fail");//根据API Name 查内部调用地址失败
+    	map.put(ERROR_CODE5001004, "Sending failed");//发送失败
     	return map;
     }
     
     public static Map<Integer,String> getSuccessMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
     	map.put(SUCCESS_CODE2001001, "Login Success");//登录成功
-    	
+    	map.put(SUCCESS_CODE2001002, "Add Success");//添加成功
+    	map.put(SUCCESS_CODE2001003, "Sending successfully");//发送成功
     	
     	return map;
     }
