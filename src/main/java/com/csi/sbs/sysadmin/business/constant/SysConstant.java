@@ -26,7 +26,7 @@ public class SysConstant {
     //deposit 服务模块-客户登录uri
     public static final String LOGIN_PATH = "/deposit/login/login";
     //token 默认有效期10天
-    public static final int VALIDITYDAYS = 10;
+    public static final int VALIDITYDAYS = 30;
     //用户类型
     public static final String USER_TYPE0 = "0";//普通用户
     public static final String USER_TYPE1 = "1";//银行柜员
