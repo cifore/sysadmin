@@ -20,7 +20,7 @@ public class SendToKafkaUtil {
 		try{
 			ResponseEntity<String> res = restTemplate.postForEntity(SysConstant.SEND_TOKAFKA_URL,
 					PostUtil.getRequestEntity(JsonProcess.changeEntityTOJSON(smm)), String.class);
-			if(res.getStatusCodeValue()!=200){
+			if(res.getStatusCodeValue()==200){
 				result.setCode(String.valueOf(ExceptionConstant.SUCCESS_CODE2001003));
 				result.setMsg(ExceptionConstant.getExceptionMap().get(ExceptionConstant.SUCCESS_CODE2001003));
 				return result;
