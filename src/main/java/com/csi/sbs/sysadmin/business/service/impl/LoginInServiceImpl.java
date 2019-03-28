@@ -1,8 +1,6 @@
 package com.csi.sbs.sysadmin.business.service.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,7 +26,6 @@ import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCreateLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCustomerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReLoginModel;
-import com.csi.sbs.sysadmin.business.clientmodel.SendMessageModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.dao.CustomerTokenRelationDao;
@@ -47,7 +44,7 @@ import com.csi.sbs.sysadmin.business.service.LoginInService;
 import com.csi.sbs.sysadmin.business.service.TokenService;
 import com.csi.sbs.sysadmin.business.util.PostUtil;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
-import com.csi.sbs.sysadmin.business.util.SendToKafkaUtil;
+import com.csi.sbs.sysadmin.business.util.SendLogUtil;
 
 @Service("LoginInService")
 public class LoginInServiceImpl implements LoginInService {
@@ -92,10 +89,7 @@ public class LoginInServiceImpl implements LoginInService {
         result.setData(reLoginIn.getId());
         
         //给kafka发送消息
-//        SendMessageModel smm = new SendMessageModel();
-//        smm.setTopic("test");
-//        smm.setMessage("Hello World");
-//        SendToKafkaUtil.sendMsgToKafka(smm, restTemplate);
+        SendLogUtil.send("test", "Login success");
         return result;
 	}
 
@@ -146,16 +140,17 @@ public class LoginInServiceImpl implements LoginInService {
 		claims.setBranchCode(rcm.getBranchcode());
 		claims.setLoginName(relie.getLoginname());
 		claims.setCustomerNumber(rcm.getCustomernumber());
+		@SuppressWarnings("unused")
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-		Date currdate = format.parse(format.format(new Date()));
-		Calendar ca = Calendar.getInstance();
-		ca.setTime(currdate);
-		ca.add(Calendar.DATE, SysConstant.VALIDITYDAYS);// num为增加的天数，可以改变的
-		currdate = ca.getTime();
-		String enddate = format.format(currdate);
-		// 设置token的失效日期
-		claims.setExpiration(format.parse(enddate));
+//		Date currdate = format.parse(format.format(new Date()));
+//		Calendar ca = Calendar.getInstance();
+//		ca.setTime(currdate);
+//		ca.add(Calendar.DATE, SysConstant.VALIDITYDAYS);// num为增加的天数，可以改变的
+//		currdate = ca.getTime();
+//		String enddate = format.format(currdate);
+//		// 设置token的失效日期
+//		claims.setExpiration(format.parse(enddate));
 		// 生成token
 		String token = jwtTokenProvider.createToken(claims);
 		// System.out.println("生成的token：" + token);
@@ -186,7 +181,7 @@ public class LoginInServiceImpl implements LoginInService {
 					 */
 					TokenEntity st = new TokenEntity();
 					st.setToken(token);
-					st.setExpiredate(format.parse(enddate));
+					//st.setExpiredate(format.parse(enddate));
 					tokenService.save(st);
 					/**
 					 * 授权token给客户
@@ -203,7 +198,7 @@ public class LoginInServiceImpl implements LoginInService {
 			 */
 			TokenEntity st = new TokenEntity();
 			st.setToken(token);
-			st.setExpiredate(format.parse(enddate));
+			//st.setExpiredate(format.parse(enddate));
 			tokenService.save(st);
 			/**
 			 * 授权token给客户
