@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.codingapi.tx.annotation.TxTransaction;
 import com.csi.sbs.common.business.constant.CommonConstant;
+import com.csi.sbs.common.business.exception.OtherException;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.util.EncryptionUtil;
 import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
@@ -220,7 +221,7 @@ public class LoginInServiceImpl implements LoginInService {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public ResultUtil createLoginUser(AddLoginUserModel alm) throws Exception {
+	public ResultUtil createLoginUser(AddLoginUserModel alm,RestTemplate restTemplate) throws Exception {
 		ResultUtil result = new ResultUtil();
 		//校验登录名是否存在
 		LoginInEntity validateLoginName = new LoginInEntity();
@@ -230,6 +231,26 @@ public class LoginInServiceImpl implements LoginInService {
 			//登录名已经存在
 			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021002),ExceptionConstant.ERROR_CODE2021002);
 		}
+		//校验customerNumber 是否正确
+		FindCustomerModel fcm = new FindCustomerModel();
+		fcm.setCustomerNumber(alm.getCustomerNumber());
+		ResponseEntity<String> ckcr = restTemplate.postForEntity("http://DEPOSIT"+SysConstant.GET_CUSTOMER_URL, PostUtil.getRequestEntity(JsonProcess.changeEntityTOJSON(fcm)), String.class);
+		if(ckcr.getStatusCodeValue()!=200){
+			//校验customerNumber失败
+			throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001004),ExceptionConstant.ERROR_CODE5001004);
+		}
+		//将返回结果转换为ResultUtil对象
+		JSONObject str = XmlToJsonUtil.xmlToJson(ckcr.getBody());
+		String str2 = JsonProcess.returnValue(str, "ResultUtil");
+		ResultUtil str3 = JSON.parseObject(str2, ResultUtil.class);
+		String str4 = JsonProcess.changeEntityTOJSON(str3.getData());
+		JSONObject str5 = JSON.parseObject(str4);
+		String str6 = JsonProcess.returnValue(str5, "customernumber");
+		if(str6==null || "".equals(str6)){
+			//customerNumber不正确
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021004),ExceptionConstant.ERROR_CODE2021004);
+		}
+		
 		//校验customerNumber是否存在
 		LoginInEntity validateCustomer = new LoginInEntity();
 		validateCustomer.setCustomernumber(alm.getCustomerNumber());

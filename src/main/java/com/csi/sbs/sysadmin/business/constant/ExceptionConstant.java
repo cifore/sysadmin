@@ -17,6 +17,8 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE2021001 = 2021001;//登录失败
 	public static final int ERROR_CODE2021002 = 2021002;//登录名已经存在
 	public static final int ERROR_CODE2021003 = 2021003;//customerNumber已经存在
+	public static final int ERROR_CODE2021004 = 2021004;//customerNumber不正确
+	
 	
 	public static final int ERROR_CODE4031001 = 4031001;//授权失败
 	public static final int ERROR_CODE4031002 = 4031002;//已经授权
@@ -26,13 +28,14 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
 	public static final int ERROR_CODE5001002 = 5001002;//添加登录用户失败
 	public static final int ERROR_CODE5001003 = 5001003;//根据API Name 查内部调用地址失败
-    
+    public static final int ERROR_CODE5001004 = 5001004;//customerNumber校验失败
+	
     public static Map<Integer,String> getExceptionMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
     	map.put(ERROR_CODE2021001, "Login Fail");//登录失败
-    	
     	map.put(ERROR_CODE2021002, "Login name already exists");//登录名已经存在
     	map.put(ERROR_CODE2021003, "Custer Number already exists");//customerNumber已经存在
+    	map.put(ERROR_CODE2021004, "Customer Number is not correct");//customerNumber不正确
     	
     	map.put(ERROR_CODE4031001, "Authorization failed,There's dirty data");//授权失败
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
@@ -42,6 +45,7 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
     	map.put(ERROR_CODE5001003, "Get InternalService Fail");//根据API Name 查内部调用地址失败
+    	map.put(ERROR_CODE5001004, "Covermer Number check failed");//customerNumber校验失败
     	
     	return map;
     }

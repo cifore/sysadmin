@@ -42,7 +42,7 @@ public class LoginController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/loginIn", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "This api return login result", notes = "version 0.0.1")
+	@ApiOperation(value = "This API allows users to log in SBS.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
 		@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
 		@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
@@ -70,7 +70,7 @@ public class LoginController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/authorize/{loginPK}", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "This api for authorize", notes = "version 0.0.1")
+	@ApiOperation(value = "This API is designed to authorize SBS users.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
 		@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
 		@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
@@ -88,18 +88,18 @@ public class LoginController {
 
 	
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/createLoginUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/userCreation", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "This api for createLoginUser", notes = "version 0.0.1")
+	@ApiOperation(value = "This API is designed to create new SBS users.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
 		@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
 		@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
 		@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
 		@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."),
     })
-	public ResultUtil createLoginUser(@RequestBody AddLoginUserModel alm) throws Exception{
+	public ResultUtil userCreation(@RequestBody AddLoginUserModel alm) throws Exception{
 		try{
-			return loginInService.createLoginUser(alm);
+			return loginInService.createLoginUser(alm,restTemplate);
 		}catch(Exception e){
 			throw e;
 		}

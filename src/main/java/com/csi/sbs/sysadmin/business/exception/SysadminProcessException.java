@@ -62,5 +62,13 @@ public class SysadminProcessException {
     {
         return new Result(e.getMessage(), e.getCode());
     }
+    
+    @ExceptionHandler(value = OtherException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleResourceOtherException(OtherException e)
+    {
+        return new Result(e.getMessage(), e.getCode());
+    }
 	
 }

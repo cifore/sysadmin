@@ -17,5 +17,5 @@ public interface LoginInService {
 	public ResultUtil authorize(String loginPK,RestTemplate restTemplate) throws Exception;
 	
 	@SuppressWarnings("rawtypes")
-	public ResultUtil createLoginUser(AddLoginUserModel alm) throws Exception;
+	public ResultUtil createLoginUser(AddLoginUserModel alm,RestTemplate restTemplate) throws Exception;
 }
