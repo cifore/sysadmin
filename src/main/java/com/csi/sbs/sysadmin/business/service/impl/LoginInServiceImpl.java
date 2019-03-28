@@ -26,7 +26,6 @@ import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCreateLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCustomerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReLoginModel;
-import com.csi.sbs.sysadmin.business.clientmodel.SendMessageModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.dao.CustomerTokenRelationDao;
@@ -45,7 +44,7 @@ import com.csi.sbs.sysadmin.business.service.LoginInService;
 import com.csi.sbs.sysadmin.business.service.TokenService;
 import com.csi.sbs.sysadmin.business.util.PostUtil;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
-import com.csi.sbs.sysadmin.business.util.SendToKafkaUtil;
+import com.csi.sbs.sysadmin.business.util.SendLogUtil;
 
 @Service("LoginInService")
 public class LoginInServiceImpl implements LoginInService {
@@ -90,10 +89,7 @@ public class LoginInServiceImpl implements LoginInService {
         result.setData(reLoginIn.getId());
         
         //给kafka发送消息
-        SendMessageModel smm = new SendMessageModel();
-        smm.setTopic("test");
-        smm.setMessage("Login success");
-        SendToKafkaUtil.sendMsgToKafka(smm, restTemplate);
+        SendLogUtil.send("test", "Login success");
         return result;
 	}
 
