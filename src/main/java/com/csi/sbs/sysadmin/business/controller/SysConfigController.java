@@ -40,7 +40,7 @@ public class SysConfigController {
        
        @RequestMapping(value = "/getSystemParameter", method = RequestMethod.POST)
        @ResponseBody
-       @ApiOperation(value = "This api return sysparameter", notes = "version 0.0.1")
+       @ApiOperation(value = "This API is designed to retrieve specified system parameter values.", notes = "version 0.0.1")
    	   public String getSystemParameter(@RequestBody SysParamsModel spm) throws JsonProcessingException{
     	   Map<String,Object> map = new HashMap<String,Object>();
     	   List<SysConfigEntity> sysconfig = null;

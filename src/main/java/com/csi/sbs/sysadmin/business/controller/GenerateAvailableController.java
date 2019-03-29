@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin//解决跨域请求
@@ -40,7 +41,7 @@ public class GenerateAvailableController {
 	 @RequestMapping(value = "/getNextAvailableNumber/{item}", method = RequestMethod.GET)
 	 @ResponseBody
 	 @ApiOperation(value = "This api return availableNumber", notes = "version 0.0.1")
- 	 public String getNextAvailableNumber(@PathVariable("item") String item) throws JsonProcessingException{
+ 	 public String getNextAvailableNumber(@ApiParam(name = "item", value = "item eg: NextAvailableCustomerNumber", required = true) @PathVariable("item") String item) throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
 		 try{
 			 //调用系统参数方法获取下一个可用的CustomerNumber/**/**/..

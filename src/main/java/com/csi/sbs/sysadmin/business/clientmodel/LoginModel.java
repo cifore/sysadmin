@@ -1,10 +1,23 @@
 package com.csi.sbs.sysadmin.business.clientmodel;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModelProperty;
 
 public class LoginModel {
 
+	@NotNull(message="loginname is a required field")
+	@NotBlank(message="loginname is a required field")
+	@ApiModelProperty(notes=""
+	,example="pim")
 	private String loginname;
 
+	@NotNull(message="loginpwd is a required field")
+	@NotBlank(message="loginpwd is a required field")
+	@ApiModelProperty(notes=""
+	,example="123456")
 	private String loginpwd;
 
 	public String getLoginname() {
