@@ -40,7 +40,7 @@ public class GenerateAvailableController {
 	
 	 @RequestMapping(value = "/getNextAvailableNumber/{item}", method = RequestMethod.GET)
 	 @ResponseBody
-	 @ApiOperation(value = "This api return availableNumber", notes = "version 0.0.1")
+	 @ApiOperation(value = "This API is designed to retrieve next available number of different number types.", notes = "version 0.0.1")
  	 public String getNextAvailableNumber(@ApiParam(name = "item", value = "item eg: NextAvailableCustomerNumber", required = true) @PathVariable("item") String item) throws JsonProcessingException{
 		 Map<String,Object> map = new HashMap<String,Object>();
 		 try{
