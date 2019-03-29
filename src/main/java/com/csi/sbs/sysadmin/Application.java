@@ -21,10 +21,11 @@ public class Application {
         return new RestTemplate();
     }
 
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(Application.class, args);
-		//InitLog.loadLogConfig(context);//初始化日志相关配置
+		//InitLog.loadLogConfig(context,"sysadmin");//初始化日志相关配置
 	}
 
 }
