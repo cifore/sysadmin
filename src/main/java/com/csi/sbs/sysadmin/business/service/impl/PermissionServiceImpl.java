@@ -122,7 +122,7 @@ public class PermissionServiceImpl implements PermissionService {
 		ResultUtil result = new ResultUtil();
 		// check user
 		UserEntity user = new UserEntity();
-		user.setUserid(addUserModel.getUserid());
+		user.setUserid(addUserModel.getDeveloperID());
 		UserEntity reuser = (UserEntity) userDao.findOne(user);
 		if (reuser != null) {
 			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021005),
@@ -130,7 +130,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		user.setEmail(addUserModel.getEmail());
 		user.setId(UUIDUtil.generateUUID());
-		user.setUsername(addUserModel.getUsername());
+		user.setUsername(addUserModel.getDevelopername());
 		userDao.insert(user);
 		// 返回的userID
 		String reuserID = user.getId();
@@ -240,8 +240,8 @@ public class PermissionServiceImpl implements PermissionService {
 
 		// 返回信息
 		ReAuthorityModel reAuthorityModel = new ReAuthorityModel();
-		reAuthorityModel.setUserid(addUserModel.getUserid());
-		reAuthorityModel.setUsername(addUserModel.getUsername());
+		reAuthorityModel.setUserid(addUserModel.getDeveloperID());
+		reAuthorityModel.setUsername(addUserModel.getDevelopername());
 		reAuthorityModel.setEmail(addUserModel.getEmail());
 		reAuthorityModel.setCountrycode(countryCode);
 		reAuthorityModel.setClearingcode(clearcode);

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
 		ResultUtil result = new ResultUtil();
 		//check user
 		UserEntity user = new UserEntity();
-		user.setUserid(addUserModel.getUserid());
+		user.setUserid(addUserModel.getDeveloperID());
 		UserEntity reuser = (UserEntity) userDao.findOne(user);
 		if(reuser!=null){
 			result.setCode("0");
@@ -40,12 +40,12 @@ public class UserServiceImpl implements UserService{
 		}
 		user.setEmail(addUserModel.getEmail());
 		user.setId(UUIDUtil.generateUUID());
-		user.setUsername(addUserModel.getUsername());
+		user.setUsername(addUserModel.getDevelopername());
 		userDao.insert(user);
 		//返回信息
 		ReUserModel reum = new ReUserModel();
-		reum.setUserid(addUserModel.getUserid());
-		reum.setUsername(addUserModel.getUsername());
+		reum.setUserid(addUserModel.getDeveloperID());
+		reum.setUsername(addUserModel.getDevelopername());
 		reum.setEmail(addUserModel.getEmail());
 		result.setCode("1");
 		result.setMsg("add User Success");

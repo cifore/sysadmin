@@ -11,17 +11,17 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "Input Params Model")
 public class AddUserModel {
 
-	@NotNull(message="userid is a required field")
-	@NotBlank(message="userid is a required field")
+	@NotNull(message="developerID is a required field")
+	@NotBlank(message="developerID is a required field")
 	@ApiModelProperty(notes="the developer id"
 	,example="111a")
-	private String userid;
+	private String developerID;
 	
 	private String sandboxid;
 
-	@ApiModelProperty(notes="the name of user"
+	@ApiModelProperty(notes="the name of developer"
 			,example="张三")
-	private String username;
+	private String developername;
 
 	@Email(message="Incorrect mailbox format")
 	@ApiModelProperty(notes="the email of the user"
@@ -39,20 +39,20 @@ public class AddUserModel {
 		this.sandboxid = sandboxid;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getDeveloperID() {
+		return developerID;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setDeveloperID(String developerID) {
+		this.developerID = developerID;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getDevelopername() {
+		return developername;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setDevelopername(String developername) {
+		this.developername = developername;
 	}
 
 	public String getEmail() {
