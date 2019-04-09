@@ -21,12 +21,22 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 	private String countryCode;
 	private String clearingCode;
 	private String branchCode;
+	private String sandBoxId;
 	
 	
 	
     
  
-    public String getDeveloperID() {
+    public String getSandBoxId() {
+		return sandBoxId;
+	}
+
+	public void setSandBoxId(String sandBoxId) {
+		this.sandBoxId = sandBoxId;
+		setValue("sandBoxId", this.sandBoxId);
+	}
+
+	public String getDeveloperID() {
 		return developerID;
 	}
 

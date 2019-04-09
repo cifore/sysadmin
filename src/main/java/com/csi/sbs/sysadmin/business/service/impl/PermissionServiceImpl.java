@@ -11,13 +11,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSONObject;
-import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReAuthorityModel;
+import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
+import com.csi.sbs.sysadmin.business.constant.PathConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.dao.BranchDao;
 import com.csi.sbs.sysadmin.business.dao.UserBranchDao;
@@ -25,6 +26,9 @@ import com.csi.sbs.sysadmin.business.dao.UserDao;
 import com.csi.sbs.sysadmin.business.entity.BranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserEntity;
+import com.csi.sbs.sysadmin.business.exception.AcceptException;
+import com.csi.sbs.sysadmin.business.exception.CallOtherException;
+import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.service.PermissionService;
 import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
 import com.csi.sbs.sysadmin.business.util.PostUtil;
@@ -114,32 +118,29 @@ public class PermissionServiceImpl implements PermissionService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Transactional
-	public ResultUtil userAuthorize(RestTemplate restTemplate, AddUserModel addUserModel) {
+	public ResultUtil userAuthorize(RestTemplate restTemplate, AddUserModel addUserModel) throws Exception {
 		ResultUtil result = new ResultUtil();
 		// check user
 		UserEntity user = new UserEntity();
 		user.setUserid(addUserModel.getUserid());
 		UserEntity reuser = (UserEntity) userDao.findOne(user);
 		if (reuser != null) {
-			result.setCode("0");
-			result.setMsg("User already exists");
-			return result;
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021005),
+					ExceptionConstant.ERROR_CODE2021005);
 		}
 		user.setEmail(addUserModel.getEmail());
 		user.setId(UUIDUtil.generateUUID());
 		user.setUsername(addUserModel.getUsername());
 		userDao.insert(user);
-		//返回的userID
+		// 返回的userID
 		String reuserID = user.getId();
 
 		// 调用服务接口地址
 		String param1 = "{\"apiname\":\"getSystemParameter\"}";
-		ResponseEntity<String> result1 = restTemplate.postForEntity(
-				"http://" + CommonConstant.getSYSADMIN() + SysConstant.SERVICE_INTERNAL_URL + "",
+		ResponseEntity<String> result1 = restTemplate.postForEntity(PathConstant.SERVICE_INTERNAL_URL,
 				PostUtil.getRequestEntity(param1), String.class);
 		if (result1.getStatusCodeValue() != 200) {
-			result.setCode("0");
-			result.setMsg("调用服务接口地址失败");
+			throw new CallOtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001005),ExceptionConstant.ERROR_CODE5001005);
 		}
 		String path = JsonProcess.returnValue(JsonProcess.changeToJSONObject(result1.getBody()), "internaURL");
 
@@ -148,18 +149,13 @@ public class PermissionServiceImpl implements PermissionService {
 		ResponseEntity<String> result2 = restTemplate.postForEntity(path, PostUtil.getRequestEntity(param2),
 				String.class);
 		if (result2.getStatusCodeValue() != 200) {
-			result.setCode("0");
-			result.setMsg("调用系统参数失败");
+			throw new CallOtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001006),ExceptionConstant.ERROR_CODE5001006);
 		}
 
 		// 返回数据处理
 		String clearcode = "";
 		String branchnumber = "";
-		@SuppressWarnings("unused")
-		String localCCy = "";
 		String countryCode = "";
-		@SuppressWarnings("unused")
-		String accountnumber = "";
 		JSONObject jsonObject1 = null;
 		String revalue = null;
 		String temp = null;
@@ -177,9 +173,7 @@ public class PermissionServiceImpl implements PermissionService {
 			if (revalue.equals("ClearingCode")) {
 				clearcode = temp;
 			}
-			if (revalue.equals("LocalCcy")) {
-				localCCy = temp;
-			}
+			
 		}
 
 		// 判断branchnumber 是否达到最大
@@ -189,18 +183,15 @@ public class PermissionServiceImpl implements PermissionService {
 		branchsearch.setBranchcode("999");
 		BranchEntity rebranchsearch = (BranchEntity) branchDao.findOne(branchsearch);
 		if (rebranchsearch != null) {
-			result.setCode("0");
-			result.setMsg("branch number 已经达到最大");
-			return result;
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021006),ExceptionConstant.ERROR_CODE2021006);
 		}
-		
-		//校验branchnumber,countryCode,clearcode是否存在
+
+		// 校验branchnumber,countryCode,clearcode是否存在
 		branchsearch.setBranchcode(branchnumber);
 		List<BranchEntity> rbs = (List<BranchEntity>) branchDao.findMany(branchsearch);
-		if(rbs!=null && rbs.size()>0){
-			result.setCode("0");
-			result.setMsg("Duplicate data, authorization failed, please check database"+"countryCode:"+countryCode+"-clearingCode:"+clearcode+"-branchCode:"+branchnumber);
-			return result;
+		if (rbs != null && rbs.size() > 0) {
+			throw new AcceptException("Duplicate data, authorization failed, please check database" + "countryCode:" + countryCode
+					+ "-clearingCode:" + clearcode + "-branchCode:" + branchnumber,ExceptionConstant.ERROR_CODE2021007);
 		}
 
 		BranchEntity branch = new BranchEntity();
@@ -209,33 +200,27 @@ public class PermissionServiceImpl implements PermissionService {
 		branch.setClearingcode(clearcode);
 		branch.setBranchcode(branchnumber);
 		branchDao.insert(branch);
-		//返回的bankID
+		// 返回的bankID
 		String rebankID = branch.getId();
 
 		if (Integer.parseInt(branchnumber) < 999) {
 			// 递增
 			AvailableNumberUtil.avaBranchNumberIncrease(restTemplate, SysConstant.NEXT_AVAILABLE_BRANCHNUMBER);
 		}
-		
-		
 
 		// 校验userid 是否存在
 		UserEntity user2 = new UserEntity();
 		user2.setUserid(reuserID);
 		UserEntity reuser2 = (UserEntity) userDao.findOne(user);
 		if (reuser2 == null) {
-			result.setCode("0");
-			result.setMsg("UserID does not exist");
-			return result;
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041002),ExceptionConstant.ERROR_CODE4041002);
 		}
 		// 校验bankID是否存在
 		BranchEntity bank = new BranchEntity();
 		bank.setId(rebankID);
 		BranchEntity rebank = (BranchEntity) branchDao.findOne(bank);
 		if (rebank == null) {
-			result.setCode("0");
-			result.setMsg("BankID does not exist");
-			return result;
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041003),ExceptionConstant.ERROR_CODE4041003);
 		}
 		// 校验是否已经授权
 		UserBranchEntity userBranchSearch = new UserBranchEntity();
@@ -243,18 +228,17 @@ public class PermissionServiceImpl implements PermissionService {
 		userBranchSearch.setBankid(rebankID);
 		UserBranchEntity reubs = (UserBranchEntity) userBranchDao.findOne(userBranchSearch);
 		if (reubs != null) {
-			result.setCode("0");
-			result.setMsg("This user has authorized");
-			return result;
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021008),ExceptionConstant.ERROR_CODE2021008);
 		}
 
 		UserBranchEntity userBranchEntity = new UserBranchEntity();
 		userBranchEntity.setId(UUIDUtil.generateUUID());
 		userBranchEntity.setUserid(reuserID);
 		userBranchEntity.setBankid(rebankID);
+		userBranchEntity.setSandboxid(addUserModel.getSandboxid());
 		userBranchDao.insert(userBranchEntity);
-		
-		//返回信息
+
+		// 返回信息
 		ReAuthorityModel reAuthorityModel = new ReAuthorityModel();
 		reAuthorityModel.setUserid(addUserModel.getUserid());
 		reAuthorityModel.setUsername(addUserModel.getUsername());

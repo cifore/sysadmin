@@ -18,17 +18,24 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE2021002 = 2021002;//登录名已经存在
 	public static final int ERROR_CODE2021003 = 2021003;//customerNumber已经存在
 	public static final int ERROR_CODE2021004 = 2021004;//customerNumber不正确
-	
+	public static final int ERROR_CODE2021005 = 2021005;//user已经存在
+	public static final int ERROR_CODE2021006 = 2021006;//branch number 已经达到最大
+	public static final int ERROR_CODE2021007 = 2021007;//branchnumber,countryCode,clearcode已经存在
+	public static final int ERROR_CODE2021008 = 2021008;//用户已经授权
 	
 	public static final int ERROR_CODE4031001 = 4031001;//授权失败
 	public static final int ERROR_CODE4031002 = 4031002;//已经授权
 	
 	public static final int ERROR_CODE4041001 = 4041001;//根据API Name 未查到内部调用地址
+	public static final int ERROR_CODE4041002 = 4041002;//UserID 不存在
+	public static final int ERROR_CODE4041003 = 4041003;//BankID does not exist
 	
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
 	public static final int ERROR_CODE5001002 = 5001002;//添加登录用户失败
 	public static final int ERROR_CODE5001003 = 5001003;//根据API Name 查内部调用地址失败
     public static final int ERROR_CODE5001004 = 5001004;//customerNumber校验失败
+    public static final int ERROR_CODE5001005 = 5001005;//调用服务接口地址失败
+    public static final int ERROR_CODE5001006 = 5001006;//调用系统参数失败
 	
     public static Map<Integer,String> getExceptionMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
@@ -36,16 +43,24 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE2021002, "Login name already exists");//登录名已经存在
     	map.put(ERROR_CODE2021003, "Custer Number already exists");//customerNumber已经存在
     	map.put(ERROR_CODE2021004, "Customer Number is not correct");//customerNumber不正确
+    	map.put(ERROR_CODE2021005, "User already exists");//user已经存在
+    	map.put(ERROR_CODE2021006, "Branch number has reached its maximum");//branch number 已经达到最大
+    	map.put(ERROR_CODE2021007, "---");//branchnumber,countryCode,clearcode已经存在
+    	map.put(ERROR_CODE2021008, "This user has authorized");//用户已经授权
     	
     	map.put(ERROR_CODE4031001, "Authorization failed,There's dirty data");//授权失败
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
     	
     	map.put(ERROR_CODE4041001, "Not Found InternalService Url");//根据API Name 未查到内部调用地址
+    	map.put(ERROR_CODE4041002, "UserID does not exist");//UserID 不存在
+    	map.put(ERROR_CODE4041003, "BankID does not exist");//BankID does not exist
     	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
     	map.put(ERROR_CODE5001003, "Get InternalService Fail");//根据API Name 查内部调用地址失败
     	map.put(ERROR_CODE5001004, "Covermer Number check failed");//customerNumber校验失败
+    	map.put(ERROR_CODE5001005, "Failed to call service interface address");//调用服务接口地址失败
+    	map.put(ERROR_CODE5001006, "Failed to call system parameters");//调用系统参数失败
     	
     	return map;
     }

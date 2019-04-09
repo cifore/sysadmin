@@ -12,6 +12,6 @@ public interface PermissionService {
 	public ResultUtil validate(PermissionModel permissionModel);
 	
 	@SuppressWarnings("rawtypes")
-	public ResultUtil userAuthorize(RestTemplate restTemplate,AddUserModel addUserModel);
+	public ResultUtil userAuthorize(RestTemplate restTemplate,AddUserModel addUserModel) throws Exception;
 
 }

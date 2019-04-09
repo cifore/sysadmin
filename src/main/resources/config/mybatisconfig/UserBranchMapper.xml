@@ -5,6 +5,7 @@
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="UserID" property="userid" jdbcType="VARCHAR" />
     <result column="BankID" property="bankid" jdbcType="VARCHAR" />
+    <result column="SandBoxId" property="sandboxid" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
@@ -43,6 +44,9 @@
       <if test="bankid != null" >
         BankID,
       </if>
+      <if test="sandboxid != null" >
+        SandBoxId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -53,6 +57,9 @@
       </if>
       <if test="bankid != null" >
         #{bankid,jdbcType=VARCHAR},
+      </if>
+      <if test="sandboxid != null" >
+        #{sandboxid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -65,6 +72,9 @@
       </if>
       <if test="bankid != null" >
         BankID = #{bankid,jdbcType=VARCHAR},
+      </if>
+      <if test="sandboxid != null" >
+        SandBoxId = #{sandboxid,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}

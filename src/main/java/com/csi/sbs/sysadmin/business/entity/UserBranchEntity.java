@@ -7,8 +7,22 @@ public class UserBranchEntity {
     private String userid;
 
     private String bankid;
+    
+    private String sandboxid;
+    
+    
+    
+    
 
-    public String getId() {
+    public String getSandboxid() {
+		return sandboxid;
+	}
+
+	public void setSandboxid(String sandboxid) {
+		this.sandboxid = sandboxid;
+	}
+
+	public String getId() {
         return id;
     }
 

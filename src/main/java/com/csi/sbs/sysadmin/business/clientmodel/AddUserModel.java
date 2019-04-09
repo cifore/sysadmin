@@ -16,6 +16,8 @@ public class AddUserModel {
 	@ApiModelProperty(notes="the developer id"
 	,example="111a")
 	private String userid;
+	
+	private String sandboxid;
 
 	@ApiModelProperty(notes="the name of user"
 			,example="张三")
@@ -25,6 +27,17 @@ public class AddUserModel {
 	@ApiModelProperty(notes="the email of the user"
 	,example="example@chinasofti.com")
 	private String email;
+	
+	
+	
+
+	public String getSandboxid() {
+		return sandboxid;
+	}
+
+	public void setSandboxid(String sandboxid) {
+		this.sandboxid = sandboxid;
+	}
 
 	public String getUserid() {
 		return userid;
