@@ -41,7 +41,7 @@ public class ExceptionConstant {
     	Map<Integer,String> map = new HashMap<Integer,String>();
     	map.put(ERROR_CODE2021001, "Login Fail");//登录失败
     	map.put(ERROR_CODE2021002, "Login name already exists");//登录名已经存在
-    	map.put(ERROR_CODE2021003, "Custer Number already exists");//customerNumber已经存在
+    	map.put(ERROR_CODE2021003, "Customer Number already exists");//customerNumber已经存在
     	map.put(ERROR_CODE2021004, "Customer Number is not correct");//customerNumber不正确
     	map.put(ERROR_CODE2021005, "User already exists");//user已经存在
     	map.put(ERROR_CODE2021006, "Branch number has reached its maximum");//branch number 已经达到最大

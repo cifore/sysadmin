@@ -70,7 +70,7 @@ public class LoginInServiceImpl implements LoginInService {
 
 	@Resource
 	private CustomerTokenRelationService customerTokenRelationService;
-	
+
 	@SuppressWarnings("rawtypes")
 	@Resource
 	private UserBranchDao userBranchDao;
@@ -145,8 +145,8 @@ public class LoginInServiceImpl implements LoginInService {
 		UserBranchEntity ube = new UserBranchEntity();
 		ube.setUserid(relie.getDeveloperid());
 		UserBranchEntity reube = (UserBranchEntity) userBranchDao.findOne(ube);
-		if(reube==null){
-			
+		if (reube == null) {
+
 		}
 		/**
 		 * token 处理部分
@@ -269,6 +269,11 @@ public class LoginInServiceImpl implements LoginInService {
 		JSONObject str = XmlToJsonUtil.xmlToJson(ckcr.getBody());
 		String str2 = JsonProcess.returnValue(str, "ResultUtil");
 		ResultUtil str3 = JSON.parseObject(str2, ResultUtil.class);
+		if (str3.getCode().equals("0")) {
+			// customerNumber不正确
+			throw new AcceptException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE2021004),
+					ExceptionConstant.ERROR_CODE2021004);
+		}
 		String str4 = JsonProcess.changeEntityTOJSON(str3.getData());
 		JSONObject str5 = JSON.parseObject(str4);
 		String str6 = JsonProcess.returnValue(str5, "customernumber");
