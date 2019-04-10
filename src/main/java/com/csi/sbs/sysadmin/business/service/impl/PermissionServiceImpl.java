@@ -235,7 +235,6 @@ public class PermissionServiceImpl implements PermissionService {
 		userBranchEntity.setId(UUIDUtil.generateUUID());
 		userBranchEntity.setUserid(reuserID);
 		userBranchEntity.setBankid(rebankID);
-		userBranchEntity.setSandboxid(addUserModel.getSandboxid());
 		userBranchDao.insert(userBranchEntity);
 
 		// 返回信息
