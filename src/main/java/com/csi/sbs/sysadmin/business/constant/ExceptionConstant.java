@@ -10,6 +10,7 @@ public class ExceptionConstant {
 	 */
 	public static final int SUCCESS_CODE2001001 = 2001001;//登录成功
 	public static final int SUCCESS_CODE2001002 = 2001002;//添加成功
+	public static final int SUCCESS_CODE2001003 = 2001003;//给developer 指派沙盒成功
 	
 	/**
      * 错误码
@@ -36,6 +37,7 @@ public class ExceptionConstant {
     public static final int ERROR_CODE5001004 = 5001004;//customerNumber校验失败
     public static final int ERROR_CODE5001005 = 5001005;//调用服务接口地址失败
     public static final int ERROR_CODE5001006 = 5001006;//调用系统参数失败
+    public static final int ERROR_CODE5001007 = 5001007;//给developer 指派沙盒失败
 	
     public static Map<Integer,String> getExceptionMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
@@ -61,6 +63,7 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE5001004, "Covermer Number check failed");//customerNumber校验失败
     	map.put(ERROR_CODE5001005, "Failed to call service interface address");//调用服务接口地址失败
     	map.put(ERROR_CODE5001006, "Failed to call system parameters");//调用系统参数失败
+    	map.put(ERROR_CODE5001007, "Appoint SandBoxId Fail For developer");//给developer 指派沙盒失败
     	
     	return map;
     }
@@ -69,6 +72,7 @@ public class ExceptionConstant {
     	Map<Integer,String> map = new HashMap<Integer,String>();
     	map.put(SUCCESS_CODE2001001, "Login Success");//登录成功
     	map.put(SUCCESS_CODE2001002, "Add Success");//添加成功
+    	map.put(SUCCESS_CODE2001003, "Appoint SandBoxId Success For developer");//给developer 指派沙盒成功
     	
     	return map;
     }

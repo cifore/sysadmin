@@ -7,12 +7,15 @@ import org.springframework.web.client.RestTemplate;
 
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserBranchModel;
+import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
+import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.dao.BranchDao;
 import com.csi.sbs.sysadmin.business.dao.UserBranchDao;
 import com.csi.sbs.sysadmin.business.dao.UserDao;
 import com.csi.sbs.sysadmin.business.entity.BranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserEntity;
+import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 
@@ -75,6 +78,26 @@ public class UserBranchServiceImpl implements UserBranchService{
 		result.setCode("1");
 		result.setMsg(userbranch.getUserid()+" authorizes "+ userbranch.getBankid() +" to succeed");
 		return result;
+	}
+
+	
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResultUtil appSandBoxForDeveloper(SandBoxModel sbm, RestTemplate restTemplate) throws Exception {
+		//model change
+		UserBranchEntity ube = new UserBranchEntity();
+		ube.setSandboxid(sbm.getSandBoxId());
+		ube.setUserid(sbm.getDeveloperId());
+		
+		int i = userBranchDao.appSandBoxForDeveloper(ube);
+		if(i>0){
+			ResultUtil result = new ResultUtil();
+			result.setCode(String.valueOf(ExceptionConstant.SUCCESS_CODE2001003));
+			result.setMsg(ExceptionConstant.getSuccessMap().get(ExceptionConstant.SUCCESS_CODE2001003)+"---developerID:"+sbm.getDeveloperId()+"---sandBoxId:"+sbm.getSandBoxId());
+		    return result;
+		}
+		throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001007),ExceptionConstant.ERROR_CODE5001007);
 	}
 
 }

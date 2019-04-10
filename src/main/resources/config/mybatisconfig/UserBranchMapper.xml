@@ -80,4 +80,14 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   
+  <update id="appSandBoxForDeveloper" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    update t_userbranch_relationship
+    <set >
+      <if test="sandboxid != null" >
+        SandBoxId = #{sandboxid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </update>
+  
 </mapper>
