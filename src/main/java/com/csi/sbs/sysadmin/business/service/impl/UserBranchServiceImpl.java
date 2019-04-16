@@ -15,6 +15,7 @@ import com.csi.sbs.sysadmin.business.dao.UserDao;
 import com.csi.sbs.sysadmin.business.entity.BranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserEntity;
+import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
@@ -85,10 +86,18 @@ public class UserBranchServiceImpl implements UserBranchService{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResultUtil appSandBoxForDeveloper(SandBoxModel sbm, RestTemplate restTemplate) throws Exception {
+		//根据developerId查询user表主键
+		UserEntity u = new UserEntity();
+		u.setUserid(sbm.getDeveloperId());
+		@SuppressWarnings("unchecked")
+		UserEntity reu = (UserEntity) userDao.findOne(u);
+		if(reu==null){
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041002),ExceptionConstant.ERROR_CODE4041002);
+		}
 		//model change
 		UserBranchEntity ube = new UserBranchEntity();
 		ube.setSandboxid(sbm.getSandBoxId());
-		ube.setUserid(sbm.getDeveloperId());
+		ube.setUserid(reu.getId());
 		
 		int i = userBranchDao.appSandBoxForDeveloper(ube);
 		if(i>0){

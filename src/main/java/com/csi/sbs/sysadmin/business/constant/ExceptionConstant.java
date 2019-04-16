@@ -28,7 +28,7 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE4031002 = 4031002;//已经授权
 	
 	public static final int ERROR_CODE4041001 = 4041001;//根据API Name 未查到内部调用地址
-	public static final int ERROR_CODE4041002 = 4041002;//UserID 不存在
+	public static final int ERROR_CODE4041002 = 4041002;//DeveloperID 不存在
 	public static final int ERROR_CODE4041003 = 4041003;//BankID does not exist
 	
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
@@ -54,7 +54,7 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
     	
     	map.put(ERROR_CODE4041001, "Not Found InternalService Url");//根据API Name 未查到内部调用地址
-    	map.put(ERROR_CODE4041002, "UserID does not exist");//UserID 不存在
+    	map.put(ERROR_CODE4041002, "DeveloperID does not exist");//DeveloperID 不存在
     	map.put(ERROR_CODE4041003, "BankID does not exist");//BankID does not exist
     	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败

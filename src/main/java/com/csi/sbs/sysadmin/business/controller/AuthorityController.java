@@ -85,10 +85,7 @@ public class AuthorityController {
 		try {
 			return permissionService.userAuthorize(restTemplate, addUserModel);
 		} catch (Exception e) {
-			ResultUtil result = new ResultUtil();
-			result.setCode("0");
-			result.setMsg("fail");
-			throw new RuntimeException(objectMapper.writeValueAsString(result));
+			throw e;
 		}
 	}
 	
