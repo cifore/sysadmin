@@ -176,8 +176,10 @@ public class UserBranchServiceImpl implements UserBranchService {
 				createPreciousAccount(header, result, restTemplate, accountNumber);
 				// 创建基金账号
 				createMutualAccount(header, result, restTemplate, accountNumber);
-				// 创建currentAccount
-				createCurrentAccount(header, result, restTemplate);
+				// 创建currentAccount-创建3个current账号
+				for(int k=0;k<4;k++){
+					createCurrentAccount(header, result, restTemplate);
+				}
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 		}
