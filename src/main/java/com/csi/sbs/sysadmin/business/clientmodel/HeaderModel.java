@@ -9,6 +9,29 @@ public class HeaderModel {
 	private String clearingCode;
 
 	private String branchCode;
+	
+	private String sandBoxId;
+	
+	private String customerNumber;
+	
+	
+	
+
+	public String getCustomerNumber() {
+		return customerNumber;
+	}
+
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
+	}
+
+	public String getSandBoxId() {
+		return sandBoxId;
+	}
+
+	public void setSandBoxId(String sandBoxId) {
+		this.sandBoxId = sandBoxId;
+	}
 
 	public String getUserID() {
 		return userID;

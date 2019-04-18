@@ -40,4 +40,8 @@ public class SysConstant {
     }
     
     
+    //t_customer_master
+    public static final String T_CUSTOMER_MASTER = "t_customer_master";
+    
+    
 }
