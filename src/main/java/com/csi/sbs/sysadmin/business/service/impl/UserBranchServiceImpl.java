@@ -21,6 +21,7 @@ import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.PathConstant;
+import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.dao.BranchDao;
 import com.csi.sbs.sysadmin.business.dao.UserBranchDao;
 import com.csi.sbs.sysadmin.business.dao.UserDao;
@@ -32,6 +33,7 @@ import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
+import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.csi.sbs.sysadmin.business.util.SRUtil;
 
@@ -140,21 +142,25 @@ public class UserBranchServiceImpl implements UserBranchService {
 		HeaderModel header = new HeaderModel();
 		// 返回结果
 		ResponseEntity<String> result = null;
-		int j = 0;
+		String j1 = null;
+		JSONObject j2 = null;
+		String customerID = null;
 		// 请求deposit创建customer的服务地址
 		if (list != null && list.size() > 0) {
 			// 循环创建customer
 			for (int i = 0; i < list.size(); i++) {
+				// 获取沙盘身份证号码
+				j1 = restTemplate.getForEntity(PathConstant.NEXT_AVAILABLE+SysConstant.SANDBOX_CUSTOMERID, String.class).getBody();
+				j2 = JSON.parseObject(j1);
+				customerID = JsonProcess.returnValue(j2, "nextAvailableNumber");
 				CustomerMasterSandBox cms = (CustomerMasterSandBox) list.get(i);
 				// 请求头赋值
 				header.setCountryCode(cms.getCountrycode());
 				header.setClearingCode(cms.getClearingcode());
 				header.setBranchCode(cms.getBranchcode());
 				header.setSandBoxId(sandBoxId);
-				cms.setCustomerID(String.valueOf(j + 1));
+				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE+customerID);
 				cms.setDateOfBirth("1975-08-25");
-				// System.out.println("----------" +
-				// JsonProcess.changeEntityTOJSON(cms));
 				// 创建customer
 				result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_CUSTOMER_URL, header,
 						JsonProcess.changeEntityTOJSON(cms));
@@ -172,7 +178,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				createMutualAccount(header, result, restTemplate, accountNumber);
 				// 创建currentAccount
 				createCurrentAccount(header, result, restTemplate);
-				j = j + 1;
+				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 		}
 		//System.out.println(result);

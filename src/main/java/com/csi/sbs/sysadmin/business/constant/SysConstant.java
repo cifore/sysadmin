@@ -11,6 +11,10 @@ public class SysConstant {
     public static final String SERVICE_INTERNAL_URL = "/sysadmin/getServiceInternalURL";
     //branchNumber
     public static final String NEXT_AVAILABLE_BRANCHNUMBER = "BranchNumber";
+    //SandBoxCustomerID
+    public static final String SANDBOX_CUSTOMERID = "SandBoxCustomerID";
+    //SandBoxCustomerID_sample
+    public static final String SANDBOX_CUSTOMERID_SAMPLE = "T";
     //Token 状态
     public static final String TOKEN_STATE1 = "effective";//有效
     public static final String TOKEN_STATE2 = "invalid";//失效

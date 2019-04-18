@@ -18,5 +18,7 @@ public class PathConstant {
     public static final String CUSTOMER_TEMPLATE = "D://t_customer_master.xls";
     //创建Account 服务地址
     public static final String CREATE_ACCOUNT_URL = "http://DEPOSIT/deposit/account/accountCreation";
-
+    //获取下一个可用的递增序列号服务地址
+    public static final String NEXT_AVAILABLE = "http://SYSADMIN/sysadmin/generate/getNextAvailableNumber/";
+    
 }
