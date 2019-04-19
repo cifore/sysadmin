@@ -22,4 +22,10 @@ public class PathConstant {
     public static final String NEXT_AVAILABLE = "http://SYSADMIN/sysadmin/generate/getNextAvailableNumber/";
     //开信用卡服务地址
     public static final String CREDITCARD_OPEN = "http://CREDITCARD/creditcard/accountOpening";
+    //创建定存单服务地址
+    public static final String CREATE_TERMDEPOSIT_APPLICATION = "http://DEPOSIT/deposit/term/termDepositApplication";
+    //存款
+    public static final String DEPOSIT = "http://DEPOSIT/deposit/account/deposit";
+
+
 }

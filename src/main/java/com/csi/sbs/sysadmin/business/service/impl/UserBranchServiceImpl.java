@@ -37,6 +37,8 @@ import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCreditSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCurrencyAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.deposit.DepositSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositMasterSandBox;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
 import com.csi.sbs.sysadmin.business.util.CalculateMaturityDateUtil;
@@ -173,10 +175,14 @@ public class UserBranchServiceImpl implements UserBranchService {
 						JsonProcess.changeEntityTOJSON(cms));
 				// 创建savingAccount
 				String accountNumber = createSavingAccount(header, result, restTemplate);
+				// 存款
+				deposit(header, result, accountNumber, restTemplate);
 				// 创建fexAccount
 				createFexAccount(header, result, restTemplate, accountNumber);
 				// 创建tdAccount
-				createTDAccount(header, result, restTemplate, accountNumber);
+				String tdAccountNumber = createTDAccount(header, result, restTemplate, accountNumber);
+				// 创建定存单
+				createTermDepositApplication(header, result, accountNumber, tdAccountNumber, restTemplate);
 				// 创建stockAccount
 				createStockAccount(header, result, restTemplate, accountNumber);
 				// 创建贵金属账号
@@ -213,9 +219,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setCustomerNumber(customerNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建savingAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		return getAccountNumber(result);
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -250,6 +256,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private void createFexAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
@@ -261,9 +268,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setRelaccountnumber(realAccountNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建fexAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
 	}
 
 	/**
@@ -275,7 +281,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
-	private void createTDAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+	private String createTDAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -286,9 +292,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setRelaccountnumber(realAccountNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建tdAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -300,6 +306,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private void createStockAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
@@ -311,9 +318,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setRelaccountnumber(realAccountNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建stockAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
 	}
 
 	/**
@@ -325,6 +331,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private void createPreciousAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
@@ -336,9 +343,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setRelaccountnumber(realAccountNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建preciousAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
 	}
 
 	/**
@@ -350,6 +356,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private void createMutualAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
@@ -361,13 +368,13 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setRelaccountnumber(realAccountNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建mutualAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
 	}
 
 	/**
 	 * 创建信用卡账号
+	 * 
 	 * @param header
 	 * @param result
 	 * @param restTemplate
@@ -375,6 +382,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param cms
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private void createCreditCard(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber, CustomerMasterSandBox cms) throws Exception {
 		// 解析返回的结果
@@ -422,10 +430,59 @@ public class UserBranchServiceImpl implements UserBranchService {
 		cca.setAccount(co);
 		cca.setCustomer(cm);
 
-		//System.out.println("-----------"+JsonProcess.changeEntityTOJSON(cca));
+		// System.out.println("-----------"+JsonProcess.changeEntityTOJSON(cca));
 		// 创建信用卡账号
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_OPEN, header,
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_OPEN, header,
 				JsonProcess.changeEntityTOJSON(cca));
+	}
+
+	/**
+	 * 创建定存单
+	 * 
+	 * @param debitAccountNumber
+	 * @param tdAccountNumber
+	 * @param restTemplate
+	 * @param result
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	private void createTermDepositApplication(HeaderModel header, ResponseEntity<String> result,
+			String debitAccountNumber, String tdAccountNumber, RestTemplate restTemplate) throws Exception {
+		// 解析返回的结果
+		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(customerNumber);
+		TermDepositMasterSandBox tdmsb = new TermDepositMasterSandBox();
+		tdmsb.setDebitAccountNumber(debitAccountNumber);
+		tdmsb.setTdAccountNumber(tdAccountNumber);
+		tdmsb.setTdAmount("10000");
+		tdmsb.setTdCcy("HKD");
+		tdmsb.setTdContractPeriod("1month");
+
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate,
+				PathConstant.CREATE_TERMDEPOSIT_APPLICATION, header, JsonProcess.changeEntityTOJSON(tdmsb));
+	}
+
+	/**
+	 * 存款
+	 * 
+	 * @param debitAccountNumber
+	 * @param restTemplate
+	 * @param result
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("unused")
+	private void deposit(HeaderModel header, ResponseEntity<String> result, String debitAccountNumber,
+			RestTemplate restTemplate) throws Exception {
+		// 解析返回的结果
+		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(customerNumber);
+		DepositSandBox dsb = new DepositSandBox();
+		dsb.setAccountNumber(debitAccountNumber);
+		dsb.setCurrencycode("HKD");
+		dsb.setDepositAmount("5000000");
+
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.DEPOSIT, header,
+				JsonProcess.changeEntityTOJSON(dsb));
 	}
 
 	/**
