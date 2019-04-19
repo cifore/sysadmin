@@ -1,6 +1,8 @@
 package com.csi.sbs.sysadmin.business.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -30,10 +32,14 @@ import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserEntity;
 import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.exception.OtherException;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.CreditCardOpenSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCreditSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCurrencyAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
+import com.csi.sbs.sysadmin.business.util.CalculateMaturityDateUtil;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.csi.sbs.sysadmin.business.util.SRUtil;
 
@@ -52,7 +58,6 @@ public class UserBranchServiceImpl implements UserBranchService {
 	@Resource
 	private BranchDao branchDao;
 
-	@SuppressWarnings("unused")
 	private SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -150,7 +155,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 			// 循环创建customer
 			for (int i = 0; i < list.size(); i++) {
 				// 获取沙盘身份证号码
-				j1 = restTemplate.getForEntity(PathConstant.NEXT_AVAILABLE+SysConstant.SANDBOX_CUSTOMERID, String.class).getBody();
+				j1 = restTemplate
+						.getForEntity(PathConstant.NEXT_AVAILABLE + SysConstant.SANDBOX_CUSTOMERID, String.class)
+						.getBody();
 				j2 = JSON.parseObject(j1);
 				customerID = JsonProcess.returnValue(j2, "nextAvailableNumber");
 				CustomerMasterSandBox cms = (CustomerMasterSandBox) list.get(i);
@@ -159,7 +166,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				header.setClearingCode(cms.getClearingcode());
 				header.setBranchCode(cms.getBranchcode());
 				header.setSandBoxId(sandBoxId);
-				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE+customerID);
+				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE + customerID);
 				cms.setDateOfBirth("1975-08-25");
 				// 创建customer
 				result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_CUSTOMER_URL, header,
@@ -176,14 +183,16 @@ public class UserBranchServiceImpl implements UserBranchService {
 				createPreciousAccount(header, result, restTemplate, accountNumber);
 				// 创建基金账号
 				createMutualAccount(header, result, restTemplate, accountNumber);
-				// 创建currentAccount-创建3个current账号
-				for(int k=0;k<4;k++){
+				// 创建currentAccount-创建4个current账号
+				for (int k = 0; k < 4; k++) {
 					createCurrentAccount(header, result, restTemplate);
 				}
+				// 创建信用卡账号
+				createCreditCard(header, result, restTemplate, accountNumber, cms);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 		}
-		//System.out.println(result);
+		// System.out.println(result);
 	}
 
 	/**
@@ -334,6 +343,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 
 	/**
 	 * 创建基金账号
+	 * 
 	 * @param header
 	 * @param result
 	 * @param restTemplate
@@ -354,6 +364,68 @@ public class UserBranchServiceImpl implements UserBranchService {
 		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
 		// System.out.println("----------" + result);
+	}
+
+	/**
+	 * 创建信用卡账号
+	 * @param header
+	 * @param result
+	 * @param restTemplate
+	 * @param realAccountNumber
+	 * @param cms
+	 * @throws Exception
+	 */
+	private void createCreditCard(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+			String realAccountNumber, CustomerMasterSandBox cms) throws Exception {
+		// 解析返回的结果
+		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(customerNumber);
+		CustomerCreditSandBox cm = new CustomerCreditSandBox();
+		cm.setAccommodation(cms.getAccommodation());
+		cm.setChinesename(cms.getChinesename());
+		cm.setCompanyaddress(cms.getCompanyaddress());
+		cm.setCompanyphonenumber(cms.getCompanyphonenumber());
+		cm.setCustomerid(cms.getCustomerID());
+		cm.setDateofbirth(cms.getDateOfBirth());
+		cm.setEducation(cms.getEducation());
+		cm.setEmailaddress(cms.getEmailaddress());
+		cm.setEmployercompanyname(cms.getEmployercompanyname());
+		cm.setFirstname(cms.getFirstname());
+		cm.setGender(cms.getGender());
+		cm.setIssuecountry(cms.getIssueCountry());
+		cm.setLastname(cms.getLastname());
+		cm.setMailingaddress(cms.getMailingAddress());
+		cm.setMaritalstatus(cms.getMaritalstatus());
+		cm.setMobilephonenumber(cms.getMobilePhoneNumber());
+		cm.setMonthlysalary(cms.getMonthlysalary());
+		cm.setNationality(cms.getNationality());
+		cm.setOccupation(cms.getOccupation());
+		cm.setPermanentresidencestatus(cms.getPermanentresidencestatus());
+		cm.setPosition(cms.getPosition());
+		cm.setResidencephonenumber(cms.getResidencephonenumber());
+		cm.setResidentialaddress(cms.getResidentialaddress());
+		cm.setWechatid(cms.getWechatid());
+		cm.setYearsofresidence(cms.getYearsofresidence());
+		cm.setYearsofservices(cms.getYearsofservices());
+
+		CreditCardOpenSandBox co = new CreditCardOpenSandBox();
+		co.setApprovedlimit(new BigDecimal(10000));
+		co.setCashadvancelimit(new BigDecimal(5000));
+		co.setCreditcardtype("V");
+		co.setExpirydate(CalculateMaturityDateUtil.plusMonth(36, format2.format(new Date())));
+		co.setIssuancedate(format2.format(new Date()));
+		co.setRepaymentaccountnum(realAccountNumber);
+		co.setRepaymentcycle("M");
+		co.setVerificationcode("001");
+
+		CustomerCurrencyAccountSandBox cca = new CustomerCurrencyAccountSandBox();
+		cca.setAccount(co);
+		cca.setCustomer(cm);
+
+		//System.out.println("-----------"+JsonProcess.changeEntityTOJSON(cca));
+		// 创建信用卡账号
+		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_OPEN, header,
+				JsonProcess.changeEntityTOJSON(cca));
 	}
 
 	/**
