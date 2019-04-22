@@ -9,4 +9,6 @@ import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 public interface UserBranchDao<T> extends BaseDao<T> {
 
 	public int appSandBoxForDeveloper(UserBranchEntity ube);
+	
+	public void accountOldDateHandle();
 }

@@ -26,6 +26,19 @@ public class PathConstant {
     public static final String CREATE_TERMDEPOSIT_APPLICATION = "http://DEPOSIT/deposit/term/termDepositApplication";
     //存款
     public static final String DEPOSIT = "http://DEPOSIT/deposit/account/deposit";
-
-
+    //账号日期做旧服务地址(deposit)
+    public static final String ACCOUNT_OLD_DATE = "http://DEPOSIT/deposit/account/accountDateProcess";
+    //账号日期做旧服务地址(investment)
+    public static final String ACCOUNT_OLD_DATEI = "http://INVESTMENT/investment/datehandle/accountDateProcess";
+    //定存到期取款
+    public static final String TERMDEPOSIT_DRAWDOWN = "http://DEPOSIT/deposit/term/termDepositDrawDown";
+    //账号日期做旧服务地址(deposit-td_detail)
+    public static final String ACCOUNT_OLD_DATE2 = "http://DEPOSIT/deposit/account/tdDetailDateProcess";
+    //定存到期续存
+    public static final String TERMDEPOSIT_RENEWAL = "http://DEPOSIT/deposit/term/termDepositRenewal";
+    //获取某个沙盘的td_detail
+    public static final String GETTD_DETAIL = "http://DEPOSIT/deposit/account/queryTdDetail";
+    
+    
+    
 }

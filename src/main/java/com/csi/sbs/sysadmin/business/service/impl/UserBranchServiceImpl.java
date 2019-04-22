@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.util.ImportUtil;
@@ -20,7 +21,9 @@ import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserBranchModel;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
+import com.csi.sbs.sysadmin.business.clientmodel.QueryTdDetailSysadminModel;
 import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
+import com.csi.sbs.sysadmin.business.clientmodel.otherservice.TermDepositDetailModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.PathConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
@@ -39,6 +42,7 @@ import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.DepositSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositMasterSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositRenewalSandBox;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
 import com.csi.sbs.sysadmin.business.util.CalculateMaturityDateUtil;
@@ -141,7 +145,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				ExceptionConstant.ERROR_CODE5001007);
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId) throws Exception {
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
 		List list = ImportUtil.importData(PathConstant.CUSTOMER_TEMPLATE, CustomerMasterSandBox.class);
@@ -149,6 +153,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 		HeaderModel header = new HeaderModel();
 		// 返回结果
 		ResponseEntity<String> result = null;
+		// saving account
+		String savingAccountNumber = null;
 		String j1 = null;
 		JSONObject j2 = null;
 		String customerID = null;
@@ -156,6 +162,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		if (list != null && list.size() > 0) {
 			// 循环创建customer
 			for (int i = 0; i < list.size(); i++) {
+				Thread.sleep(1000);
 				// 获取沙盘身份证号码
 				j1 = restTemplate
 						.getForEntity(PathConstant.NEXT_AVAILABLE + SysConstant.SANDBOX_CUSTOMERID, String.class)
@@ -175,6 +182,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 						JsonProcess.changeEntityTOJSON(cms));
 				// 创建savingAccount
 				String accountNumber = createSavingAccount(header, result, restTemplate);
+				savingAccountNumber = accountNumber;
 				// 存款
 				deposit(header, result, accountNumber, restTemplate);
 				// 创建fexAccount
@@ -182,7 +190,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 创建tdAccount
 				String tdAccountNumber = createTDAccount(header, result, restTemplate, accountNumber);
 				// 创建定存单
-				createTermDepositApplication(header, result, accountNumber, tdAccountNumber, restTemplate);
+				String tdNumber = createTermDepositApplication(header, result, accountNumber, tdAccountNumber,
+						restTemplate);
 				// 创建stockAccount
 				createStockAccount(header, result, restTemplate, accountNumber);
 				// 创建贵金属账号
@@ -196,6 +205,24 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 创建信用卡账号
 				createCreditCard(header, result, restTemplate, accountNumber, cms);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
+			}
+			/**
+			 * saving;current;fex;td;precious 账号时间做旧处理
+			 */
+			String d1 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATE, String.class).getBody();
+			/**
+			 * stock;mutual 账号时间做旧处理
+			 */
+			String d2 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATEI, String.class).getBody();
+			// 获取某个沙盘下的td_detail数据
+			JSONArray td1 = getTdDetail(header,sandBoxId,restTemplate);
+			if(td1!=null && td1.size()>0){
+				for(int n=0;n<td1.size();n++){
+					TermDepositDetailModel tdd = JSON.parseObject(td1.get(n).toString(), TermDepositDetailModel.class);
+					Thread.sleep(1000);
+					// 定存到期续存
+					termDepositRenewal(header, result, tdd.getAccountnumber(), tdd.getDepositnumber(), "1week", restTemplate);
+				}
 			}
 		}
 		// System.out.println(result);
@@ -242,9 +269,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setCustomerNumber(customerNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建CurrentAccount
-		result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
+		@SuppressWarnings("unused")
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		// System.out.println("----------" + result);
 	}
 
 	/**
@@ -445,8 +472,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param result
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	private void createTermDepositApplication(HeaderModel header, ResponseEntity<String> result,
+	private String createTermDepositApplication(HeaderModel header, ResponseEntity<String> result,
 			String debitAccountNumber, String tdAccountNumber, RestTemplate restTemplate) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -460,6 +486,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate,
 				PathConstant.CREATE_TERMDEPOSIT_APPLICATION, header, JsonProcess.changeEntityTOJSON(tdmsb));
+		return getTDNumber(result_);
 	}
 
 	/**
@@ -468,7 +495,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param debitAccountNumber
 	 * @param restTemplate
 	 * @param result
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
 	private void deposit(HeaderModel header, ResponseEntity<String> result, String debitAccountNumber,
@@ -483,6 +510,58 @@ public class UserBranchServiceImpl implements UserBranchService {
 
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.DEPOSIT, header,
 				JsonProcess.changeEntityTOJSON(dsb));
+	}
+
+	/**
+	 * 定存到期取款
+	 * 
+	 * @param header
+	 * @param result
+	 * @param tdAccountNumber
+	 * @param tdNumber
+	 * @param debitAccountNumber
+	 * @param restTemplate
+	 * @throws Exception
+	 */
+//	private void termDepositDrawDown(HeaderModel header, ResponseEntity<String> result, String tdAccountNumber,
+//			String tdNumber, String debitAccountNumber, RestTemplate restTemplate) throws Exception {
+//		// 解析返回的结果
+////		String customerNumber = getCustomerNumber(result);
+//		header.setCustomerNumber(null);
+//		TermDepositDrawDownSandBox tsb = new TermDepositDrawDownSandBox();
+//		tsb.setDebitAccountNumber(debitAccountNumber);
+//		tsb.setTdAccountNumber(tdAccountNumber);
+//		tsb.setTdNumber(tdNumber);
+//
+//		@SuppressWarnings("unused")
+//		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.TERMDEPOSIT_DRAWDOWN, header,
+//				JsonProcess.changeEntityTOJSON(tsb));
+//	}
+
+	/**
+	 * 定存到期续存
+	 * 
+	 * @param header
+	 * @param result
+	 * @param tdAccountNumber
+	 * @param tdNumber
+	 * @param tdRenewalPeriod
+	 * @param restTemplate
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	private void termDepositRenewal(HeaderModel header, ResponseEntity<String> result, String tdAccountNumber,
+			String tdNumber, String tdRenewalPeriod, RestTemplate restTemplate) throws Exception {
+		// 解析返回的结果
+//		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(null);
+		TermDepositRenewalSandBox tsb = new TermDepositRenewalSandBox();
+		tsb.setTdaccountnumber(tdAccountNumber);
+		tsb.setTdnumber(tdNumber);
+		tsb.setTdRenewalPeriod(tdRenewalPeriod);
+
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.TERMDEPOSIT_RENEWAL, header,
+				JsonProcess.changeEntityTOJSON(tsb));
 	}
 
 	/**
@@ -528,6 +607,55 @@ public class UserBranchServiceImpl implements UserBranchService {
 			}
 		}
 		return accountNumber;
+	}
+
+	/**
+	 * 解析创建定存单返回的tdNumber
+	 * 
+	 * @param result
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	private String getTDNumber(ResponseEntity<String> result) throws Exception {
+		String tdNumber = null;
+		// 解析返回的结果
+		if (result.getStatusCodeValue() == 200) {
+			JSONObject str1 = XmlToJsonUtil.xmlToJson(result.getBody());
+			String str2 = JsonProcess.returnValue(str1, "ResultUtil");
+			ResultUtil res = JSON.parseObject(str2, ResultUtil.class);
+			if (res.getCode().equals("1")) {
+				tdNumber = res.getData().toString();
+			}
+		}
+		return tdNumber;
+	}
+
+	/**
+	 * 获取某个沙盘下的td_detail数据
+	 * 
+	 * @param header
+	 * @param sandBoxId
+	 * @param restTemplate
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("rawtypes")
+	private JSONArray getTdDetail(HeaderModel header, String sandBoxId, RestTemplate restTemplate) throws Exception {
+		QueryTdDetailSysadminModel qm = new QueryTdDetailSysadminModel();
+		qm.setSandBoxId(sandBoxId);
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.GETTD_DETAIL, header,
+				JsonProcess.changeEntityTOJSON(qm));
+		JSONArray str3 = null;
+		// 解析返回的结果
+		if (result_.getStatusCodeValue() == 200) {
+			JSONObject str1 = XmlToJsonUtil.xmlToJson(result_.getBody());
+			String str2 = JsonProcess.returnValue(str1, "ResultUtil");
+			ResultUtil res = JSON.parseObject(str2, ResultUtil.class);
+			if (res.getCode().equals("1")) {
+				str3 = JSON.parseArray(res.getData().toString());
+			}
+		}
+		return str3;
 	}
 
 }
