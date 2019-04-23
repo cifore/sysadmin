@@ -1,6 +1,7 @@
 package com.csi.sbs.sysadmin.business.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,9 @@ import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.DepositSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositRenewalSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.foreignexchange.ExchangeSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.investment.FundBuyTradingSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.investment.StockTradingSandBox;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
 import com.csi.sbs.sysadmin.business.util.CalculateMaturityDateUtil;
@@ -63,6 +67,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 	@SuppressWarnings("rawtypes")
 	@Resource
 	private BranchDao branchDao;
+	
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -138,7 +144,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 			/**
 			 * 生成沙盘数据
 			 */
-			generateSandBoxData(restTemplate, sbm.getSandBoxId());
+			generateSandBoxData(restTemplate, sbm.getSandBoxId(),sbm.getDeveloperId());
 			return result;
 		}
 		throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001007),
@@ -146,7 +152,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unused" })
-	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId) throws Exception {
+	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId,String developerId) throws Exception {
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
 		List list = ImportUtil.importData(PathConstant.CUSTOMER_TEMPLATE, CustomerMasterSandBox.class);
 		// 创建请求头
@@ -175,6 +181,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				header.setClearingCode(cms.getClearingcode());
 				header.setBranchCode(cms.getBranchcode());
 				header.setSandBoxId(sandBoxId);
+				header.setUserID(developerId);
 				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE + customerID);
 				cms.setDateOfBirth("1975-08-25");
 				// 创建customer
@@ -186,24 +193,30 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 存款
 				deposit(header, result, accountNumber, restTemplate);
 				// 创建fexAccount
-				createFexAccount(header, result, restTemplate, accountNumber);
+				String fexaccountnumber = createFexAccount(header, result, restTemplate, accountNumber);
 				// 创建tdAccount
 				String tdAccountNumber = createTDAccount(header, result, restTemplate, accountNumber);
 				// 创建定存单
 				String tdNumber = createTermDepositApplication(header, result, accountNumber, tdAccountNumber,
 						restTemplate);
 				// 创建stockAccount
-				createStockAccount(header, result, restTemplate, accountNumber);
+				String stockAccountNumber = createStockAccount(header, result, restTemplate, accountNumber);
 				// 创建贵金属账号
 				createPreciousAccount(header, result, restTemplate, accountNumber);
 				// 创建基金账号
-				createMutualAccount(header, result, restTemplate, accountNumber);
+				String mutualAccountNumber = createMutualAccount(header, result, restTemplate, accountNumber);
 				// 创建currentAccount-创建4个current账号
 				for (int k = 0; k < 4; k++) {
 					createCurrentAccount(header, result, restTemplate);
 				}
 				// 创建信用卡账号
 				createCreditCard(header, result, restTemplate, accountNumber, cms);
+				// 基金买入
+				subscription(header, result,accountNumber,mutualAccountNumber,restTemplate);
+				// 股票交易(买)
+				stockTrading(header, result,accountNumber,stockAccountNumber,restTemplate);
+				// 外汇交易
+				currencyExchange(header, result,accountNumber,fexaccountnumber,restTemplate);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 			/**
@@ -283,8 +296,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	private void createFexAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+	private String createFexAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -297,6 +309,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 		// 创建fexAccount
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
+		
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -333,8 +347,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	private void createStockAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+	private String createStockAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -347,6 +360,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		// 创建stockAccount
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -383,8 +397,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param realAccountNumber
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	private void createMutualAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+	private String createMutualAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -397,6 +410,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		// 创建mutualAccount
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -564,6 +578,76 @@ public class UserBranchServiceImpl implements UserBranchService {
 				JsonProcess.changeEntityTOJSON(tsb));
 	}
 
+	
+	/**
+	 * 基金买入
+	 * @param header
+	 * @param result
+	 * @param debitaccountnumber
+	 * @param mutualaccountnumber
+	 */
+	private void subscription(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String mutualaccountnumber,RestTemplate restTemplate){
+		FundBuyTradingSandBox fb = new FundBuyTradingSandBox();
+		fb.setDebitaccountnumber(debitaccountnumber);
+		fb.setFundaccountnumber(mutualaccountnumber);
+		fb.setFundcode(SysConstant.SANDBOX_FUNDCODE);
+		fb.setTradingamount(new BigDecimal(1));
+		
+		
+		@SuppressWarnings("unused")
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.FUND_BUY, header,
+				JsonProcess.changeEntityTOJSON(fb));
+	}
+	
+	/**
+	 * 股票交易
+	 * @param header
+	 * @param result
+	 * @param debitaccountnumber
+	 * @param stockaccountnumber
+	 * @param restTemplate
+	 * @throws ParseException
+	 */
+	private void stockTrading(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String stockaccountnumber,RestTemplate restTemplate) throws ParseException{
+		String date1 = format.format(new Date());
+		String date2 = CalculateMaturityDateUtil.plusDay(2, date1);
+		StockTradingSandBox ss = new StockTradingSandBox();
+		ss.setDebitaccountnumber(debitaccountnumber);
+		ss.setExpiredate(date2);
+		ss.setOrderType("Fix Price");
+		ss.setSellAll("");
+		ss.setSharingNo("200");
+		ss.setStkaccountnumber(stockaccountnumber);
+		ss.setStocknumber("0100.HK");
+		ss.setTradingOption("Buy");
+		ss.setTradingPrice("7.2");
+		
+		@SuppressWarnings("unused")
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.STOCK_TRAD, header,
+				JsonProcess.changeEntityTOJSON(ss));
+	}
+	
+	/**
+	 * 外汇交易
+	 * @param header
+	 * @param result
+	 * @param debitaccountnumber
+	 * @param fexaccountnumber
+	 * @param restTemplate
+	 */
+	@SuppressWarnings("unused")
+	private void currencyExchange(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String fexaccountnumber,RestTemplate restTemplate){
+		ExchangeSandBox eb = new ExchangeSandBox();
+		eb.setActionCode("Buy");
+		eb.setCcycode("USD");
+		eb.setDebitaccountnumber(debitaccountnumber);
+		eb.setExchangeAmount("10");
+		eb.setFexAccountNumber(fexaccountnumber);
+		
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.FOREIGNEXCHANGE, header,
+				JsonProcess.changeEntityTOJSON(eb));
+	}
+	
 	/**
 	 * 解析创建customer返回的结果获取customerNumber
 	 * 

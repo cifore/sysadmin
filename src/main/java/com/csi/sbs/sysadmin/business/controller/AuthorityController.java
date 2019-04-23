@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
 import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
+import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.service.PermissionService;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
@@ -109,6 +110,8 @@ public class AuthorityController {
 		try{
 			return userBranchService.appSandBoxForDeveloper(sbm, restTemplate);
 		}catch(OtherException e){
+			throw e;
+		}catch(NotFoundException e){
 			throw e;
 		}catch(Exception e){
 			throw e;

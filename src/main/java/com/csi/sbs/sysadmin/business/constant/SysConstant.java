@@ -46,6 +46,8 @@ public class SysConstant {
     
     //t_customer_master
     public static final String T_CUSTOMER_MASTER = "t_customer_master";
+    //沙盘基金代码
+    public static final String SANDBOX_FUNDCODE = "U000001";
     
     
 }

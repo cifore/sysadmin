@@ -38,6 +38,12 @@ public class PathConstant {
     public static final String TERMDEPOSIT_RENEWAL = "http://DEPOSIT/deposit/term/termDepositRenewal";
     //获取某个沙盘的td_detail
     public static final String GETTD_DETAIL = "http://DEPOSIT/deposit/account/queryTdDetail";
+    //基金买入
+    public static final String FUND_BUY = "http://INVESTMENT/fund/subscription";
+    //股票交易
+    public static final String STOCK_TRAD = "http://INVESTMENT/investment/stock/stockTrading";
+    //外汇交易
+    public static final String FOREIGNEXCHANGE = "http://FOREIGNEXCHANGE/foreignExchange/currencyExchange";
     
     
     
