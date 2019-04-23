@@ -226,11 +226,11 @@ public class UserBranchServiceImpl implements UserBranchService {
 			/**
 			 * saving;current;fex;td;precious 账号时间做旧处理
 			 */
-			String d1 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATE, String.class).getBody();
+			String d1 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATE+"/"+sandBoxId, String.class).getBody();
 			/**
 			 * stock;mutual 账号时间做旧处理
 			 */
-			String d2 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATEI, String.class).getBody();
+			String d2 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATEI+"/"+sandBoxId, String.class).getBody();
 			// 获取某个沙盘下的td_detail数据
 			JSONArray td1 = getTdDetail(header,sandBoxId,restTemplate);
 			if(td1!=null && td1.size()>0){
