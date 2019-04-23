@@ -44,7 +44,8 @@ public class PathConstant {
     public static final String STOCK_TRAD = "http://INVESTMENT/investment/stock/stockTrading";
     //外汇交易
     public static final String FOREIGNEXCHANGE = "http://FOREIGNEXCHANGE/foreignExchange/currencyExchange";
-    
+    //转账
+    public static final String TRANSFER = "http://DEPOSIT/deposit/account/transfer";
     
     
 }

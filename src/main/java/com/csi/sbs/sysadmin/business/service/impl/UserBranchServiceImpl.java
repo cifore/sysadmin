@@ -44,6 +44,7 @@ import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.DepositSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.TermDepositRenewalSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.deposit.TransactionSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.foreignexchange.ExchangeSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.FundBuyTradingSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.StockTradingSandBox;
@@ -206,11 +207,14 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 创建基金账号
 				String mutualAccountNumber = createMutualAccount(header, result, restTemplate, accountNumber);
 				// 创建currentAccount-创建4个current账号
+				String currentAccount = null;
 				for (int k = 0; k < 4; k++) {
-					createCurrentAccount(header, result, restTemplate);
+					currentAccount = createCurrentAccount(header, result, restTemplate);
 				}
 				// 创建信用卡账号
 				createCreditCard(header, result, restTemplate, accountNumber, cms);
+				// 转账
+				transfer(header, result,currentAccount,accountNumber,restTemplate);
 				// 基金买入
 				subscription(header, result,accountNumber,mutualAccountNumber,restTemplate);
 				// 股票交易(买)
@@ -272,7 +276,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param restTemplate
 	 * @throws Exception
 	 */
-	private void createCurrentAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate)
+	private String createCurrentAccount(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate)
 			throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -282,9 +286,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 		asb.setCustomerNumber(customerNumber);
 		header.setCustomerNumber(customerNumber);
 		// 创建CurrentAccount
-		@SuppressWarnings("unused")
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
+		return getAccountNumber(result_);
 	}
 
 	/**
@@ -646,6 +650,25 @@ public class UserBranchServiceImpl implements UserBranchService {
 		
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.FOREIGNEXCHANGE, header,
 				JsonProcess.changeEntityTOJSON(eb));
+	}
+	
+	/**
+	 * 转账
+	 * @param header
+	 * @param result
+	 * @param inAccountNumber
+	 * @param outAccountNumber
+	 * @param restTemplate
+	 */
+	@SuppressWarnings("unused")
+	private void transfer(HeaderModel header, ResponseEntity<String> result,String inAccountNumber,String outAccountNumber,RestTemplate restTemplate){
+		TransactionSandBox tb = new TransactionSandBox();
+		tb.setTransferAmount("1");
+		tb.setTransferInAccountNumber(inAccountNumber);
+		tb.setTransferOutAccountNumber(outAccountNumber);
+		
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.TRANSFER, header,
+				JsonProcess.changeEntityTOJSON(tb));
 	}
 	
 	/**
