@@ -44,10 +44,12 @@ public class SysConstant {
     }
     
     
-    //t_customer_master
+    //t_customer_master(生成沙盘数据时,所需的客户模板文件名称.xls)
     public static final String T_CUSTOMER_MASTER = "t_customer_master";
-    //沙盘基金代码
+    //生成沙盘数据时,所用的基金代码
     public static final String SANDBOX_FUNDCODE = "U000001";
+    //生成沙盘数据时,所用的信用卡商户Number
+    public static final String SANDBOX_MERCHANT_NUMBER = "HK0001001000000001";
     
     
 }

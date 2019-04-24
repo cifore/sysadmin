@@ -46,6 +46,12 @@ public class PathConstant {
     public static final String FOREIGNEXCHANGE = "http://FOREIGNEXCHANGE/foreignExchange/currencyExchange";
     //转账
     public static final String TRANSFER = "http://DEPOSIT/deposit/account/transfer";
+    //信用卡还款
+    public static final String CREDITCARD_REPEYMENT = "http://CREDITCARD/creditcard/creditCardRepeyment";
+    //信用卡交易
+    public static final String CREDITCARD_TRANSFER = "http://CREDITCARD/creditcard/transactionPosting";
+    
+    
     
     
 }

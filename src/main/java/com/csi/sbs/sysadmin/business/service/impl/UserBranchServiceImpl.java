@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
@@ -39,6 +40,8 @@ import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CreditCardOpenSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCreditSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCurrencyAccountSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.PostTransDeInputSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.RepaymentSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.CustomerMasterSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.DepositSandBox;
@@ -212,7 +215,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 					currentAccount = createCurrentAccount(header, result, restTemplate);
 				}
 				// 创建信用卡账号
-				createCreditCard(header, result, restTemplate, accountNumber, cms);
+				String creditCardAccountNumber = createCreditCard(header, result, restTemplate, accountNumber, cms);
 				// 转账
 				transfer(header, result,currentAccount,accountNumber,restTemplate);
 				// 基金买入
@@ -221,6 +224,10 @@ public class UserBranchServiceImpl implements UserBranchService {
 				stockTrading(header, result,accountNumber,stockAccountNumber,restTemplate);
 				// 外汇交易
 				currencyExchange(header, result,accountNumber,fexaccountnumber,restTemplate);
+				// 信用卡还款
+				creditCardRepeyment(header, result,accountNumber,creditCardAccountNumber,restTemplate);
+				// 信用卡交易
+				transactionPosting(header, result,creditCardAccountNumber,restTemplate);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 			/**
@@ -427,8 +434,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param cms
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	private void createCreditCard(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
+	private String createCreditCard(HeaderModel header, ResponseEntity<String> result, RestTemplate restTemplate,
 			String realAccountNumber, CustomerMasterSandBox cms) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
@@ -479,6 +485,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		// 创建信用卡账号
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_OPEN, header,
 				JsonProcess.changeEntityTOJSON(cca));
+		return getCreditCardAccountNum(result_);
 	}
 
 	/**
@@ -671,6 +678,51 @@ public class UserBranchServiceImpl implements UserBranchService {
 				JsonProcess.changeEntityTOJSON(tb));
 	}
 	
+	
+	/**
+	 * 信用卡还款
+	 * @param header
+	 * @param result
+	 * @param debitaccountnumber
+	 * @param creditcardnumber
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("unused")
+	private void creditCardRepeyment(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String creditcardnumber,RestTemplate restTemplate) throws Exception{
+		// 解析返回的结果
+		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(customerNumber);
+		RepaymentSandBox rb = new RepaymentSandBox();
+		rb.setCreditcardnumber(creditcardnumber);
+		rb.setDebitaccountnumber(debitaccountnumber);
+		rb.setRepaymentAmount(new BigDecimal(10));
+		
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_REPEYMENT, header,
+				JsonProcess.changeEntityTOJSON(rb));
+	}
+	
+	
+	/**
+	 * 信用卡交易
+	 * @param header
+	 * @param result
+	 * @param creditcardnumber
+	 * @param restTemplate
+	 */
+	@SuppressWarnings("unused")
+	private void transactionPosting(HeaderModel header, ResponseEntity<String> result,String creditcardnumber,RestTemplate restTemplate){
+		PostTransDeInputSandBox pb = new PostTransDeInputSandBox();
+		pb.setCreditcardnumber(creditcardnumber);
+		pb.setMerchantnumber(SysConstant.SANDBOX_MERCHANT_NUMBER);
+		pb.setTransactionamount(new BigDecimal(10));
+		pb.setTransactionccy("USD");
+		pb.setTransactiontime(format2.format(new Date()));
+		
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_TRANSFER, header,
+				JsonProcess.changeEntityTOJSON(pb));
+	}
+	
+	
 	/**
 	 * 解析创建customer返回的结果获取customerNumber
 	 * 
@@ -736,6 +788,26 @@ public class UserBranchServiceImpl implements UserBranchService {
 			}
 		}
 		return tdNumber;
+	}
+	
+	/**
+	 * 解析创建信用卡返回的信用卡账号
+	 * @param result
+	 * @return
+	 */
+	private String getCreditCardAccountNum(ResponseEntity<String> result){
+		String creditCardNumber = null;
+		// 解析返回的结果
+		if (result.getStatusCodeValue() == 200) {
+			if(!StringUtils.isEmpty(result.getBody())){
+				JSONObject str1 = JSON.parseObject(result.getBody());
+				String str2 = JsonProcess.returnValue(str1, "code");
+				if(str2.equals("1")){
+					creditCardNumber = JsonProcess.returnValue(str1, "creditcardnumber");
+				}
+			}
+		}
+		return creditCardNumber;
 	}
 
 	/**
