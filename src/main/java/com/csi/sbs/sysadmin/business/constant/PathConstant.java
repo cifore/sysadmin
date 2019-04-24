@@ -50,7 +50,8 @@ public class PathConstant {
     public static final String CREDITCARD_REPEYMENT = "http://CREDITCARD/creditcard/creditCardRepeyment";
     //信用卡交易
     public static final String CREDITCARD_TRANSFER = "http://CREDITCARD/creditcard/transactionPosting";
-    
+    //信用卡积分消费
+    public static final String CREDITCARD_REDEMPTION = "http://CREDITCARD/point/redemption";
     
     
     

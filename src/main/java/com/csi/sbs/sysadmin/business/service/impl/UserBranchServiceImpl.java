@@ -40,6 +40,7 @@ import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CreditCardOpenSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCreditSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCurrencyAccountSandBox;
+import com.csi.sbs.sysadmin.business.sandbox.creditcard.PointRedemptionSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.PostTransDeInputSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.RepaymentSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.deposit.AddAccountSandBox;
@@ -71,7 +72,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	@SuppressWarnings("rawtypes")
 	@Resource
 	private BranchDao branchDao;
-	
+
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -148,7 +149,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 			/**
 			 * 生成沙盘数据
 			 */
-			generateSandBoxData(restTemplate, sbm.getSandBoxId(),sbm.getDeveloperId());
+			generateSandBoxData(restTemplate, sbm.getSandBoxId(), sbm.getDeveloperId());
 			return result;
 		}
 		throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001007),
@@ -156,7 +157,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unused" })
-	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId,String developerId) throws Exception {
+	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId, String developerId) throws Exception {
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
 		List list = ImportUtil.importData(PathConstant.CUSTOMER_TEMPLATE, CustomerMasterSandBox.class);
 		// 创建请求头
@@ -217,35 +218,40 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 创建信用卡账号
 				String creditCardAccountNumber = createCreditCard(header, result, restTemplate, accountNumber, cms);
 				// 转账
-				transfer(header, result,currentAccount,accountNumber,restTemplate);
+				transfer(header, result, currentAccount, accountNumber, restTemplate);
 				// 基金买入
-				subscription(header, result,accountNumber,mutualAccountNumber,restTemplate);
+				subscription(header, result, accountNumber, mutualAccountNumber, restTemplate);
 				// 股票交易(买)
-				stockTrading(header, result,accountNumber,stockAccountNumber,restTemplate);
+				stockTrading(header, result, accountNumber, stockAccountNumber, restTemplate);
 				// 外汇交易
-				currencyExchange(header, result,accountNumber,fexaccountnumber,restTemplate);
+				currencyExchange(header, result, accountNumber, fexaccountnumber, restTemplate);
 				// 信用卡还款
-				creditCardRepeyment(header, result,accountNumber,creditCardAccountNumber,restTemplate);
+				creditCardRepeyment(header, result, accountNumber, creditCardAccountNumber, restTemplate);
 				// 信用卡交易
-				transactionPosting(header, result,creditCardAccountNumber,restTemplate);
+				transactionPosting(header, result, creditCardAccountNumber, restTemplate);
+				// 信用卡积分消费
+				redemption(header, result,creditCardAccountNumber,restTemplate);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 			/**
 			 * saving;current;fex;td;precious 账号时间做旧处理
 			 */
-			String d1 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATE+"/"+sandBoxId, String.class).getBody();
+			String d1 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATE + "/" + sandBoxId, String.class)
+					.getBody();
 			/**
 			 * stock;mutual 账号时间做旧处理
 			 */
-			String d2 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATEI+"/"+sandBoxId, String.class).getBody();
+			String d2 = restTemplate.getForEntity(PathConstant.ACCOUNT_OLD_DATEI + "/" + sandBoxId, String.class)
+					.getBody();
 			// 获取某个沙盘下的td_detail数据
-			JSONArray td1 = getTdDetail(header,sandBoxId,restTemplate);
-			if(td1!=null && td1.size()>0){
-				for(int n=0;n<td1.size();n++){
+			JSONArray td1 = getTdDetail(header, sandBoxId, restTemplate);
+			if (td1 != null && td1.size() > 0) {
+				for (int n = 0; n < td1.size(); n++) {
 					TermDepositDetailModel tdd = JSON.parseObject(td1.get(n).toString(), TermDepositDetailModel.class);
 					Thread.sleep(1000);
 					// 定存到期续存
-					termDepositRenewal(header, result, tdd.getAccountnumber(), tdd.getDepositnumber(), "1week", restTemplate);
+					termDepositRenewal(header, result, tdd.getAccountnumber(), tdd.getDepositnumber(), "1week",
+							restTemplate);
 				}
 			}
 		}
@@ -320,7 +326,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		// 创建fexAccount
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_ACCOUNT_URL, header,
 				JsonProcess.changeEntityTOJSON(asb));
-		
+
 		return getAccountNumber(result_);
 	}
 
@@ -548,20 +554,23 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param restTemplate
 	 * @throws Exception
 	 */
-//	private void termDepositDrawDown(HeaderModel header, ResponseEntity<String> result, String tdAccountNumber,
-//			String tdNumber, String debitAccountNumber, RestTemplate restTemplate) throws Exception {
-//		// 解析返回的结果
-////		String customerNumber = getCustomerNumber(result);
-//		header.setCustomerNumber(null);
-//		TermDepositDrawDownSandBox tsb = new TermDepositDrawDownSandBox();
-//		tsb.setDebitAccountNumber(debitAccountNumber);
-//		tsb.setTdAccountNumber(tdAccountNumber);
-//		tsb.setTdNumber(tdNumber);
-//
-//		@SuppressWarnings("unused")
-//		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.TERMDEPOSIT_DRAWDOWN, header,
-//				JsonProcess.changeEntityTOJSON(tsb));
-//	}
+	// private void termDepositDrawDown(HeaderModel header,
+	// ResponseEntity<String> result, String tdAccountNumber,
+	// String tdNumber, String debitAccountNumber, RestTemplate restTemplate)
+	// throws Exception {
+	// // 解析返回的结果
+	//// String customerNumber = getCustomerNumber(result);
+	// header.setCustomerNumber(null);
+	// TermDepositDrawDownSandBox tsb = new TermDepositDrawDownSandBox();
+	// tsb.setDebitAccountNumber(debitAccountNumber);
+	// tsb.setTdAccountNumber(tdAccountNumber);
+	// tsb.setTdNumber(tdNumber);
+	//
+	// @SuppressWarnings("unused")
+	// ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate,
+	// PathConstant.TERMDEPOSIT_DRAWDOWN, header,
+	// JsonProcess.changeEntityTOJSON(tsb));
+	// }
 
 	/**
 	 * 定存到期续存
@@ -578,7 +587,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	private void termDepositRenewal(HeaderModel header, ResponseEntity<String> result, String tdAccountNumber,
 			String tdNumber, String tdRenewalPeriod, RestTemplate restTemplate) throws Exception {
 		// 解析返回的结果
-//		String customerNumber = getCustomerNumber(result);
+		// String customerNumber = getCustomerNumber(result);
 		header.setCustomerNumber(null);
 		TermDepositRenewalSandBox tsb = new TermDepositRenewalSandBox();
 		tsb.setTdaccountnumber(tdAccountNumber);
@@ -589,29 +598,30 @@ public class UserBranchServiceImpl implements UserBranchService {
 				JsonProcess.changeEntityTOJSON(tsb));
 	}
 
-	
 	/**
 	 * 基金买入
+	 * 
 	 * @param header
 	 * @param result
 	 * @param debitaccountnumber
 	 * @param mutualaccountnumber
 	 */
-	private void subscription(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String mutualaccountnumber,RestTemplate restTemplate){
+	private void subscription(HeaderModel header, ResponseEntity<String> result, String debitaccountnumber,
+			String mutualaccountnumber, RestTemplate restTemplate) {
 		FundBuyTradingSandBox fb = new FundBuyTradingSandBox();
 		fb.setDebitaccountnumber(debitaccountnumber);
 		fb.setFundaccountnumber(mutualaccountnumber);
 		fb.setFundcode(SysConstant.SANDBOX_FUNDCODE);
 		fb.setTradingamount(new BigDecimal(1));
-		
-		
+
 		@SuppressWarnings("unused")
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.FUND_BUY, header,
 				JsonProcess.changeEntityTOJSON(fb));
 	}
-	
+
 	/**
 	 * 股票交易
+	 * 
 	 * @param header
 	 * @param result
 	 * @param debitaccountnumber
@@ -619,7 +629,8 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param restTemplate
 	 * @throws ParseException
 	 */
-	private void stockTrading(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String stockaccountnumber,RestTemplate restTemplate) throws ParseException{
+	private void stockTrading(HeaderModel header, ResponseEntity<String> result, String debitaccountnumber,
+			String stockaccountnumber, RestTemplate restTemplate) throws ParseException {
 		String date1 = format.format(new Date());
 		String date2 = CalculateMaturityDateUtil.plusDay(2, date1);
 		StockTradingSandBox ss = new StockTradingSandBox();
@@ -632,14 +643,15 @@ public class UserBranchServiceImpl implements UserBranchService {
 		ss.setStocknumber("0100.HK");
 		ss.setTradingOption("Buy");
 		ss.setTradingPrice("7.2");
-		
+
 		@SuppressWarnings("unused")
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.STOCK_TRAD, header,
 				JsonProcess.changeEntityTOJSON(ss));
 	}
-	
+
 	/**
 	 * 外汇交易
+	 * 
 	 * @param header
 	 * @param result
 	 * @param debitaccountnumber
@@ -647,20 +659,22 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param restTemplate
 	 */
 	@SuppressWarnings("unused")
-	private void currencyExchange(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String fexaccountnumber,RestTemplate restTemplate){
+	private void currencyExchange(HeaderModel header, ResponseEntity<String> result, String debitaccountnumber,
+			String fexaccountnumber, RestTemplate restTemplate) {
 		ExchangeSandBox eb = new ExchangeSandBox();
 		eb.setActionCode("Buy");
 		eb.setCcycode("USD");
 		eb.setDebitaccountnumber(debitaccountnumber);
 		eb.setExchangeAmount("10");
 		eb.setFexAccountNumber(fexaccountnumber);
-		
+
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.FOREIGNEXCHANGE, header,
 				JsonProcess.changeEntityTOJSON(eb));
 	}
-	
+
 	/**
 	 * 转账
+	 * 
 	 * @param header
 	 * @param result
 	 * @param inAccountNumber
@@ -668,27 +682,29 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param restTemplate
 	 */
 	@SuppressWarnings("unused")
-	private void transfer(HeaderModel header, ResponseEntity<String> result,String inAccountNumber,String outAccountNumber,RestTemplate restTemplate){
+	private void transfer(HeaderModel header, ResponseEntity<String> result, String inAccountNumber,
+			String outAccountNumber, RestTemplate restTemplate) {
 		TransactionSandBox tb = new TransactionSandBox();
 		tb.setTransferAmount("1");
 		tb.setTransferInAccountNumber(inAccountNumber);
 		tb.setTransferOutAccountNumber(outAccountNumber);
-		
+
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.TRANSFER, header,
 				JsonProcess.changeEntityTOJSON(tb));
 	}
-	
-	
+
 	/**
 	 * 信用卡还款
+	 * 
 	 * @param header
 	 * @param result
 	 * @param debitaccountnumber
 	 * @param creditcardnumber
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	private void creditCardRepeyment(HeaderModel header, ResponseEntity<String> result,String debitaccountnumber,String creditcardnumber,RestTemplate restTemplate) throws Exception{
+	private void creditCardRepeyment(HeaderModel header, ResponseEntity<String> result, String debitaccountnumber,
+			String creditcardnumber, RestTemplate restTemplate) throws Exception {
 		// 解析返回的结果
 		String customerNumber = getCustomerNumber(result);
 		header.setCustomerNumber(customerNumber);
@@ -696,33 +712,56 @@ public class UserBranchServiceImpl implements UserBranchService {
 		rb.setCreditcardnumber(creditcardnumber);
 		rb.setDebitaccountnumber(debitaccountnumber);
 		rb.setRepaymentAmount(new BigDecimal(10));
-		
+
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_REPEYMENT, header,
 				JsonProcess.changeEntityTOJSON(rb));
 	}
-	
-	
+
 	/**
 	 * 信用卡交易
+	 * 
 	 * @param header
 	 * @param result
 	 * @param creditcardnumber
 	 * @param restTemplate
 	 */
 	@SuppressWarnings("unused")
-	private void transactionPosting(HeaderModel header, ResponseEntity<String> result,String creditcardnumber,RestTemplate restTemplate){
+	private void transactionPosting(HeaderModel header, ResponseEntity<String> result, String creditcardnumber,
+			RestTemplate restTemplate) {
 		PostTransDeInputSandBox pb = new PostTransDeInputSandBox();
 		pb.setCreditcardnumber(creditcardnumber);
 		pb.setMerchantnumber(SysConstant.SANDBOX_MERCHANT_NUMBER);
 		pb.setTransactionamount(new BigDecimal(10));
 		pb.setTransactionccy("USD");
 		pb.setTransactiontime(format2.format(new Date()));
-		
+
 		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_TRANSFER, header,
 				JsonProcess.changeEntityTOJSON(pb));
 	}
-	
-	
+
+	/**
+	 * 信用卡积分消费
+	 * @param header
+	 * @param result
+	 * @param creditcardnumber
+	 * @param restTemplate
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	private void redemption(HeaderModel header, ResponseEntity<String> result, String creditcardnumber,
+			RestTemplate restTemplate) throws Exception {
+		// 解析返回的结果
+		String customerNumber = getCustomerNumber(result);
+		header.setCustomerNumber(customerNumber);
+		PointRedemptionSandBox pb = new PointRedemptionSandBox();
+		pb.setAmount(new BigDecimal(2));
+		pb.setCreditcardnumber(creditcardnumber);
+		pb.setProductcode(SysConstant.SANDBOX_PRODUCTCODE);
+
+		ResponseEntity<String> result_ = SRUtil.sendWithHeader(restTemplate, PathConstant.CREDITCARD_REDEMPTION, header,
+				JsonProcess.changeEntityTOJSON(pb));
+	}
+
 	/**
 	 * 解析创建customer返回的结果获取customerNumber
 	 * 
@@ -789,20 +828,21 @@ public class UserBranchServiceImpl implements UserBranchService {
 		}
 		return tdNumber;
 	}
-	
+
 	/**
 	 * 解析创建信用卡返回的信用卡账号
+	 * 
 	 * @param result
 	 * @return
 	 */
-	private String getCreditCardAccountNum(ResponseEntity<String> result){
+	private String getCreditCardAccountNum(ResponseEntity<String> result) {
 		String creditCardNumber = null;
 		// 解析返回的结果
 		if (result.getStatusCodeValue() == 200) {
-			if(!StringUtils.isEmpty(result.getBody())){
+			if (!StringUtils.isEmpty(result.getBody())) {
 				JSONObject str1 = JSON.parseObject(result.getBody());
 				String str2 = JsonProcess.returnValue(str1, "code");
-				if(str2.equals("1")){
+				if (str2.equals("1")) {
 					creditCardNumber = JsonProcess.returnValue(str1, "creditcardnumber");
 				}
 			}
@@ -816,7 +856,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	 * @param header
 	 * @param sandBoxId
 	 * @param restTemplate
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
 	private JSONArray getTdDetail(HeaderModel header, String sandBoxId, RestTemplate restTemplate) throws Exception {

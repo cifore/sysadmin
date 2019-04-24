@@ -50,6 +50,9 @@ public class SysConstant {
     public static final String SANDBOX_FUNDCODE = "U000001";
     //生成沙盘数据时,所用的信用卡商户Number
     public static final String SANDBOX_MERCHANT_NUMBER = "HK0001001000000001";
+    //生成沙盘数据时 ,所用的信用卡积分消费productcode"00001"
+    public static final String SANDBOX_PRODUCTCODE = "00001";
+    
     
     
 }
