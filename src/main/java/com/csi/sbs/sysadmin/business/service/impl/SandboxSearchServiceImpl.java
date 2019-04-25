@@ -50,9 +50,12 @@ public class SandboxSearchServiceImpl implements SandboxSearchService{
 		ResponseEntity<String> result = restTemplate.postForEntity(path, PostUtil.getRequestEntity(param),String.class);
 		JSONObject str1 = XmlToJsonUtil.xmlToJson(result.getBody());
 		String str2 = JsonProcess.returnValue(str1, "Map");
+		if(str2.length() == 0){
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041005),ExceptionConstant.ERROR_CODE4041005);
+		}
 		JSONObject str3 = JSON.parseObject(str2);
 		String list = JsonProcess.returnValue(str3, "list");
-		if(JSON.parseArray(list) == null || JSON.parseArray(list).size() == 0 ){
+		if(list == null || JSON.parseArray(list) == null || JSON.parseArray(list).size() == 0 ){
 			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041005),ExceptionConstant.ERROR_CODE4041005);
 		}
 		
