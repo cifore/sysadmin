@@ -77,8 +77,27 @@ public class SysConstant {
     public static final String T_CREDITCARDPOINT_TRANSACTION_DETAIL = "t_creditcardpoint_transaction_detail";
     
     
-    public static Map<String,Object> getTableRemark(){
-    	Map map = new HashMap();
+    public static Map<String,String> getSandBoxTable(){
+    	Map<String,String> map = new HashMap<String,String>();
+    	map.put(T_CUSTOMER_MASTER_SANDBOX, "Customer Master Table");
+    	map.put(T_CURRENTACCOUNT_MASTER, "Current Account Table");
+    	map.put(T_SAVINGACCOUNT_MASTER, "Saving Account Table");
+    	map.put(T_FEXACCOUNT_MASTER, "Fex Account Table");
+    	map.put(T_TERMDEPOSIT_MASTER, "TermDeposit Account Table");
+    	map.put(T_TERMDEPOSIT_DETAIL, "TermDeposit Detail Table");
+    	map.put(T_PRECIOUSMETALACCOUNT_MASTER, "PreciousMetal Account Table");
+    	map.put(T_TRANSACTION_LOG, "Transaction Log Table");
+    	map.put(T_FEXACCOUNT_DETAIL, "Fex Detail Table");
+    	map.put(T_STOCKTRADINGACCOUNT_MASTER, "StockTrading Account Table");
+    	map.put(T_MUTUALFUNDACCOUNT_MASTER, "MutualFund Account Table");
+    	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");
+    	map.put(T_MUTUALFUND_HOLDINGS, "MutualFund Holdings Table");
+    	map.put(T_STOCK_PLATFORM_LOG, "Stock PlatForm Log Table");
+    	map.put(T_CREDITCARD_MASTER, "CreditCard Account Table");
+    	map.put(T_CREDITCARD_POINT_REFERENCE, "CreditCard Point Reference Table");
+    	map.put(T_CREDITCARD_TRANSACTION_DETAIL, "CreditCard Transaction Detail Table");
+    	map.put(T_CREDITCARDPOINT_TRANSACTION_DETAIL, "CreditCardPoint Transaction Detail Table");
+    	
     	
     	return map;
     }
