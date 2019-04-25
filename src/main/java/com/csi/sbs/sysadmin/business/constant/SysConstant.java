@@ -69,12 +69,12 @@ public class SysConstant {
     public static final String T_STOCKTRADINGACCOUNT_MASTER = "t_stocktradingaccount_master";
     public static final String T_MUTUALFUNDACCOUNT_MASTER = "t_mutualfundaccount_master";
     public static final String T_MUTUALFUND_PLATFORM_LOG = "t_mutualfund_platform_log";
-    public static final String T_MUTUALFUND_HOLDINGS = "t_mutualfund_holdings";
+    //public static final String T_MUTUALFUND_HOLDINGS = "t_mutualfund_holdings";
     public static final String T_STOCK_PLATFORM_LOG = "t_stock_platform_log";
     public static final String T_CREDITCARD_MASTER = "t_creditcard_master";
-    public static final String T_CREDITCARD_POINT_REFERENCE = "t_creditcard_point_reference";
+    //public static final String T_CREDITCARD_POINT_REFERENCE = "t_creditcard_point_reference";
     public static final String T_CREDITCARD_TRANSACTION_DETAIL = "t_creditcard_transaction_detail";
-    public static final String T_CREDITCARDPOINT_TRANSACTION_DETAIL = "t_creditcardpoint_transaction_detail";
+    //public static final String T_CREDITCARDPOINT_TRANSACTION_DETAIL = "t_creditcardpoint_transaction_detail";
     
     
     public static Map<String,String> getSandBoxTable(){
@@ -91,12 +91,12 @@ public class SysConstant {
     	map.put(T_STOCKTRADINGACCOUNT_MASTER, "StockTrading Account Table");
     	map.put(T_MUTUALFUNDACCOUNT_MASTER, "MutualFund Account Table");
     	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");
-    	map.put(T_MUTUALFUND_HOLDINGS, "MutualFund Holdings Table");
+    	//map.put(T_MUTUALFUND_HOLDINGS, "MutualFund Holdings Table");
     	map.put(T_STOCK_PLATFORM_LOG, "Stock PlatForm Log Table");
     	map.put(T_CREDITCARD_MASTER, "CreditCard Account Table");
-    	map.put(T_CREDITCARD_POINT_REFERENCE, "CreditCard Point Reference Table");
+    	//map.put(T_CREDITCARD_POINT_REFERENCE, "CreditCard Point Reference Table");
     	map.put(T_CREDITCARD_TRANSACTION_DETAIL, "CreditCard Transaction Detail Table");
-    	map.put(T_CREDITCARDPOINT_TRANSACTION_DETAIL, "CreditCardPoint Transaction Detail Table");
+    	//map.put(T_CREDITCARDPOINT_TRANSACTION_DETAIL, "CreditCardPoint Transaction Detail Table");
     	
     	
     	return map;
