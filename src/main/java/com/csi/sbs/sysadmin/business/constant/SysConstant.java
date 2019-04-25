@@ -54,5 +54,33 @@ public class SysConstant {
     public static final String SANDBOX_PRODUCTCODE = "00001";
     
     
+    /**
+     * 调用设置沙盘接口时,以下表会产生沙盘数据
+     */
+    public static final String T_CUSTOMER_MASTER_SANDBOX = "t_customer_master";
+    public static final String T_CURRENTACCOUNT_MASTER = "t_currentaccount_master";
+    public static final String T_SAVINGACCOUNT_MASTER = "t_savingaccount_master";
+    public static final String T_FEXACCOUNT_MASTER = "t_fexaccount_master";
+    public static final String T_TERMDEPOSIT_MASTER = "t_termdeposit_master";
+    public static final String T_TERMDEPOSIT_DETAIL = "t_termdeposit_detail";
+    public static final String T_PRECIOUSMETALACCOUNT_MASTER = "t_preciousmetalaccount_master";
+    public static final String T_TRANSACTION_LOG = "t_transaction_log";
+    public static final String T_FEXACCOUNT_DETAIL = "t_fexaccount_detail";
+    public static final String T_STOCKTRADINGACCOUNT_MASTER = "t_stocktradingaccount_master";
+    public static final String T_MUTUALFUNDACCOUNT_MASTER = "t_mutualfundaccount_master";
+    public static final String T_MUTUALFUND_PLATFORM_LOG = "t_mutualfund_platform_log";
+    public static final String T_MUTUALFUND_HOLDINGS = "t_mutualfund_holdings";
+    public static final String T_STOCK_PLATFORM_LOG = "t_stock_platform_log";
+    public static final String T_CREDITCARD_MASTER = "t_creditcard_master";
+    public static final String T_CREDITCARD_POINT_REFERENCE = "t_creditcard_point_reference";
+    public static final String T_CREDITCARD_TRANSACTION_DETAIL = "t_creditcard_transaction_detail";
+    public static final String T_CREDITCARDPOINT_TRANSACTION_DETAIL = "t_creditcardpoint_transaction_detail";
+    
+    
+    public static Map<String,Object> getTableRemark(){
+    	Map map = new HashMap();
+    	
+    	return map;
+    }
     
 }

@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-//import com.csi.sbs.common.business.log.InitLog;
+import com.csi.sbs.common.business.log.InitLog;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -22,10 +22,10 @@ public class Application {
     }
 
 	
-	@SuppressWarnings("unused")
+	
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(Application.class, args);
-		//InitLog.loadLogConfig(context,"sysadmin");//初始化日志相关配置
+		InitLog.loadLogConfig(context,"sysadmin");//初始化日志相关配置
 	}
 
 }
