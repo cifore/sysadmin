@@ -17,7 +17,7 @@ import com.csi.sbs.common.business.exception.OtherException;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.util.EncryptionUtil;
 import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
-import com.csi.sbs.common.business.util.SendLogUtil;
+//import com.csi.sbs.common.business.util.SendLogUtil;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddLoginUserModel;
@@ -97,7 +97,7 @@ public class LoginInServiceImpl implements LoginInService {
 		result.setData(reLoginIn.getId());
 
 		// 给kafka发送消息
-		SendLogUtil.sendInfo("测试消息发送");
+		//SendLogUtil.sendInfo("测试消息发送");
 		return result;
 	}
 
