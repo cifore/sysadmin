@@ -1,11 +1,19 @@
 package com.csi.sbs.sysadmin.business.controller;
 
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
+import com.csi.sbs.sysadmin.business.service.SandboxSearchService;
+import com.csi.sbs.sysadmin.business.clientmodel.SandboxSearchModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
@@ -21,6 +29,12 @@ public class SandBoxSearchController {
 	
 	
 	ObjectMapper objectMapper = new ObjectMapper();
+	
+	@Resource
+	private SandboxSearchService sandboxSearchService;
+	
+	@Resource
+	private RestTemplate restTemplate;
 
 	/**
 	 * 获取所有会产生沙盘数据的表信息
@@ -43,5 +57,12 @@ public class SandBoxSearchController {
 			result.setMsg(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001008));
 			return result;
 		}
+	}
+	
+	@RequestMapping(value = "/getSandBoxTableInfo", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to return sandBox Table Information.", notes = "version 0.0.1")
+	public Map<String, Object> getSandBoxTableInfo(@RequestBody SandboxSearchModel ase) throws Exception {
+			return sandboxSearchService.getTableSandboxInfo(restTemplate, ase); 
 	}
 }
