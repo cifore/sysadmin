@@ -71,7 +71,7 @@ public class SysConstant {
     public static final String T_STOCK_PLATFORM_LOG = "t_stock_platform_log";
     public static final String T_CREDITCARD_MASTER = "t_creditcard_master";
     public static final String T_CREDITCARD_TRANSACTION_DETAIL = "t_creditcard_transaction_detail";
-    
+
     
     public static Map<String,String> getSandBoxTable(){
     	Map<String,String> map = new HashMap<String,String>();
@@ -86,9 +86,11 @@ public class SysConstant {
     	map.put(T_STOCKTRADINGACCOUNT_MASTER, "StockTrading Account Table");
     	map.put(T_MUTUALFUNDACCOUNT_MASTER, "MutualFund Account Table");
     	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");;
+    	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");
     	map.put(T_STOCK_PLATFORM_LOG, "Stock PlatForm Log Table");
     	map.put(T_CREDITCARD_MASTER, "CreditCard Account Table");
     	map.put(T_CREDITCARD_TRANSACTION_DETAIL, "CreditCard Transaction Detail Table");
+
     	
     	
     	return map;
