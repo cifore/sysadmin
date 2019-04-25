@@ -52,7 +52,12 @@ public class PathConstant {
     public static final String CREDITCARD_TRANSFER = "http://CREDITCARD/creditcard/transactionPosting";
     //信用卡积分消费
     public static final String CREDITCARD_REDEMPTION = "http://CREDITCARD/point/redemption";
-    
+    //信用卡sandbox查询
+    public static final String CREDITCARD_SANDBOXSEARCH = "http://CREDITCARD/creditcard/sandboxSearch";
+    //投资sandbox查询
+    public static final String INVESTMENT_SANDBOXSEARCH = "http://INVESTMENT/investment/datehandle/sandboxSearch";
+   //depositsandbox查询
+    public static final String DEPOSIT_SANDBOXSEARCH = "http://DEPOSIT/deposit/account/sandboxSearch";
     
     
 }

@@ -31,6 +31,8 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE4041001 = 4041001;//根据API Name 未查到内部调用地址
 	public static final int ERROR_CODE4041002 = 4041002;//DeveloperID 不存在
 	public static final int ERROR_CODE4041003 = 4041003;//BankID does not exist
+	public static final int ERROR_CODE4041004 = 4041004;//tablename not exist
+	public static final int ERROR_CODE4041005 = 4041005;//Record Not Found
 	
 	
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
@@ -59,6 +61,8 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE4041001, "Not Found InternalService Url");//根据API Name 未查到内部调用地址
     	map.put(ERROR_CODE4041002, "DeveloperID does not exist");//DeveloperID 不存在
     	map.put(ERROR_CODE4041003, "BankID does not exist");//BankID does not exist
+    	map.put(ERROR_CODE4041004, "tablename not exist");//BankID does not exist
+    	map.put(ERROR_CODE4041005, "Record Not Found");//Record Not Found
     	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
