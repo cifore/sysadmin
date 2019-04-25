@@ -38,7 +38,7 @@ public class CurrencyController{
 	//Alina 获取所有货币汇率列表
 	@RequestMapping(value = "/currencyRetrieval", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "This api is designed to retrieve all supported currency in SBS.", notes = "version 0.0.1")
+	@ApiOperation(value = "This api is designed to retrieve all supported currency in LBS.", notes = "version 0.0.1")
 	public String getCurrencys() throws Exception{
 		Map<String,Object> map = currencyService.getCurrencys();
 		if(map.get("list") == null){

@@ -75,7 +75,7 @@ public class AuthorityController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/developerAuthorization", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = " This API is designed to authorize developers to use SBS API.", notes = "version 0.0.1")
+	@ApiOperation(value = " This API is designed to authorize developers to use LBS API.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
 		@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
 		@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
