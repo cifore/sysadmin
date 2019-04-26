@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,7 @@ public class SandBoxSearchController {
 	@RequestMapping(value = "/getSandBoxTableInfo", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to return sandBox Table Information.", notes = "version 0.0.1")
-	public Map<String, Object> getSandBoxTableInfo(@RequestBody SandboxSearchModel ase) throws Exception {
+	public Map<String, Object> getSandBoxTableInfo(@RequestBody @Validated SandboxSearchModel ase) throws Exception {
 			return sandboxSearchService.getTableSandboxInfo(restTemplate, ase); 
 	}
 }
