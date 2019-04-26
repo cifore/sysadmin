@@ -56,8 +56,17 @@ public class PathConstant {
     public static final String CREDITCARD_SANDBOXSEARCH = "http://CREDITCARD/creditcard/sandboxSearch";
     //投资sandbox查询
     public static final String INVESTMENT_SANDBOXSEARCH = "http://INVESTMENT/investment/datehandle/sandboxSearch";
-   //depositsandbox查询
+    //depositsandbox查询
     public static final String DEPOSIT_SANDBOXSEARCH = "http://DEPOSIT/deposit/account/sandboxSearch";
+    //删除沙盘数据(deposit)
+    public static final String DEL_SANDBOXDATA_DEPOSIT = "http://DEPOSIT/deposit/account/delSandBoxId";
+    //删除沙盘数据(creditcard)
+    public static final String DEL_SANDBOXDATA_CREDITCARD = "http://CREDITCARD/creditcard/delSandBoxId";
+    //删除沙盘数据(investment)
+    public static final String DEL_SANDBOXDATA_INVESTMENT = "http://INVESTMENT/investment/datehandle/delSandBoxId";
+    
+    
+    
     
     
 }

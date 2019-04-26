@@ -147,6 +147,10 @@ public class UserBranchServiceImpl implements UserBranchService {
 					+ "---developerID:" + sbm.getDeveloperId() + "---sandBoxId:" + sbm.getSandBoxId());
 
 			/**
+			 * 先根据沙盘ID删除沙盘数据
+			 */
+			delSandBoxData(sbm.getSandBoxId(),restTemplate);
+			/**
 			 * 生成沙盘数据
 			 */
 			generateSandBoxData(restTemplate, sbm.getSandBoxId(), sbm.getDeveloperId());
@@ -875,6 +879,14 @@ public class UserBranchServiceImpl implements UserBranchService {
 			}
 		}
 		return str3;
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private void delSandBoxData(String sandBoxId,RestTemplate restTemplate){
+		String r1 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_DEPOSIT + "/" + sandBoxId, String.class).getBody();
+		String r2 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_CREDITCARD + "/" + sandBoxId, String.class).getBody();
+		String r3 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_INVESTMENT + "/" + sandBoxId, String.class).getBody();
 	}
 
 }
