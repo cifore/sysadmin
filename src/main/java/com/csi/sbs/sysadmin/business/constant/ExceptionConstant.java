@@ -34,6 +34,9 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE4041004 = 4041004;//tablename not exist
 	public static final int ERROR_CODE4041005 = 4041005;//Record Not Found
 	
+	public static final int ERROR_CODE400001 = 400001;//必填字段不全
+	public static final int ERROR_CODE400002 = 400002;//请求body格式有误
+	
 	
 	public static final int ERROR_CODE5001001 = 5001001;//获取客户信息失败
 	public static final int ERROR_CODE5001002 = 5001002;//添加登录用户失败
@@ -57,6 +60,9 @@ public class ExceptionConstant {
     	
     	map.put(ERROR_CODE4031001, "Authorization failed,There's dirty data");//授权失败
     	map.put(ERROR_CODE4031002, "Authorized");//已经授权
+    	
+    	map.put(ERROR_CODE400001, "Required field incomplete");//必填字段不全
+    	map.put(ERROR_CODE400002, "Incorrect requesting format");//请求body格式有误
     	
     	map.put(ERROR_CODE4041001, "Not Found InternalService Url");//根据API Name 未查到内部调用地址
     	map.put(ERROR_CODE4041002, "DeveloperID does not exist");//DeveloperID 不存在
