@@ -4,8 +4,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel
 public class SandboxSearchModel{
 	
 	@NotNull(message="tablename is a required field")
