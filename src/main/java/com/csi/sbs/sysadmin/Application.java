@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 
+
 @SpringBootApplication
 @EnableEurekaClient
 public class Application {
@@ -22,6 +23,7 @@ public class Application {
         return new RestTemplate();
     }
 
+	
 	
 	
 	@SuppressWarnings("unused")
