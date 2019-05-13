@@ -161,7 +161,7 @@ public class LoginInServiceImpl implements LoginInService {
 		claims.setBranchCode(rcm.getBranchcode());
 		claims.setLoginName(relie.getLoginname());
 		claims.setCustomerNumber(rcm.getCustomernumber());
-		claims.setSandBoxId(reube.getSandboxid());
+		claims.setSandBoxId(reube!=null?reube.getSandboxid():"");
 		@SuppressWarnings("unused")
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

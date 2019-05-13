@@ -6,7 +6,7 @@ public class StockTradingSandBox {
 
 	private String stkaccountnumber;
 	private String tradingOption;
-	private String stocknumber;
+	private String stockCode;
 	private String orderType;
 	private String tradingPrice;
 	private String sharingNo;
@@ -30,12 +30,12 @@ public class StockTradingSandBox {
 		this.tradingOption = tradingOption;
 	}
 
-	public String getStocknumber() {
-		return stocknumber;
+	public String getStockCode() {
+		return stockCode;
 	}
 
-	public void setStocknumber(String stocknumber) {
-		this.stocknumber = stocknumber;
+	public void setStockCode(String stockCode) {
+		this.stockCode = stockCode;
 	}
 
 	public String getOrderType() {

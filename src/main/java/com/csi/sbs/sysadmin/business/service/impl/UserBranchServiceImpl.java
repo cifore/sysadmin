@@ -644,7 +644,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		ss.setSellAll("");
 		ss.setSharingNo("200");
 		ss.setStkaccountnumber(stockaccountnumber);
-		ss.setStocknumber("0100.HK");
+		ss.setStockCode("0100.HK");
 		ss.setTradingOption("Buy");
 		ss.setTradingPrice("7.2");
 
