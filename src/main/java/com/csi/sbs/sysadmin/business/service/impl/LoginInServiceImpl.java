@@ -33,11 +33,13 @@ import com.csi.sbs.sysadmin.business.dao.CustomerTokenRelationDao;
 import com.csi.sbs.sysadmin.business.dao.LoginInDao;
 import com.csi.sbs.sysadmin.business.dao.TokenDao;
 import com.csi.sbs.sysadmin.business.dao.UserBranchDao;
+import com.csi.sbs.sysadmin.business.dao.UserDao;
 import com.csi.sbs.sysadmin.business.entity.CustomerTokenRelationEntity;
 import com.csi.sbs.sysadmin.business.entity.LoginInEntity;
 import com.csi.sbs.sysadmin.business.entity.TokenEntity;
 import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
 import com.csi.sbs.sysadmin.business.entity.UserClaimsEntity;
+import com.csi.sbs.sysadmin.business.entity.UserEntity;
 import com.csi.sbs.sysadmin.business.exception.AcceptException;
 import com.csi.sbs.sysadmin.business.exception.AuthorityException;
 import com.csi.sbs.sysadmin.business.exception.CallOtherException;
@@ -72,6 +74,10 @@ public class LoginInServiceImpl implements LoginInService {
 	@SuppressWarnings("rawtypes")
 	@Resource
 	private UserBranchDao userBranchDao;
+	
+	@SuppressWarnings("rawtypes")
+	@Resource
+	private UserDao userDao;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -143,8 +149,12 @@ public class LoginInServiceImpl implements LoginInService {
 		/**
 		 * 根据developerID去查询sandBoxId
 		 */
+		UserEntity ue = new UserEntity();
+		ue.setUserid(relie.getDeveloperid());
+		UserEntity reue = (UserEntity) userDao.findOne(ue);
+		
 		UserBranchEntity ube = new UserBranchEntity();
-		ube.setUserid(relie.getDeveloperid());
+		ube.setUserid(reue!=null?reue.getId():"");//t_user表主键
 		UserBranchEntity reube = (UserBranchEntity) userBranchDao.findOne(ube);
 		if (reube == null) {
 

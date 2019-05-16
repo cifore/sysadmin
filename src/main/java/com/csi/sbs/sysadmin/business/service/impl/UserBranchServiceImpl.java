@@ -639,7 +639,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 		String date2 = CalculateMaturityDateUtil.plusDay(2, date1);
 		StockTradingSandBox ss = new StockTradingSandBox();
 		ss.setDebitaccountnumber(debitaccountnumber);
-		ss.setExpiredate(date2);
+		ss.setExpiryDate(date2);
 		ss.setOrderType("Fix Price");
 		ss.setSellAll("");
 		ss.setSharingNo("200");

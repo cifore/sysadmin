@@ -11,7 +11,7 @@ public class StockTradingSandBox {
 	private String tradingPrice;
 	private String sharingNo;
 	private String sellAll;
-	private String expiredate;
+	private String expiryDate;
 	private String debitaccountnumber;
 
 	public String getStkaccountnumber() {
@@ -70,12 +70,12 @@ public class StockTradingSandBox {
 		this.sellAll = sellAll;
 	}
 
-	public String getExpiredate() {
-		return expiredate;
+	public String getExpiryDate() {
+		return expiryDate;
 	}
 
-	public void setExpiredate(String expiredate) {
-		this.expiredate = expiredate;
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 
 	public String getDebitaccountnumber() {
