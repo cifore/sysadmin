@@ -102,7 +102,7 @@ public class LoginInServiceImpl implements LoginInService {
 		result.setMsg(ExceptionConstant.getSuccessMap().get(ExceptionConstant.SUCCESS_CODE2001001));
 		result.setData(reLoginIn.getId());
 
-		// 给kafka发送消息
+		// 发送消息到监控中心
 		SendLogUtil.sendInfo("loginIn--Send Info Test Message");
 		SendLogUtil.sendWarn("loginIn--Send Warn Test Message");
 		SendLogUtil.sendError("loginIn--Send Error Test Message");
