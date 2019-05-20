@@ -22,6 +22,7 @@ import com.csi.sbs.common.business.util.ImportUtil;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserBranchModel;
+import com.csi.sbs.sysadmin.business.clientmodel.DockerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.QueryTdDetailSysadminModel;
 import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
@@ -149,7 +150,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 			/**
 			 * 先根据沙盘ID删除沙盘数据
 			 */
-			delSandBoxData(sbm.getSandBoxId(),restTemplate);
+			delSandBoxData(sbm.getSandBoxId(), restTemplate);
 			/**
 			 * 生成沙盘数据
 			 */
@@ -234,7 +235,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				// 信用卡交易
 				transactionPosting(header, result, creditCardAccountNumber, restTemplate);
 				// 信用卡积分消费
-				redemption(header, result,creditCardAccountNumber,restTemplate);
+				redemption(header, result, creditCardAccountNumber, restTemplate);
 				AvailableNumberUtil.sandBoxCustomerIDIncrease(restTemplate, SysConstant.SANDBOX_CUSTOMERID);
 			}
 			/**
@@ -745,6 +746,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 
 	/**
 	 * 信用卡积分消费
+	 * 
 	 * @param header
 	 * @param result
 	 * @param creditcardnumber
@@ -880,13 +882,44 @@ public class UserBranchServiceImpl implements UserBranchService {
 		}
 		return str3;
 	}
-	
-	
+
 	@SuppressWarnings("unused")
-	private void delSandBoxData(String sandBoxId,RestTemplate restTemplate){
-		String r1 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_DEPOSIT + "/" + sandBoxId, String.class).getBody();
-		String r2 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_CREDITCARD + "/" + sandBoxId, String.class).getBody();
-		String r3 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_INVESTMENT + "/" + sandBoxId, String.class).getBody();
+	private void delSandBoxData(String sandBoxId, RestTemplate restTemplate) {
+		String r1 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_DEPOSIT + "/" + sandBoxId, String.class)
+				.getBody();
+		String r2 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_CREDITCARD + "/" + sandBoxId, String.class)
+				.getBody();
+		String r3 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_INVESTMENT + "/" + sandBoxId, String.class)
+				.getBody();
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResultUtil appDockerForDeveloper(DockerModel dm, RestTemplate restTemplate) throws Exception {
+		// 根据developerId查询user表主键
+		UserEntity u = new UserEntity();
+		u.setUserid(dm.getDeveloperId());
+		@SuppressWarnings("unchecked")
+		UserEntity reu = (UserEntity) userDao.findOne(u);
+		if (reu == null) {
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041002),
+					ExceptionConstant.ERROR_CODE4041002);
+		}
+		// 设置dockerId
+		UserBranchEntity ube = new UserBranchEntity();
+		ube.setDockerid(dm.getDockerId());
+		ube.setUserid(reu.getId());
+		
+		int i = userBranchDao.appDockerForDeveloper(ube);
+		if (i > 0) {
+			ResultUtil result = new ResultUtil();
+			result.setCode(String.valueOf(ExceptionConstant.SUCCESS_CODE2001005));
+			result.setMsg(ExceptionConstant.getSuccessMap().get(ExceptionConstant.SUCCESS_CODE2001005)
+					+ "---developerID:" + dm.getDeveloperId() + "---dockerId:" + dm.getDockerId());
+			return result;
+		}
+		throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001009),
+				ExceptionConstant.ERROR_CODE5001009);
 	}
 
 }

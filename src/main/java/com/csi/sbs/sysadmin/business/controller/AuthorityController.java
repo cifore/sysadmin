@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserModel;
+import com.csi.sbs.sysadmin.business.clientmodel.DockerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
 import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
 import com.csi.sbs.sysadmin.business.exception.NotFoundException;
@@ -109,6 +110,34 @@ public class AuthorityController {
 	public ResultUtil appSandBoxForDeveloper(@RequestBody SandBoxModel sbm,HttpServletRequest request) throws Exception{
 		try{
 			return userBranchService.appSandBoxForDeveloper(sbm, restTemplate);
+		}catch(OtherException e){
+			throw e;
+		}catch(NotFoundException e){
+			throw e;
+		}catch(Exception e){
+			throw e;
+		}
+	}
+	
+	/**
+	 * 给developer设置dockerId
+	 * @param dm
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/appDockerForDeveloper", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to set dockerId for developer.", notes = "version 0.0.1")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
+			@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
+			@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
+			@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
+			@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."), })
+	public ResultUtil appDockerForDeveloper(@RequestBody DockerModel dm,HttpServletRequest request) throws Exception{
+		try{
+			return userBranchService.appDockerForDeveloper(dm, restTemplate);
 		}catch(OtherException e){
 			throw e;
 		}catch(NotFoundException e){

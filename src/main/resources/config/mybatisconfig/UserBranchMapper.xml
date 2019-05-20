@@ -6,6 +6,7 @@
     <result column="UserID" property="userid" jdbcType="VARCHAR" />
     <result column="BankID" property="bankid" jdbcType="VARCHAR" />
     <result column="SandBoxId" property="sandboxid" jdbcType="VARCHAR" />
+    <result column="DockerId" property="dockerid" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
@@ -47,6 +48,9 @@
       <if test="sandboxid != null" >
         SandBoxId,
       </if>
+      <if test="dockerid != null" >
+        DockerId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -60,6 +64,9 @@
       </if>
       <if test="sandboxid != null" >
         #{sandboxid,jdbcType=VARCHAR},
+      </if>
+      <if test="dockerid != null" >
+        #{dockerid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -76,6 +83,9 @@
       <if test="sandboxid != null" >
         SandBoxId = #{sandboxid,jdbcType=VARCHAR},
       </if>
+      <if test="dockerid != null" >
+        DockerId = #{dockerid,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -85,6 +95,16 @@
     <set >
       <if test="sandboxid != null" >
         SandBoxId = #{sandboxid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="appDockerForDeveloper" parameterType="com.csi.sbs.sysadmin.business.entity.UserBranchEntity" >
+    update t_userbranch_relationship
+    <set >
+      <if test="dockerid != null" >
+        DockerId = #{dockerid,jdbcType=VARCHAR},
       </if>
     </set>
     where UserID = #{userid,jdbcType=VARCHAR}

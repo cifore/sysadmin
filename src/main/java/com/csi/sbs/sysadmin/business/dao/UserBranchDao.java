@@ -11,4 +11,6 @@ public interface UserBranchDao<T> extends BaseDao<T> {
 	public int appSandBoxForDeveloper(UserBranchEntity ube);
 	
 	public void accountOldDateHandle();
+	
+	public int appDockerForDeveloper(UserBranchEntity ube);
 }
