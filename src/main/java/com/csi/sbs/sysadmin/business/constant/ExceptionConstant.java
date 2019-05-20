@@ -13,6 +13,7 @@ public class ExceptionConstant {
 	public static final int SUCCESS_CODE2001003 = 2001003;//给developer 指派沙盒成功
 	public static final int SUCCESS_CODE2001004 = 2001004;//获取所有会产生沙盘数据的表成功
 	public static final int SUCCESS_CODE2001005 = 2001005;//给developer 设置docker成功
+	public static final int SUCCESS_CODE2001006 = 2001006;//获取所有包含branchCode的表成功
 	
 	/**
      * 错误码
@@ -48,6 +49,7 @@ public class ExceptionConstant {
     public static final int ERROR_CODE5001007 = 5001007;//给developer 指派沙盒失败
 	public static final int ERROR_CODE5001008 = 5001008;//获取所有会产生沙盘数据的表失败
 	public static final int ERROR_CODE5001009 = 5001009;//给developer 设置dockerId失败
+	public static final int ERROR_CODE5001010 = 5001010;//获取所有包含branchCode的表失败
     
     public static Map<Integer,String> getExceptionMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
@@ -81,6 +83,7 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE5001007, "Appoint SandBoxId Fail For developer");//给developer 指派沙盒失败
     	map.put(ERROR_CODE5001008, "Get SandBox Table Fail");//获取所有会产生沙盘数据的表失败
     	map.put(ERROR_CODE5001009, "Appoint DockerId Fail For developer");//给developer 设置dockerId失败
+    	map.put(ERROR_CODE5001010, "Get BranchCode Table Fail");//获取所有包含branchCode的表失败
     	
     	return map;
     }
@@ -92,6 +95,7 @@ public class ExceptionConstant {
     	map.put(SUCCESS_CODE2001003, "Appoint SandBoxId Success For developer");//给developer 指派沙盒成功
     	map.put(SUCCESS_CODE2001004, "Get SandBox Table Success");//获取所有会产生沙盘数据的表成功
     	map.put(SUCCESS_CODE2001005, "Appoint DockerId Success For developer");//给developer 设置dockerId成功
+    	map.put(SUCCESS_CODE2001006, "Get BranchCode Table Success");//获取所有包含branchCode的表成功
     	
     	return map;
     }

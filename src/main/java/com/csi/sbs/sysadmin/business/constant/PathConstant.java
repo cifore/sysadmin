@@ -64,7 +64,12 @@ public class PathConstant {
     public static final String DEL_SANDBOXDATA_CREDITCARD = "http://CREDITCARD/creditcard/delSandBoxId";
     //删除沙盘数据(investment)
     public static final String DEL_SANDBOXDATA_INVESTMENT = "http://INVESTMENT/investment/datehandle/delSandBoxId";
-    
+    //信用卡branch数据查询
+    public static final String CREDITCARD_BRANCHSEARCH = "http://CREDITCARD/creditcard/branchDataSearch";
+    //投资branch数据查询
+    public static final String INVESTMENT_BRANCHSEARCH = "http://INVESTMENT/investment/datehandle/branchDataSearch";
+    //deposit branch数据查询
+    public static final String DEPOSIT_BRANCHSEARCH = "http://DEPOSIT/deposit/account/branchDataSearch";
     
     
     

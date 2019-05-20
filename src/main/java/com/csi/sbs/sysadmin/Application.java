@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-import com.csi.sbs.common.business.log.InitLog;
+//import com.csi.sbs.common.business.log.InitLog;
 
 
 
@@ -28,10 +28,11 @@ public class Application {
 	
 	
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(Application.class, args);
 		//初始化日志相关配置
-		InitLog.loadLogConfig(context,"sysadmin");
+		//InitLog.loadLogConfig(context,"sysadmin");
 	}
 
 }

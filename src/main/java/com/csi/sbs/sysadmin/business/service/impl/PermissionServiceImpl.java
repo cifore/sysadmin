@@ -12,9 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csi.sbs.common.business.json.JsonProcess;
+import com.csi.sbs.common.business.model.HeaderModel;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddUserModel;
-import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.PermissionModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReAuthorityModel;
 import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;

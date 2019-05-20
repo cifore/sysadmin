@@ -2,8 +2,8 @@ package com.csi.sbs.sysadmin.business.service;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.csi.sbs.common.business.model.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.AddLoginUserModel;
-import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 

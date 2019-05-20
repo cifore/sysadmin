@@ -1,6 +1,8 @@
 package com.csi.sbs.sysadmin.business.constant;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SysConstant {
@@ -94,6 +96,79 @@ public class SysConstant {
     	
     	
     	return map;
+    }
+    
+    /**
+     * 返回带有branchCode的表
+     * @return
+     */
+    public static Map<String,String> getBranchCodeTable(){
+    	Map<String,String> map = new HashMap<String,String>();
+    	map.put(T_CUSTOMER_MASTER_SANDBOX, "Customer Master Table");
+    	map.put(T_CURRENTACCOUNT_MASTER, "Current Account Table");
+    	map.put(T_SAVINGACCOUNT_MASTER, "Saving Account Table");
+    	map.put(T_FEXACCOUNT_MASTER, "Fex Account Table");
+    	map.put(T_TERMDEPOSIT_MASTER, "TermDeposit Account Table");
+    	map.put(T_TERMDEPOSIT_DETAIL, "TermDeposit Detail Table");
+    	map.put(T_PRECIOUSMETALACCOUNT_MASTER, "PreciousMetal Account Table");
+    	map.put(T_TRANSACTION_LOG, "Transaction Log Table");
+    	map.put(T_STOCKTRADINGACCOUNT_MASTER, "StockTrading Account Table");
+    	map.put(T_MUTUALFUNDACCOUNT_MASTER, "MutualFund Account Table");
+    	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");;
+    	map.put(T_MUTUALFUND_PLATFORM_LOG, "MutualFund PlatForm Log Table");
+    	map.put(T_STOCK_PLATFORM_LOG, "Stock PlatForm Log Table");
+    	map.put(T_CREDITCARD_MASTER, "CreditCard Account Table");
+    	map.put(T_CREDITCARD_TRANSACTION_DETAIL, "CreditCard Transaction Detail Table");
+
+    	
+    	
+    	return map;
+    }
+    
+    
+    /**
+     * deposit数据表
+     * @return
+     */
+    public static List<String> depositTable(){
+    	List<String> list = new ArrayList<String>();
+    	list.add(T_CUSTOMER_MASTER_SANDBOX);
+    	list.add(T_CURRENTACCOUNT_MASTER);
+    	list.add(T_SAVINGACCOUNT_MASTER);
+    	list.add(T_FEXACCOUNT_MASTER);
+    	list.add(T_TERMDEPOSIT_MASTER);
+    	list.add(T_TERMDEPOSIT_DETAIL);
+    	list.add(T_PRECIOUSMETALACCOUNT_MASTER);
+    	list.add(T_TRANSACTION_LOG);
+    	
+    	return list;
+    }
+    
+    /**
+     * 信用卡数据表
+     * @return
+     */
+    public static List<String> creditCardTable(){
+    	List<String> list = new ArrayList<String>();
+    	list.add(T_CREDITCARD_MASTER);
+    	list.add(T_CREDITCARD_TRANSACTION_DETAIL);
+    	
+    	return list;
+    }
+    
+    
+    /**
+     * investment数据表
+     */
+    public static List<String> investmentTable(){
+    	List<String> list = new ArrayList<String>();
+    	list.add(T_STOCKTRADINGACCOUNT_MASTER);
+    	list.add(T_MUTUALFUNDACCOUNT_MASTER);
+    	list.add(T_MUTUALFUND_PLATFORM_LOG);
+    	list.add(T_MUTUALFUND_PLATFORM_LOG);
+    	list.add(T_STOCK_PLATFORM_LOG);
+    	
+    	return list;
     }
     
 }

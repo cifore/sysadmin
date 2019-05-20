@@ -15,14 +15,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.codingapi.tx.annotation.TxTransaction;
 import com.csi.sbs.common.business.exception.OtherException;
 import com.csi.sbs.common.business.json.JsonProcess;
+import com.csi.sbs.common.business.model.HeaderModel;
 import com.csi.sbs.common.business.util.EncryptionUtil;
 import com.csi.sbs.common.business.util.JwtTokenProviderUtil;
-import com.csi.sbs.common.business.util.SendLogUtil;
+//import com.csi.sbs.common.business.util.SendLogUtil;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.AddLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.FindCustomerModel;
-import com.csi.sbs.sysadmin.business.clientmodel.HeaderModel;
 import com.csi.sbs.sysadmin.business.clientmodel.LoginModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCreateLoginUserModel;
 import com.csi.sbs.sysadmin.business.clientmodel.ReCustomerModel;
@@ -103,10 +103,10 @@ public class LoginInServiceImpl implements LoginInService {
 		result.setData(reLoginIn.getId());
 
 		// 发送消息到监控中心
-		SendLogUtil.sendInfo("loginIn--Send Info Test Message");
-		SendLogUtil.sendWarn("loginIn--Send Warn Test Message");
-		SendLogUtil.sendError("loginIn--Send Error Test Message");
-		SendLogUtil.sendDebug("loginIn--Send Debug Test Message");
+//		SendLogUtil.sendInfo("loginIn--Send Info Test Message");
+//		SendLogUtil.sendWarn("loginIn--Send Warn Test Message");
+//		SendLogUtil.sendError("loginIn--Send Error Test Message");
+//		SendLogUtil.sendDebug("loginIn--Send Debug Test Message");
 		return result;
 	}
 
@@ -173,6 +173,7 @@ public class LoginInServiceImpl implements LoginInService {
 		claims.setLoginName(relie.getLoginname());
 		claims.setCustomerNumber(rcm.getCustomernumber());
 		claims.setSandBoxId(reube!=null?reube.getSandboxid():"");
+		claims.setDockerId(reube!=null?reube.getDockerid():"");
 		@SuppressWarnings("unused")
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

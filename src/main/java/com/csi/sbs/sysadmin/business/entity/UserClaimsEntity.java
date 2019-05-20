@@ -22,12 +22,22 @@ public class UserClaimsEntity extends JwtMap implements Claims {
 	private String clearingCode;
 	private String branchCode;
 	private String sandBoxId;
+	private String dockerId;
 	
 	
 	
     
  
-    public String getSandBoxId() {
+    public String getDockerId() {
+		return dockerId;
+	}
+
+	public void setDockerId(String dockerId) {
+		this.dockerId = dockerId;
+		setValue("dockerId", this.dockerId);
+	}
+
+	public String getSandBoxId() {
 		return sandBoxId;
 	}
 
