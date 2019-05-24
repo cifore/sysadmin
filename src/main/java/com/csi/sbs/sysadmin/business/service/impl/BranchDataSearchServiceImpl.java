@@ -39,6 +39,14 @@ public class BranchDataSearchServiceImpl implements BranchDataSearchService{
 		}
 		//返回数据处理
 		ResponseEntity<String> res = SRUtil.sendNoWithHeader(restTemplate, path, JsonProcess.changeEntityTOJSON(bdsm));
+		if(res.getStatusCodeValue()!=200){
+			//查询失败
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041005),ExceptionConstant.ERROR_CODE4041005);
+		}
+		if(res.getBody().equals("<List/>") || res.getBody()==null || "".equals(res.getBody())){
+			//查询失败
+			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041005),ExceptionConstant.ERROR_CODE4041005);
+		}
 		JSONObject str1 = XmlToJsonUtil.xmlToJson(res.getBody());
 		String str2 = JsonProcess.returnValue(str1, "List");
 		JSONObject str3 = JSON.parseObject(str2);
