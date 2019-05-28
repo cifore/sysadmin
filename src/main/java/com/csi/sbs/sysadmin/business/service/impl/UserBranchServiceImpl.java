@@ -192,6 +192,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				header.setBranchCode(cms.getBranchcode());
 				header.setSandBoxId(sandBoxId);
 				header.setUserID(developerId);
+				//header.setDockerId(null);
 				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE + customerID);
 				cms.setDateOfBirth("1975-08-25");
 				// 创建customer
