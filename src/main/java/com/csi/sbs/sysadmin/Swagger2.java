@@ -3,6 +3,8 @@ package com.csi.sbs.sysadmin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.csi.sbs.sysadmin.business.constant.PathConstant;
+
 //import com.csi.sbs.sysadmin.business.constant.PathConstant;
 
 //import com.csi.sbs.sysadmin.business.constant.PathConstant;
@@ -36,7 +38,7 @@ public class Swagger2 {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                //.host(PathConstant.GATEWAY_LOCALHOST)
+                .host(PathConstant.GATEWAY_SERVICE)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.csi.sbs.sysadmin.business.controller"))
