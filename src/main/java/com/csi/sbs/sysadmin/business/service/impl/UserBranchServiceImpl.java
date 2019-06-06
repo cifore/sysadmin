@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.model.HeaderModel;
 import com.csi.sbs.common.business.util.ImportUtil;
@@ -164,7 +165,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 	@SuppressWarnings({ "rawtypes", "unused" })
 	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId, String developerId) throws Exception {
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
-		List list = ImportUtil.importData(PathConstant.CUSTOMER_TEMPLATE, CustomerMasterSandBox.class);
+		List list = ImportUtil.importData(CommonConstant.CUSTOMER_MASTER_TEMPLATE, CustomerMasterSandBox.class);
 		// 创建请求头
 		HeaderModel header = new HeaderModel();
 		// 返回结果

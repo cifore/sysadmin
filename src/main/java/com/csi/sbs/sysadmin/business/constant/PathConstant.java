@@ -14,8 +14,6 @@ public class PathConstant {
     public static final String GET_CUSTOMER_URL = "http://" + CommonConstant.getDEPOSIT() + SysConstant.GET_CUSTOMER_URL;
     //创建customer 服务地址
     public static final String CREATE_CUSTOMER_URL = "http://DEPOSIT/deposit/account/customerCreation";
-    //t_customer_master模板地址
-    public static final String CUSTOMER_TEMPLATE = "C://t_customer_master.xls";
     //创建Account 服务地址
     public static final String CREATE_ACCOUNT_URL = "http://DEPOSIT/deposit/account/accountCreation";
     //获取下一个可用的递增序列号服务地址
