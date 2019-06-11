@@ -41,6 +41,7 @@ public class SRUtil {
         requestHeaders.add("branchCode", header.getBranchCode());
         requestHeaders.add("customerNumber", header.getCustomerNumber());
         requestHeaders.add("sandBoxId", header.getSandBoxId());
+        requestHeaders.add("dockerId", header.getDockerId());
         requestHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(json, requestHeaders);
