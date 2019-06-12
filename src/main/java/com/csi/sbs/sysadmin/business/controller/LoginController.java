@@ -97,9 +97,9 @@ public class LoginController {
 		@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
 		@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."),
     })
-	public ResultUtil userCreation(@RequestBody AddLoginUserModel alm) throws Exception{
+	public ResultUtil userCreation(@RequestBody AddLoginUserModel addLoginUserModel) throws Exception{
 		try{
-			return loginInService.createLoginUser(alm,restTemplate);
+			return loginInService.createLoginUser(addLoginUserModel,restTemplate);
 		}catch(Exception e){
 			throw e;
 		}

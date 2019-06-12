@@ -81,17 +81,17 @@ public class CheckListController {
 	@RequestMapping(value = "/testApiSend", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String testApi(@RequestBody TestApiModel ase) throws JsonProcessingException {
+	public String testApi(@RequestBody TestApiModel testApiModel) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String requestmode = ase.getRequestmode();
-		String apiAddress = ase.getApiaddress();
+		String requestmode = testApiModel.getRequestmode();
+		String apiAddress = testApiModel.getApiaddress();
 		String result = null;
-		JSON.parse(ase.getInputDesc());
+		JSON.parse(testApiModel.getInputDesc());
 		if (requestmode.equals("GET")) {
 			result = restTemplate.getForEntity(apiAddress, String.class).getBody();
 		} else if (requestmode.equals("POST")) {
 			ResponseEntity<String> response = restTemplate.postForEntity(apiAddress,
-					PostUtil.getRequestEntity(ase.getInputDesc()), String.class);
+					PostUtil.getRequestEntity(testApiModel.getInputDesc()), String.class);
 			result = response.getBody();
 		}
 		if (result == null) {
@@ -116,10 +116,10 @@ public class CheckListController {
 	@ApiOperation(value = "This api return api's url base on api's name.", notes = "version 0.0.1")
 	@ApiIgnore()
 	public String getServiceInternalURL(final HttpServletRequest request, final HttpServletResponse response,
-			@RequestBody ApiNameModel anm) throws Exception {
+			@RequestBody ApiNameModel apiNameModel) throws Exception {
 		Map<String, Object> map = null;
 		try {
-			map = checkListService.getServiceInternalURL(anm);
+			map = checkListService.getServiceInternalURL(apiNameModel);
 		} catch (Exception e) {
 			throw e;
 		}

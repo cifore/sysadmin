@@ -53,9 +53,9 @@ public class BranchController {
 	@RequestMapping(value = "/getClearingCodeByCountryCode", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String getClearingCodeByCountryCode(@RequestBody GetCountryCodeModel ase) throws Exception {
+	public String getClearingCodeByCountryCode(@RequestBody GetCountryCodeModel getCountryCodeModel) throws Exception {
 		try {
-			return objectMapper.writeValueAsString(branchService.getClearingCodeByCountryCode(ase));
+			return objectMapper.writeValueAsString(branchService.getClearingCodeByCountryCode(getCountryCodeModel));
 		} catch (Exception e) {
 			ResultUtil result = new ResultUtil();
 			result.setCode("0");
@@ -68,9 +68,9 @@ public class BranchController {
 	@RequestMapping(value = "/getBrancoByCC", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String getBrancoByCC(@RequestBody FindBranchCodeModel ase) throws Exception {
+	public String getBrancoByCC(@RequestBody FindBranchCodeModel findBranchCodeModel) throws Exception {
 		try {
-			return objectMapper.writeValueAsString(branchService.getBrancoByCC(ase));
+			return objectMapper.writeValueAsString(branchService.getBrancoByCC(findBranchCodeModel));
 		} catch (Exception e) {
 			ResultUtil result = new ResultUtil();
 			result.setCode("0");
@@ -84,9 +84,9 @@ public class BranchController {
 	@RequestMapping(value = "/checkccbInfo", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String checkccbInfo(@RequestBody CheckCCBModel ase) throws Exception {
+	public String checkccbInfo(@RequestBody CheckCCBModel checkCCBModel) throws Exception {
 		try {
-			return objectMapper.writeValueAsString(branchService.checkccbInfo(ase));
+			return objectMapper.writeValueAsString(branchService.checkccbInfo(checkCCBModel));
 		} catch (Exception e) {
 			ResultUtil result = new ResultUtil();
 			result.setCode("0");

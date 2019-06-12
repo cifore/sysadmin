@@ -59,8 +59,8 @@ public class CurrencyController{
 	@RequestMapping(value = "/isSupportbyccy", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String isSupportbyccy(@RequestBody CurrencyModel ase) throws Exception{
-		Map<String,Object> map  = currencyService.queryByCcyCode(ase.getCcycode());
+	public String isSupportbyccy(@RequestBody CurrencyModel currencyModel) throws Exception{
+		Map<String,Object> map  = currencyService.queryByCcyCode(currencyModel.getCcycode());
 		if(map.get("code").equals("0")){
 			return "false";
 		}else{
@@ -80,8 +80,8 @@ public class CurrencyController{
 	@RequestMapping(value = "/queryByCcyCode", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String queryByCcyCode(@RequestBody CurrencyModel ase) throws Exception{
-		Map<String,Object> map = currencyService.queryByCcyCode(ase.getCcycode());
+	public String queryByCcyCode(@RequestBody CurrencyModel currencyModel) throws Exception{
+		Map<String,Object> map = currencyService.queryByCcyCode(currencyModel.getCcycode());
 		if(map.get("ccyInfo") ==  null){
 			return objectMapper.writeValueAsString(map);
 		}
@@ -92,8 +92,8 @@ public class CurrencyController{
 	@RequestMapping(value = "/insertCurrency", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String insertCurrency(@RequestBody @Validated InsertCurrencyModel ase) throws Exception{
-		Map<String,Object> map = currencyService.insertCurrency(ase);
+	public String insertCurrency(@RequestBody @Validated InsertCurrencyModel insertCurrencyModel) throws Exception{
+		Map<String,Object> map = currencyService.insertCurrency(insertCurrencyModel);
         return objectMapper.writeValueAsString(map);	
 	}
 	
@@ -101,8 +101,8 @@ public class CurrencyController{
 	@RequestMapping(value = "/updateCurrency", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String updateCurrency(@RequestBody CurrencyEntity ase) throws Exception{
-		Map<String,Object> map = currencyService.updateCurrency(ase);
+	public String updateCurrency(@RequestBody CurrencyEntity currencyEntity) throws Exception{
+		Map<String,Object> map = currencyService.updateCurrency(currencyEntity);
         return objectMapper.writeValueAsString(map);	
 	}
 	
@@ -110,8 +110,8 @@ public class CurrencyController{
 	@RequestMapping(value = "/deleteCurrency", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String deleteCurrency(@RequestBody @Validated DeleteCurrencyModel ase) throws Exception{
-		Map<String,Object> map = currencyService.deleteCurrency(ase.getId());
+	public String deleteCurrency(@RequestBody @Validated DeleteCurrencyModel deleteCurrencyModel) throws Exception{
+		Map<String,Object> map = currencyService.deleteCurrency(deleteCurrencyModel.getId());
         return objectMapper.writeValueAsString(map);	
 	}
 }

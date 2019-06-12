@@ -31,10 +31,10 @@ public class SysTransactionLogController {
 	@RequestMapping(value = "/writeTransactionLog", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String createTransactionLog(@RequestBody SysTransactionLogEntity stl) throws Exception{
+	public String createTransactionLog(@RequestBody SysTransactionLogEntity sysTransactionLogEntity) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		try{
-			stlservice.writeTransactionLog(stl);			
+			stlservice.writeTransactionLog(sysTransactionLogEntity);			
 			map.put("msg", "save log success");
 			map.put("code", "1");
 			return objectMapper.writeValueAsString(map);

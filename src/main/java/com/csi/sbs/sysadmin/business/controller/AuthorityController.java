@@ -107,9 +107,9 @@ public class AuthorityController {
 			@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
 			@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
 			@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."), })
-	public ResultUtil appSandBoxForDeveloper(@RequestBody SandBoxModel sbm,HttpServletRequest request) throws Exception{
+	public ResultUtil appSandBoxForDeveloper(@RequestBody SandBoxModel sandBoxModel,HttpServletRequest request) throws Exception{
 		try{
-			return userBranchService.appSandBoxForDeveloper(sbm, restTemplate);
+			return userBranchService.appSandBoxForDeveloper(sandBoxModel, restTemplate);
 		}catch(OtherException e){
 			throw e;
 		}catch(NotFoundException e){
@@ -135,9 +135,9 @@ public class AuthorityController {
 			@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
 			@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
 			@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."), })
-	public ResultUtil appDockerForDeveloper(@RequestBody DockerModel dm,HttpServletRequest request) throws Exception{
+	public ResultUtil appDockerForDeveloper(@RequestBody DockerModel dockerModel,HttpServletRequest request) throws Exception{
 		try{
-			return userBranchService.appDockerForDeveloper(dm, restTemplate);
+			return userBranchService.appDockerForDeveloper(dockerModel, restTemplate);
 		}catch(OtherException e){
 			throw e;
 		}catch(NotFoundException e){

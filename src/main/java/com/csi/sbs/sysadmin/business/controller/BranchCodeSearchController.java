@@ -68,9 +68,9 @@ public class BranchCodeSearchController {
 	@RequestMapping(value = "/getBranchCodeTableInfo", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to return branchCode Table Information.", notes = "version 0.0.1")
-	public ResultUtil getBranchCodeTableInfo(@RequestBody @Validated BranchDataSearchModel bdsm) throws Exception {
+	public ResultUtil getBranchCodeTableInfo(@RequestBody @Validated BranchDataSearchModel branchDataSearchModel) throws Exception {
 	     try{
-	    	 return branchDataSearchService.getTableBranchInfo(restTemplate, bdsm); 
+	    	 return branchDataSearchService.getTableBranchInfo(restTemplate, branchDataSearchModel); 
 	     }catch(Exception e){
 	    	 throw e;
 	     }

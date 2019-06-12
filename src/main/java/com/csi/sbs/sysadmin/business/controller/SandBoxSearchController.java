@@ -63,7 +63,7 @@ public class SandBoxSearchController {
 	@RequestMapping(value = "/getSandBoxTableInfo", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "This API is designed to return sandBox Table Information.", notes = "version 0.0.1")
-	public Map<String, Object> getSandBoxTableInfo(@RequestBody @Validated SandboxSearchModel ase) throws Exception {
-			return sandboxSearchService.getTableSandboxInfo(restTemplate, ase); 
+	public Map<String, Object> getSandBoxTableInfo(@RequestBody @Validated SandboxSearchModel sandboxSearchModel) throws Exception {
+			return sandboxSearchService.getTableSandboxInfo(restTemplate, sandboxSearchModel); 
 	}
 }
