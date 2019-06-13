@@ -7,7 +7,7 @@ public class PathConstant {
 	//获取内部服务调用地址
 	public static final String SERVICE_INTERNAL_URL = "http://" + CommonConstant.getSYSADMIN() + SysConstant.SERVICE_INTERNAL_URL;
 	//网关地址(服务器)
-    public static final String GATEWAY_SERVICE = "47.112.146.96:8086/sysadmin";
+    public static final String GATEWAY_SERVICE = "3.130.122.199:8086/sysadmin";
     //网关地址(本地)
     public static final String GATEWAY_LOCALHOST = "localhost:8086/sysadmin";
     //获取customer服务地址
@@ -41,7 +41,7 @@ public class PathConstant {
     //股票交易
     public static final String STOCK_TRAD = "http://INVESTMENT/investment/stock/stockTrading";
     //外汇交易
-    public static final String FOREIGNEXCHANGE = "http://FOREIGNEXCHANGE/foreignExchange/currencyExchange";
+    public static final String FOREIGNEXCHANGE = "http://FOREIGNEXCHANGE/foreignExchange/foreignExchange";
     //转账
     public static final String TRANSFER = "http://DEPOSIT/deposit/account/transfer";
     //信用卡还款
