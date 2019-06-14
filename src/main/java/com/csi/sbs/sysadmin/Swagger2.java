@@ -1,9 +1,11 @@
 package com.csi.sbs.sysadmin;
  
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.csi.sbs.sysadmin.business.constant.PathConstant;
+import com.csi.sbs.sysadmin.business.config.PathConfig;
 
 //import com.csi.sbs.sysadmin.business.constant.PathConstant;
 
@@ -26,6 +28,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class Swagger2 {
+	
+	
+	
+	@Resource
+	private PathConfig pathConfig;
     
     /**
      * 创建API应用
@@ -38,7 +45,7 @@ public class Swagger2 {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host(PathConstant.GATEWAY_SERVICE)
+                .host(pathConfig.getGateWayUrl())
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.csi.sbs.sysadmin.business.controller"))
@@ -54,9 +61,9 @@ public class Swagger2 {
     @SuppressWarnings("deprecation")
 	private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Open API for sysadmin service")
-                .description("Open API for sysadmin service")
-                .termsOfServiceUrl("http://localhost:8083/sysadmin")
+                .title("Sysadmin service")
+                .description("Sysadmin service")
+                //.termsOfServiceUrl("http://localhost:8083/sysadmin")
                 .contact("Pim li:lihuacheng@chinasofti.com")
                 .version("1.0")
                 .build();
