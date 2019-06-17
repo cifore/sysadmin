@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ import com.csi.sbs.common.business.util.ImportUtil;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
 import com.csi.sbs.sysadmin.business.clientmodel.QueryTdDetailSysadminModel;
+import com.csi.sbs.sysadmin.business.clientmodel.SandboxSaveModel;
 import com.csi.sbs.sysadmin.business.clientmodel.otherservice.TermDepositDetailModel;
 import com.csi.sbs.sysadmin.business.constant.PathConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
@@ -37,22 +39,33 @@ import com.csi.sbs.sysadmin.business.sandbox.deposit.TransactionSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.foreignexchange.ExchangeSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.FundBuyTradingSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.StockTradingSandBox;
+import com.csi.sbs.sysadmin.business.service.impl.SandboxServiceImpl;
+
 
 public class OfflineGenerateSandBoxUtil {
 	
 	
-	private String customerTemplate="D://t_customer_master.xls";
+//	public void test(SandboxServiceImpl s) throws Exception{
+//		SandboxSaveModel sm = new SandboxSaveModel();
+//		sm.setSandboxid("123456");
+//		s.save(sm);
+//	}
 	
+	private String customerTemplate="D://t_customer_master.xls";
 	
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	private SandboxSaveModel sm = new SandboxSaveModel();
+	
 	@SuppressWarnings({ "rawtypes", "unused" })
-	public void generateSandBox(RestTemplate restTemplate) throws Exception {
+	public void generateSandBox(RestTemplate restTemplate,SandboxServiceImpl sandBoxSave) throws Exception {
 		String sandBoxId = UUIDUtil.generateUUID();
+		sm.setSandboxid(sandBoxId);
+		//保存sandboxid
+		sandBoxSave.save(sm);
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
-		
 		List list = ImportUtil.importData(customerTemplate, CustomerMasterSandBox.class);
 		// 创建请求头
 		HeaderModel header = new HeaderModel();

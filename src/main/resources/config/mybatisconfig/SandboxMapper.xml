@@ -6,6 +6,7 @@
     <result column="SandBoxId" property="sandboxid" jdbcType="VARCHAR" />
     <result column="State" property="state" jdbcType="VARCHAR" />
     <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="LastUpdatedDate" property="lastupdateddate" jdbcType="TIMESTAMP" />
   </resultMap>
   
   
@@ -57,6 +58,9 @@
       <if test="createdate != null" >
         CreateDate,
       </if>
+      <if test="lastupdateddate != null" >
+        LastUpdatedDate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -70,6 +74,9 @@
       </if>
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdateddate != null" >
+        #{lastupdateddate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -86,6 +93,9 @@
       <if test="createdate != null" >
         CreateDate = #{createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="lastupdateddate != null" >
+        LastUpdatedDate = #{lastupdateddate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -95,6 +105,9 @@
     <set >
       <if test="state != null" >
         State = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdateddate != null" >
+        LastUpdatedDate = #{lastupdateddate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}

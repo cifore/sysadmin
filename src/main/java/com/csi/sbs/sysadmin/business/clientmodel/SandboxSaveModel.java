@@ -1,8 +1,8 @@
-package com.csi.sbs.sysadmin.business.entity;
+package com.csi.sbs.sysadmin.business.clientmodel;
 
 import java.util.Date;
 
-public class SandboxEntity {
+public class SandboxSaveModel {
 	
     private String id;
 
@@ -11,8 +11,6 @@ public class SandboxEntity {
     private String state;
 
     private Date createdate;
-    
-    private Date lastupdateddate;
     
     
     //表外字段
@@ -24,15 +22,7 @@ public class SandboxEntity {
     
     
 
-    public Date getLastupdateddate() {
-		return lastupdateddate;
-	}
-
-	public void setLastupdateddate(Date lastupdateddate) {
-		this.lastupdateddate = lastupdateddate;
-	}
-
-	public int getCount() {
+    public int getCount() {
 		return count;
 	}
 

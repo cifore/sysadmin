@@ -8,6 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+import com.csi.sbs.sysadmin.business.service.impl.SandboxServiceImpl;
+
+
+
 
 
 
@@ -15,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class Application {
+public class SysadminApplication {
 	
 	
 	@Bean
@@ -28,18 +32,22 @@ public class Application {
 	
 	
 	
-	@SuppressWarnings("unused")
+	
 	public static void main(String[] args) throws Exception {
-		ApplicationContext context = SpringApplication.run(Application.class, args);
+		ApplicationContext context = SpringApplication.run(SysadminApplication.class, args);
+		@SuppressWarnings("unused")
 		RestTemplate r = context.getBean(org.springframework.web.client.RestTemplate.class);
-//		Thread.sleep(2000);
-//		//初始化日志相关配置
-//		//InitLog.loadLogConfig(context,"sysadmin");
+		@SuppressWarnings("unused")
+		SandboxServiceImpl s = (SandboxServiceImpl) context.getBean(com.csi.sbs.sysadmin.business.service.impl.SandboxServiceImpl.class);
+		//Thread.sleep(4000);
+		//初始化日志相关配置
+		//InitLog.loadLogConfig(context,"sysadmin");
 //		OfflineGenerateSandBoxUtil ou = new OfflineGenerateSandBoxUtil();
 //		for(int i=0;i<99;i++){
-//			ou.generateSandBox(r);
+//			System.out.println("正在生成第"+i+"个sandboxid数据===========");
+//			ou.generateSandBox(r,s);
 //		}
-//		System.out.println("100个sandboxid生成完毕");
+//		System.out.println("100个sandboxid生成完毕================");
 	}
 
 }
