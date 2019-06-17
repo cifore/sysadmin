@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csi.sbs.sysadmin.business.dao.SandboxDao" >
+  <resultMap id="BaseResultMap" type="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SandBoxId" property="sandboxid" jdbcType="VARCHAR" />
+    <result column="State" property="state" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    select * from t_sandbox
+    where 1=1
+    <if test="id != null" >
+      and ID = #{id,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="randomOne" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    select * from t_sandbox
+    where 1=1
+    <if test="id != null" >
+      and ID = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="state != null" >
+      and State = #{state,jdbcType=VARCHAR}
+    </if>
+    ORDER BY RAND() LIMIT #{count}
+  </select>
+  
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    select * from t_sandbox
+    where 1=1
+    <if test="id != null" >
+      and ID = #{id,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from t_sandbox
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    insert into t_sandbox
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="sandboxid != null" >
+        SandBoxId,
+      </if>
+      <if test="state != null" >
+        State,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sandboxid != null" >
+        #{sandboxid,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    update t_sandbox
+    <set >
+      <if test="sandboxid != null" >
+        SandBoxId = #{sandboxid,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        State = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="markUsed" parameterType="com.csi.sbs.sysadmin.business.entity.SandboxEntity" >
+    update t_sandbox
+    <set >
+      <if test="state != null" >
+        State = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

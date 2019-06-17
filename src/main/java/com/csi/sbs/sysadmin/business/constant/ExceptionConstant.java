@@ -8,6 +8,7 @@ public class ExceptionConstant {
 	/**
 	 * 正常码
 	 */
+	public static final int SUCCESS_CODE200 = 200;//成功
 	public static final int SUCCESS_CODE2001001 = 2001001;//登录成功
 	public static final int SUCCESS_CODE2001002 = 2001002;//添加成功
 	public static final int SUCCESS_CODE2001003 = 2001003;//给developer 指派沙盒成功
@@ -27,6 +28,7 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE2021007 = 2021007;//branchnumber,countryCode,clearcode已经存在
 	public static final int ERROR_CODE2021008 = 2021008;//用户已经授权
 	
+	
 	public static final int ERROR_CODE4031001 = 4031001;//授权失败
 	public static final int ERROR_CODE4031002 = 4031002;//已经授权
 	
@@ -35,6 +37,7 @@ public class ExceptionConstant {
 	public static final int ERROR_CODE4041003 = 4041003;//BankID does not exist
 	public static final int ERROR_CODE4041004 = 4041004;//tablename not exist
 	public static final int ERROR_CODE4041005 = 4041005;//Record Not Found
+	public static final int ERROR_CODE4041006 = 4041006;//没有找到可用的sandboxid
 	
 	public static final int ERROR_CODE400001 = 400001;//必填字段不全
 	public static final int ERROR_CODE400002 = 400002;//请求body格式有误
@@ -73,6 +76,7 @@ public class ExceptionConstant {
     	map.put(ERROR_CODE4041003, "BankID does not exist");//BankID does not exist
     	map.put(ERROR_CODE4041004, "tablename not exist");//BankID does not exist
     	map.put(ERROR_CODE4041005, "Record Not Found");//Record Not Found
+    	map.put(ERROR_CODE4041006, "No available sandboxid found");//没有找到可用的sandboxid
     	
     	map.put(ERROR_CODE5001001, "Get Customer Fail");//获取客户信息失败
     	map.put(ERROR_CODE5001002, "Failed to add login user");//添加登录用户失败
@@ -90,6 +94,7 @@ public class ExceptionConstant {
     
     public static Map<Integer,String> getSuccessMap(){
     	Map<Integer,String> map = new HashMap<Integer,String>();
+    	map.put(SUCCESS_CODE200, "Success");//成功
     	map.put(SUCCESS_CODE2001001, "Login Success");//登录成功
     	map.put(SUCCESS_CODE2001002, "Add Success");//添加成功
     	map.put(SUCCESS_CODE2001003, "Appoint SandBoxId Success For developer");//给developer 指派沙盒成功

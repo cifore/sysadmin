@@ -171,4 +171,8 @@ public class SysConstant {
     	return list;
     }
     
+    
+    public static final String USED = "0";//sandboxid已被使用
+    public static final String NOT_USED = "1";//sandboxid未被使用
+    
 }

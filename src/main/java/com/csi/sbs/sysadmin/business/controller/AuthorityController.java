@@ -19,6 +19,7 @@ import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
 import com.csi.sbs.sysadmin.business.exception.NotFoundException;
 import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.service.PermissionService;
+import com.csi.sbs.sysadmin.business.service.SandboxService;
 import com.csi.sbs.sysadmin.business.service.UserBranchService;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +39,9 @@ public class AuthorityController {
 	
 	@Resource
 	private UserBranchService userBranchService;
+	
+	@Resource
+	private SandboxService sandboxService;
 	
 	@Resource
 	private RestTemplate restTemplate;
@@ -99,17 +103,18 @@ public class AuthorityController {
 	 * @throws Exception 
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/appSandBoxForDeveloper", method = RequestMethod.POST)
+	@RequestMapping(value = "/getSandBox", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "This API is designed to set sandBoxId for developer.", notes = "version 0.0.1")
+	@ApiOperation(value = "This API is designed to get sandBoxId for developer.", notes = "version 0.0.1")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
 			@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
 			@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
 			@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
 			@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."), })
-	public ResultUtil appSandBoxForDeveloper(@RequestBody SandBoxModel sandBoxModel,HttpServletRequest request) throws Exception{
+	public ResultUtil getSandBox(@RequestBody SandBoxModel sandBoxModel,HttpServletRequest request) throws Exception{
 		try{
-			return userBranchService.appSandBoxForDeveloper(sandBoxModel, restTemplate);
+			return sandboxService.randomOne(sandBoxModel);
+			//return userBranchService.appSandBoxForDeveloper(sandBoxModel, restTemplate);
 		}catch(OtherException e){
 			throw e;
 		}catch(NotFoundException e){
@@ -146,5 +151,34 @@ public class AuthorityController {
 			throw e;
 		}
 	}
+	
+	
+//	/**
+//	 * 线下生成数据
+//	 * @param sbm
+//	 * @param request
+//	 * @throws Exception 
+//	 */
+//	@SuppressWarnings("rawtypes")
+//	@RequestMapping(value = "/getSandBox", method = RequestMethod.POST)
+//	@ResponseBody
+//	@ApiOperation(value = "This API is designed to get sandBoxId for developer.", notes = "version 0.0.1")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "Query completed successfully.(Returned By Get)"),
+//			@ApiResponse(code = 404, message = "The requested deposit account does not exist.Action: Please make sure the account number and account type you’re inputting are correct."),
+//			@ApiResponse(code = 201, message = "Normal execution. The request has succeeded. (Returned By Post)"),
+//			@ApiResponse(code = 403, message = "Token has incorrect scope or a security policy was violated. Action: Please check whether you’re using the right token with the legal authorized user account."),
+//			@ApiResponse(code = 500, message = "Something went wrong on the API gateway or micro-service. Action: check your network and try again later."), })
+//	public ResultUtil getSandBox(@RequestBody SandBoxModel sandBoxModel,HttpServletRequest request) throws Exception{
+//		try{
+//			return sandboxService.randomOne(sandBoxModel);
+//			//return userBranchService.appSandBoxForDeveloper(sandBoxModel, restTemplate);
+//		}catch(OtherException e){
+//			throw e;
+//		}catch(NotFoundException e){
+//			throw e;
+//		}catch(Exception e){
+//			throw e;
+//		}
+//	}
 
 }

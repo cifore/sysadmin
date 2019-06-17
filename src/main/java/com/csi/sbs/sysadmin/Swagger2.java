@@ -62,7 +62,7 @@ public class Swagger2 {
 	private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Sysadmin service")
-                .description("Sysadmin service")
+                //.description("Sysadmin service")
                 //.termsOfServiceUrl("http://localhost:8083/sysadmin")
                 .contact("Pim li:lihuacheng@chinasofti.com")
                 .version("1.0")

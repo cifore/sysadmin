@@ -1,4 +1,4 @@
-package com.csi.sbs.sysadmin.business.service.impl;
+package com.csi.sbs.sysadmin.business.util;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -6,40 +6,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.codingapi.tx.annotation.TxTransaction;
-import com.csi.sbs.common.business.constant.CommonConstant;
 import com.csi.sbs.common.business.json.JsonProcess;
 import com.csi.sbs.common.business.model.HeaderModel;
 import com.csi.sbs.common.business.util.ImportUtil;
 import com.csi.sbs.common.business.util.UUIDUtil;
 import com.csi.sbs.common.business.util.XmlToJsonUtil;
-import com.csi.sbs.sysadmin.business.clientmodel.AddUserBranchModel;
-import com.csi.sbs.sysadmin.business.clientmodel.DockerModel;
 import com.csi.sbs.sysadmin.business.clientmodel.QueryTdDetailSysadminModel;
-import com.csi.sbs.sysadmin.business.clientmodel.SandBoxModel;
 import com.csi.sbs.sysadmin.business.clientmodel.otherservice.TermDepositDetailModel;
-import com.csi.sbs.sysadmin.business.constant.ExceptionConstant;
 import com.csi.sbs.sysadmin.business.constant.PathConstant;
 import com.csi.sbs.sysadmin.business.constant.SysConstant;
-import com.csi.sbs.sysadmin.business.dao.BranchDao;
-import com.csi.sbs.sysadmin.business.dao.UserBranchDao;
-import com.csi.sbs.sysadmin.business.dao.UserDao;
-import com.csi.sbs.sysadmin.business.entity.BranchEntity;
-import com.csi.sbs.sysadmin.business.entity.UserBranchEntity;
-import com.csi.sbs.sysadmin.business.entity.UserEntity;
-import com.csi.sbs.sysadmin.business.exception.NotFoundException;
-import com.csi.sbs.sysadmin.business.exception.OtherException;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CreditCardOpenSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCreditSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.creditcard.CustomerCurrencyAccountSandBox;
@@ -55,96 +37,23 @@ import com.csi.sbs.sysadmin.business.sandbox.deposit.TransactionSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.foreignexchange.ExchangeSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.FundBuyTradingSandBox;
 import com.csi.sbs.sysadmin.business.sandbox.investment.StockTradingSandBox;
-import com.csi.sbs.sysadmin.business.service.UserBranchService;
-import com.csi.sbs.sysadmin.business.util.AvailableNumberUtil;
-import com.csi.sbs.sysadmin.business.util.CalculateMaturityDateUtil;
-import com.csi.sbs.sysadmin.business.util.ResultUtil;
-import com.csi.sbs.sysadmin.business.util.SRUtil;
 
-@Service("UserBranchService")
-public class UserBranchServiceImpl implements UserBranchService {
-
-	@SuppressWarnings("rawtypes")
-	@Resource
-	private UserBranchDao userBranchDao;
-
-	@SuppressWarnings("rawtypes")
-	@Resource
-	private UserDao userDao;
-
-	@SuppressWarnings("rawtypes")
-	@Resource
-	private BranchDao branchDao;
-
+public class OfflineGenerateSandBoxUtil {
+	
+	
+	private String customerTemplate="D://t_customer_master.xls";
+	
+	
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public ResultUtil addUserBranch(AddUserBranchModel userbranch, RestTemplate restTemplate) {
-		ResultUtil result = new ResultUtil();
-		// 校验userid 是否存在
-		UserEntity user = new UserEntity();
-		user.setUserid(userbranch.getUserid());
-		UserEntity reuser = (UserEntity) userDao.findOne(user);
-		if (reuser == null) {
-			result.setCode("0");
-			result.setMsg("UserID does not exist");
-			return result;
-		}
-		// 校验bankID是否存在
-		BranchEntity bank = new BranchEntity();
-		bank.setId(userbranch.getBankid());
-		BranchEntity rebank = (BranchEntity) branchDao.findOne(bank);
-		if (rebank == null) {
-			result.setCode("0");
-			result.setMsg("BankID does not exist");
-			return result;
-		}
-		// 校验是否已经授权
-		UserBranchEntity userBranchSearch = new UserBranchEntity();
-		userBranchSearch.setUserid(userbranch.getUserid());
-		userBranchSearch.setBankid(userbranch.getBankid());
-		UserBranchEntity reubs = (UserBranchEntity) userBranchDao.findOne(userBranchSearch);
-		if (reubs != null) {
-			result.setCode("0");
-			result.setMsg("This user has authorized");
-			return result;
-		}
-
-		UserBranchEntity userBranchEntity = new UserBranchEntity();
-		userBranchEntity.setId(UUIDUtil.generateUUID());
-		userBranchEntity.setUserid(userbranch.getUserid());
-		userBranchEntity.setBankid(userbranch.getBankid());
-		userBranchDao.insert(userBranchEntity);
-
-		result.setCode("1");
-		result.setMsg(userbranch.getUserid() + " authorizes " + userbranch.getBankid() + " to succeed");
-		return result;
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	@TxTransaction(isStart = true)
-	@Transactional
-	public ResultUtil appSandBoxForDeveloper(SandBoxModel sbm, RestTemplate restTemplate) throws Exception {
-
-		/**
-		 * 先根据沙盘ID删除沙盘数据
-		 */
-		//delSandBoxData(sbm.getSandBoxId(), restTemplate);
-		/**
-		 * 生成沙盘数据
-		 */
-		//generateSandBoxData(restTemplate, sbm.getSandBoxId(), sbm.getDeveloperId());
-		return null;
-	}
-
 	@SuppressWarnings({ "rawtypes", "unused" })
-	private void generateSandBoxData(RestTemplate restTemplate, String sandBoxId, String developerId) throws Exception {
+	public void generateSandBox(RestTemplate restTemplate) throws Exception {
+		String sandBoxId = UUIDUtil.generateUUID();
 		// 读取t_customer_master模板数据到 CustomerMasterSandBox.class
-		List list = ImportUtil.importData(CommonConstant.CUSTOMER_MASTER_TEMPLATE, CustomerMasterSandBox.class);
+		
+		List list = ImportUtil.importData(customerTemplate, CustomerMasterSandBox.class);
 		// 创建请求头
 		HeaderModel header = new HeaderModel();
 		// 返回结果
@@ -171,7 +80,7 @@ public class UserBranchServiceImpl implements UserBranchService {
 				header.setClearingCode(cms.getClearingcode());
 				header.setBranchCode(cms.getBranchcode());
 				header.setSandBoxId(sandBoxId);
-				header.setUserID(developerId);
+				header.setUserID("1");
 				// header.setDockerId(null);
 				cms.setCustomerID(SysConstant.SANDBOX_CUSTOMERID_SAMPLE + customerID);
 				cms.setDateOfBirth("1975-08-25");
@@ -241,9 +150,9 @@ public class UserBranchServiceImpl implements UserBranchService {
 				}
 			}
 		}
-		// System.out.println(result);
 	}
-
+	
+	
 	/**
 	 * 创建savingAccount
 	 * 
@@ -862,45 +771,6 @@ public class UserBranchServiceImpl implements UserBranchService {
 			}
 		}
 		return str3;
-	}
-
-	@SuppressWarnings("unused")
-	private void delSandBoxData(String sandBoxId, RestTemplate restTemplate) {
-		String r1 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_DEPOSIT + "/" + sandBoxId, String.class)
-				.getBody();
-		String r2 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_CREDITCARD + "/" + sandBoxId, String.class)
-				.getBody();
-		String r3 = restTemplate.getForEntity(PathConstant.DEL_SANDBOXDATA_INVESTMENT + "/" + sandBoxId, String.class)
-				.getBody();
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public ResultUtil appDockerForDeveloper(DockerModel dm, RestTemplate restTemplate) throws Exception {
-		// 根据developerId查询user表主键
-		UserEntity u = new UserEntity();
-		u.setUserid(dm.getDeveloperId());
-		@SuppressWarnings("unchecked")
-		UserEntity reu = (UserEntity) userDao.findOne(u);
-		if (reu == null) {
-			throw new NotFoundException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE4041002),
-					ExceptionConstant.ERROR_CODE4041002);
-		}
-		// 设置dockerId
-		UserBranchEntity ube = new UserBranchEntity();
-		ube.setDockerid(dm.getDockerId());
-		ube.setUserid(reu.getId());
-
-		int i = userBranchDao.appDockerForDeveloper(ube);
-		if (i > 0) {
-			ResultUtil result = new ResultUtil();
-			result.setCode(String.valueOf(ExceptionConstant.SUCCESS_CODE2001005));
-			result.setMsg(ExceptionConstant.getSuccessMap().get(ExceptionConstant.SUCCESS_CODE2001005)
-					+ "---developerID:" + dm.getDeveloperId() + "---dockerId:" + dm.getDockerId());
-			return result;
-		}
-		throw new OtherException(ExceptionConstant.getExceptionMap().get(ExceptionConstant.ERROR_CODE5001009),
-				ExceptionConstant.ERROR_CODE5001009);
 	}
 
 }

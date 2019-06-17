@@ -1,10 +1,17 @@
 package com.csi.sbs.sysadmin.business.clientmodel;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModelProperty;
+
 public class SandBoxModel {
 
+	@NotNull(message="developerId is a required field")
+	@NotBlank(message="developerId is a required field")
+	@ApiModelProperty(notes="",example="5ce51202ebd6453d71d86129")
 	private String developerId;
-
-	private String sandBoxId;
 
 	public String getDeveloperId() {
 		return developerId;
@@ -12,14 +19,6 @@ public class SandBoxModel {
 
 	public void setDeveloperId(String developerId) {
 		this.developerId = developerId;
-	}
-
-	public String getSandBoxId() {
-		return sandBoxId;
-	}
-
-	public void setSandBoxId(String sandBoxId) {
-		this.sandBoxId = sandBoxId;
 	}
 
 }
