@@ -9,20 +9,8 @@ public class PathConfig {
 	@Value("${gateway.url}")
 	private String gateWayUrl;
 	
-	@Value("${customer.template}")
-	private String customerTemplate;
 	
 	
-	
-
-	public String getCustomerTemplate() {
-		return customerTemplate;
-	}
-
-	public void setCustomerTemplate(String customerTemplate) {
-		this.customerTemplate = customerTemplate;
-	}
-
 	public String getGateWayUrl() {
 		return gateWayUrl;
 	}

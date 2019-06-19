@@ -39,11 +39,11 @@ public class SysadminApplication {
 		RestTemplate r = context.getBean(org.springframework.web.client.RestTemplate.class);
 		@SuppressWarnings("unused")
 		SandboxServiceImpl s = (SandboxServiceImpl) context.getBean(com.csi.sbs.sysadmin.business.service.impl.SandboxServiceImpl.class);
-		//Thread.sleep(4000);
-		//初始化日志相关配置
-		//InitLog.loadLogConfig(context,"sysadmin");
+//		Thread.sleep(10000);
+//		//初始化日志相关配置
+//		//InitLog.loadLogConfig(context,"sysadmin");
 //		OfflineGenerateSandBoxUtil ou = new OfflineGenerateSandBoxUtil();
-//		for(int i=0;i<99;i++){
+//		for(int i=0;i<=99;i++){
 //			System.out.println("正在生成第"+i+"个sandboxid数据===========");
 //			ou.generateSandBox(r,s);
 //		}

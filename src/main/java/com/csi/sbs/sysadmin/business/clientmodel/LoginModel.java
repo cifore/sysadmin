@@ -11,7 +11,7 @@ public class LoginModel {
 	@NotNull(message="loginname is a required field")
 	@NotBlank(message="loginname is a required field")
 	@ApiModelProperty(notes=""
-	,example="pim")
+	,example="WongYan")
 	private String loginname;
 
 	@NotNull(message="loginpwd is a required field")

@@ -51,7 +51,7 @@ public class OfflineGenerateSandBoxUtil {
 //		s.save(sm);
 //	}
 	
-	private String customerTemplate="D://t_customer_master.xls";
+	private String customerTemplate="/home/lbs/t_customer_master.xls";
 	
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -101,7 +101,10 @@ public class OfflineGenerateSandBoxUtil {
 				result = SRUtil.sendWithHeader(restTemplate, PathConstant.CREATE_CUSTOMER_URL, header,
 						JsonProcess.changeEntityTOJSON(cms));
 				// 创建savingAccount
-				String accountNumber = createSavingAccount(header, result, restTemplate);
+				String accountNumber = null;
+				for(int n=0;n<=15;n++){
+					accountNumber = createSavingAccount(header, result, restTemplate);
+				}
 				savingAccountNumber = accountNumber;
 				// 存款
 				deposit(header, result, accountNumber, restTemplate);
