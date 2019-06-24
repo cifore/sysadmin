@@ -51,7 +51,7 @@ public class OfflineGenerateSandBoxUtil {
 //		s.save(sm);
 //	}
 	
-	private String customerTemplate="/home/lbs/t_customer_master.xls";
+	private String customerTemplate="D://t_customer_master.xls";
 	
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
