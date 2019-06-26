@@ -47,7 +47,7 @@ public class SysadminApplication {
 //			System.out.println("正在生成第"+i+"个sandboxid数据===========");
 //			ou.generateSandBox(r,s);
 //		}
-//		System.out.println("100个sandboxid生成完毕================");
+//		System.out.println("sandboxid生成完毕================");
 	}
 
 }
