@@ -2,7 +2,7 @@ package com.csi.sbs.sysadmin.business.clientmodel;
 
 
 
-public class DeleteCurrencyModel {
+public class IDModel {
     private String id;
 
     public String getId() {

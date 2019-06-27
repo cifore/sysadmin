@@ -18,6 +18,24 @@
     </foreach>
   </select>
   
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    select * from t_sys_conf where 1=1
+    <if test="item != null and item != ''">
+    	and Item = #{item}
+    </if>
+    order by Sort asc
+  </select>
+  
+  <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" parameterType="com.csi.sbs.sysadmin.business.entity.SysConfigEntity" >
+    select * from t_sys_conf where 1=1 
+    <if test="item != null and item != ''">
+    	and Item = #{item}
+    </if>
+    <if test="id != null and id != ''">
+    	and ID = #{id}
+    </if>
+  </select>
+  
   <delete id="delete" parameterType="java.lang.String" >
     delete from t_sys_conf
     where ID = #{id,jdbcType=VARCHAR}
