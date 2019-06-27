@@ -1,11 +1,14 @@
 package com.csi.sbs.sysadmin.business.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,9 +18,11 @@ import com.csi.sbs.sysadmin.business.clientmodel.HolidayModel;
 import com.csi.sbs.sysadmin.business.service.HolidayService;
 import com.csi.sbs.sysadmin.business.util.HolidayUtil;
 import com.csi.sbs.sysadmin.business.util.ResultUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin // 解决跨域请求
 @Controller
@@ -32,6 +37,7 @@ public class HolidayController {
 	@Resource
 	private RestTemplate restTemplate;
 	
+	ObjectMapper objectMapper = new ObjectMapper();
 	
 	/**
 	 * 初始化全年的节假日信息
@@ -70,6 +76,55 @@ public class HolidayController {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+	
+	
+	@RequestMapping(value = "/queryHolidayList", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to query all holiday list", notes = "version 0.0.1")
+	@ApiIgnore
+	public String queryHolidayList() throws Exception {
+		Map<String, Object> map = holidayService.queryHolidayList();
+		if(map.get("list") != null){
+			return objectMapper.writeValueAsString(map.get("list"));
+		}
+		return objectMapper.writeValueAsString(map);
+	}
+	
+	@RequestMapping(value = "/insertHoliday", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to insert holiday information", notes = "version 0.0.1")
+	@ApiIgnore
+	public String insertHoliday(@RequestBody HolidayModel holidayModel) throws Exception {
+		Map<String, Object> map = holidayService.insertHoliday(holidayModel);
+		return objectMapper.writeValueAsString(map);
+	}
+	
+	@RequestMapping(value = "/updateHoliday", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to update holiday information", notes = "version 0.0.1")
+	@ApiIgnore
+	public String updateHoliday(@RequestBody HolidayModel holidayModel) throws Exception {
+		Map<String, Object> map = holidayService.updateHoliday(holidayModel);
+		return objectMapper.writeValueAsString(map);
+	}
+	
+	@RequestMapping(value = "/getHolidayInfo", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to update holiday information", notes = "version 0.0.1")
+	@ApiIgnore
+	public String getHolidayInfo(@RequestBody HolidayModel holidayModel) throws Exception {
+		Map<String, Object> map = holidayService.getHolidayInfo(holidayModel);
+		return objectMapper.writeValueAsString(map);
+	}
+	
+	@RequestMapping(value = "/deleteHoliday", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "This API is designed to update holiday information", notes = "version 0.0.1")
+	@ApiIgnore
+	public String deleteHoliday(@RequestBody HolidayModel holidayModel) throws Exception {
+		Map<String, Object> map = holidayService.deleteHoliday(holidayModel);
+		return objectMapper.writeValueAsString(map);
 	}
 
 }
