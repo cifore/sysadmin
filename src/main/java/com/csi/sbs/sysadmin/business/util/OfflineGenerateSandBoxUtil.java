@@ -51,7 +51,7 @@ public class OfflineGenerateSandBoxUtil {
 //		s.save(sm);
 //	}
 	
-	private String customerTemplate="/home/lbs/t_customer_master.xls";
+	private String customerTemplate="D://t_customer_master.xls";
 	
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -102,7 +102,7 @@ public class OfflineGenerateSandBoxUtil {
 						JsonProcess.changeEntityTOJSON(cms));
 				// 创建savingAccount
 				String accountNumber = null;
-				for(int n=0;n<=15;n++){
+				for(int n=0;n<=2500;n++){
 					accountNumber = createSavingAccount(header, result, restTemplate);
 				}
 				savingAccountNumber = accountNumber;
@@ -123,7 +123,7 @@ public class OfflineGenerateSandBoxUtil {
 				String mutualAccountNumber = createMutualAccount(header, result, restTemplate, accountNumber);
 				// 创建currentAccount-创建4个current账号
 				String currentAccount = null;
-				for (int k = 0; k < 4; k++) {
+				for (int k = 0; k < 2500; k++) {
 					currentAccount = createCurrentAccount(header, result, restTemplate);
 				}
 				// 创建信用卡账号
@@ -165,6 +165,7 @@ public class OfflineGenerateSandBoxUtil {
 							restTemplate);
 				}
 			}
+			System.out.println("10万条数据生成完毕=================");
 		}
 	}
 	

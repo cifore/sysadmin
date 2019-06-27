@@ -31,6 +31,7 @@ public class SRUtil {
 	
 	/**
 	 * 带header
+	 * @throws InterruptedException 
 	 */
 	public static ResponseEntity<String> sendWithHeader(RestTemplate restTemplate,String path, HeaderModel header,String json) {
 		HttpHeaders requestHeaders = new HttpHeaders();
@@ -43,9 +44,7 @@ public class SRUtil {
         requestHeaders.add("sandBoxId", header.getSandBoxId());
         requestHeaders.add("dockerId", header.getDockerId());
         requestHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        
         HttpEntity<String> requestEntity = new HttpEntity<String>(json, requestHeaders);
-       
 		ResponseEntity<String> result = restTemplate.postForEntity(path, requestEntity,String.class);
 	    if(result.getStatusCodeValue()==200){
 	    	return result;
