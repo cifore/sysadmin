@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csi.sbs.sysadmin.business.clientmodel.CurrencyModel;
-import com.csi.sbs.sysadmin.business.clientmodel.DeleteCurrencyModel;
+import com.csi.sbs.sysadmin.business.clientmodel.IDModel;
 import com.csi.sbs.sysadmin.business.clientmodel.InsertCurrencyModel;
 import com.csi.sbs.sysadmin.business.entity.CurrencyEntity;
 import com.csi.sbs.sysadmin.business.service.CurrencyService;
@@ -110,7 +110,7 @@ public class CurrencyController{
 	@RequestMapping(value = "/deleteCurrency", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiIgnore()
-	public String deleteCurrency(@RequestBody @Validated DeleteCurrencyModel deleteCurrencyModel) throws Exception{
+	public String deleteCurrency(@RequestBody @Validated IDModel deleteCurrencyModel) throws Exception{
 		Map<String,Object> map = currencyService.deleteCurrency(deleteCurrencyModel.getId());
         return objectMapper.writeValueAsString(map);	
 	}

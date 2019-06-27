@@ -5,14 +5,24 @@
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="Name" property="name" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, Name
-  </sql>
-  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_module
+
+  <select id="selectById" resultType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" parameterType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" >
+    select * from t_module
     where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findOne" resultType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" parameterType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" >
+    select * from t_module where 1 = 1
+    <if test="name != null">
+    	and Name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null and id != ''">
+    	and ID = #{id,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="findMany" resultMap="BaseResultMap" parameterType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" >
+    select * from t_module
+    where 1 = 1
   </select>
   <delete id="delete" parameterType="java.lang.String" >
     delete from t_module
@@ -37,7 +47,7 @@
       </if>
     </trim>
   </insert>
-  <update id="udpate" parameterType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" >
+  <update id="update" parameterType="com.csi.sbs.sysadmin.business.entity.ModuleEntity" >
     update t_module
     <set >
       <if test="name != null" >
